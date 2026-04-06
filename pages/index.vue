@@ -35,7 +35,10 @@
       <div class="sticky top-0 h-screen flex flex-col md:flex-row items-center pl-4 pr-4 md:pl-8 md:pr-8 py-12 md:py-0">
         <div class="w-full md:w-2/5 bg-black/5 rounded-2xl flex items-center justify-center h-[60vh] md:h-[87%] relative overflow-hidden">
           <transition name="fade" mode="out-in">
-            <video v-if="panelVideos[activePanel]" :key="'vid-'+activePanel" :src="panelVideos[activePanel]" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+            <div v-if="panelVideos[activePanel]" :key="'vid-'+activePanel" class="absolute inset-0">
+              <img :src="`/posters/panel${activePanel}.jpg`" class="absolute inset-0 w-full h-full object-cover" />
+              <LazyVideo :src="panelVideos[activePanel]" :poster="`/posters/panel${activePanel}.jpg`" />
+            </div>
             <span v-else :key="activePanel" class="text-[5rem] md:text-[8rem] font-bold leading-none text-black/10 select-none">
               {{ activePanel }}
             </span>
@@ -106,15 +109,18 @@
         <div class="h-[70%] relative overflow-hidden">
           <!-- Slide 1 - uvek na dnu -->
           <div class="absolute inset-0 bg-[#02d4ff]">
-            <video :src="`${videoCdn}/slide1.mp4`" muted autoplay loop playsinline class="w-full h-full object-cover"></video>
+            <img src="/posters/slide1.jpg" class="absolute inset-0 w-full h-full object-cover" />
+            <LazyVideo :src="`${videoCdn}/slide1.mp4`" poster="/posters/slide1.jpg" />
           </div>
           <!-- Slide 2 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#051e2e]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Progress * 3)) * 100}%)` }">
-            <video :src="`${videoCdn}/slide2.mp4`" muted autoplay loop playsinline class="w-full h-full object-cover"></video>
+            <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
+            <LazyVideo :src="`${videoCdn}/slide2.mp4`" poster="/posters/slide2.jpg" />
           </div>
           <!-- Slide 3 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Progress - 0.33) * 3)) * 100}%)` }">
-            <video :src="`${videoCdn}/slide3.mp4`" muted autoplay loop playsinline class="w-full h-full object-cover"></video>
+            <img src="/posters/slide3.jpg" class="absolute inset-0 w-full h-full object-cover" />
+            <LazyVideo :src="`${videoCdn}/slide3.mp4`" poster="/posters/slide3.jpg" />
           </div>
         </div>
         <div class="h-[30%] bg-white flex flex-col md:flex-row items-start justify-between px-6 md:px-16 py-8 md:py-12 gap-6 overflow-hidden">
