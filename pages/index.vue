@@ -23,10 +23,8 @@
     <section
       class="relative flex items-center justify-center h-[50vh] w-full overflow-hidden"
     >
-      <div class="max-w-6xl px-6 md:px-8 text-center" :style="{ transform: `translateY(${parallax2}px)` }">
-        <RevealY>
+      <div class="max-w-6xl px-6 md:px-8 text-center">
           <h2 class="text-3xl md:text-5xl font-bold leading-snug">Building Europe's next ammunition facility from the ground up — 9,050 m² licensed, NATO-aligned, expansion-ready.</h2>
-        </RevealY>
       </div>
     </section>
 
@@ -60,12 +58,19 @@
             </div>
           </div>
         </div>
+        <!-- Panel number indicator -->
+        <div class="absolute right-[20%] md:right-[25%] top-1/2 -translate-y-1/2 z-10">
+          <span class="text-sm font-mono text-black/30 flex">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="activePanel > (activePanelPrev || 1) ? 'num-up' : 'num-down'" mode="out-in"><span :key="activePanel" class="block">{{ activePanel }}</span></transition></span></span>
+        </div>
       </div>
     </section>
 
     <!-- Section 4 -->
     <section ref="section4" class="relative w-full border-b border-white/10 h-[200vh]">
       <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden transition-colors duration-300" :style="{ backgroundColor: section4ColorShift > 0 ? `rgb(${5 + section4ColorShift * 250}, ${30 + section4ColorShift * 225}, ${46 + section4ColorShift * 209})` : '#051e2e' }">
+        <div class="absolute z-10 top-[38%] left-1/2 -translate-x-1/2">
+          <span class="text-sm font-mono uppercase tracking-wider transition-colors duration-300" :style="{ color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'rgba(255,255,255,0.4)' }">Our Mission</span>
+        </div>
         <div class="relative z-10 text-5xl md:text-9xl font-bold whitespace-nowrap" :style="{ color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'white', transform: `scale(${1 + section4Merge * 0.5})` }">
           <span class="inline-flex">
             <span>B</span>
@@ -113,23 +118,30 @@
             <LazyVideo :src="`${videoCdn}/slide1.mp4`" poster="/posters/slide1.jpg" />
           </div>
           <!-- Slide 2 - klizi odozgo -->
-          <div class="absolute inset-0 bg-[#051e2e]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Progress * 3)) * 100}%)` }">
+          <div class="absolute inset-0 bg-[#051e2e]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Smooth * 3)) * 100}%)` }">
             <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
             <LazyVideo :src="`${videoCdn}/slide2.mp4`" poster="/posters/slide2.jpg" />
           </div>
           <!-- Slide 3 - klizi odozgo -->
-          <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Progress - 0.33) * 3)) * 100}%)` }">
+          <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Smooth - 0.33) * 3)) * 100}%)` }">
             <img src="/posters/slide3.jpg" class="absolute inset-0 w-full h-full object-cover" />
             <LazyVideo :src="`${videoCdn}/slide3.mp4`" poster="/posters/slide3.jpg" />
+          </div>
+          <!-- Slide indicator - line + number -->
+          <div class="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-10 h-[40%] flex items-start gap-3">
+            <div class="w-[2px] h-full bg-white/20 rounded-full relative overflow-hidden">
+              <div class="absolute top-0 left-0 w-full bg-[#02d4ff] rounded-full transition-none" :style="{ height: (slide5Smooth * 100) + '%' }"></div>
+            </div>
+            <span class="text-sm font-mono text-white/60 absolute -left-8 flex" :style="{ top: (slide5Smooth * 85) + '%' }">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="slide5Direction > 0 ? 'num-up' : 'num-down'" mode="out-in"><span :key="activeSlide5" class="block">{{ activeSlide5 }}</span></transition></span></span>
           </div>
         </div>
         <div class="h-[30%] bg-white flex flex-col md:flex-row items-start justify-between px-6 md:px-16 py-8 md:py-12 gap-6 overflow-hidden">
           <div :key="'h1-'+slide5Display" class="md:w-2/5">
-            <span class="text-sm text-black/30 font-mono uppercase tracking-wider stagger-char" :style="{ '--i': 0 }">Capability {{ String(slide5Display).padStart(2, '0') }}</span>
-            <h1 class="text-2xl md:text-4xl font-bold mt-2 leading-tight"><span v-for="(char, ci) in slide5Titles[slide5Display - 1].replace(/<[^>]*>/g, '')" :key="ci" class="stagger-char" :class="char === ' ' ? 'inline' : 'inline-block'" :style="{ '--i': ci + 1 }">{{ char === ' ' ? '\u00A0' : char }}</span></h1>
+            <span ref="slide5Label" class="text-sm text-black/30 font-mono uppercase tracking-wider split-text">Capability {{ String(slide5Display).padStart(2, '0') }}</span>
+            <h1 ref="slide5Title" class="text-2xl md:text-4xl font-bold mt-2 leading-tight split-text" v-html="slide5Titles[slide5Display - 1]"></h1>
           </div>
           <div :key="'h2-'+slide5Display" class="md:w-1/2">
-            <p class="text-base md:text-lg text-black/60 leading-relaxed"><span v-for="(char, ci) in slide5Subtitles[slide5Display - 1]" :key="ci" class="stagger-char" :class="char === ' ' ? 'inline' : 'inline-block'" :style="{ '--i': ci }">{{ char === ' ' ? '\u00A0' : char }}</span></p>
+            <p ref="slide5Desc" class="text-base md:text-lg text-black/60 leading-relaxed split-text">{{ slide5Subtitles[slide5Display - 1] }}</p>
           </div>
         </div>
       </div>
@@ -160,12 +172,10 @@
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3s" repeatCount="indefinite" />
         </path>
       </svg>
-      <RevealY>
-        <div class="text-center relative z-10" :style="{ transform: `translateY(${parallax6}px)` }">
+        <div class="text-center relative z-10">
           <span class="text-sm text-black/30 font-mono uppercase tracking-wider">Our Partners & Licenses</span>
           <h1 class="text-3xl md:text-5xl font-bold px-6 mt-3">Powering European Defense</h1>
         </div>
-      </RevealY>
     </section>
 
     <!-- Section 7 -->
@@ -282,9 +292,10 @@
 
       <!-- Section 9 -->
       <section ref="section9El" class="relative flex items-center justify-center h-[50vh] w-full overflow-hidden">
-        <RevealY>
-          <h1 class="text-3xl md:text-5xl font-bold px-6 max-w-5xl text-center relative z-10" :style="{ transform: `translateY(${parallax9}px)` }">Ready to scale European ammunition production? Let's talk.</h1>
-        </RevealY>
+          <div class="text-center relative z-10">
+            <span class="text-sm text-black/30 font-mono uppercase tracking-wider">Get In Touch</span>
+            <h1 class="text-3xl md:text-5xl font-bold px-6 max-w-5xl mt-3">Ready to scale European ammunition production? Let's talk.</h1>
+          </div>
       </section>
 
       <!-- Section 10 - Contact -->
@@ -295,7 +306,7 @@
               <span class="w-3 h-3 rounded-full bg-[#02d4ff]"></span>
               <span class="w-3 h-3 rounded-full bg-black/15"></span>
             </div>
-            <RevealY><h2 class="text-3xl md:text-5xl font-bold text-center">Tell us a bit about you:</h2></RevealY>
+            <h2 class="text-3xl md:text-5xl font-bold text-center">Tell us a bit about you:</h2>
           </div>
           <form class="space-y-10">
             <div>
@@ -394,7 +405,7 @@
 
       <!-- Gornji deo - heading + CTA -->
       <div class="flex flex-col items-center text-center px-6 pt-32 md:pt-40">
-        <RevealY><h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2></RevealY>
+        <h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2>
         <a href="#" class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group">
           <span class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
           <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300">Request A Briefing</span>
@@ -453,6 +464,13 @@
 </template>
 
 <script setup lang="ts">
+import gsap from 'gsap'
+import { SplitText } from 'gsap/SplitText'
+
+if (import.meta.client) {
+  gsap.registerPlugin(SplitText)
+}
+
 useHead({
   bodyAttrs: {
     class: 'bg-white text-black',
@@ -481,12 +499,17 @@ const section4Progress = ref(0)
 const section4Merge = ref(0)
 const section4ColorShift = ref(0)
 const activePanel = ref(1)
+const activePanelPrev = ref(1)
 const section3Progress = ref(0)
 const activeSlide5 = ref(1)
 const slide5Direction = ref(1)
 const slide5Transitioning = ref(false)
 const slide5Display = ref(1)
+const slide5Label = ref<HTMLElement | null>(null)
+const slide5Title = ref<HTMLElement | null>(null)
+const slide5Desc = ref<HTMLElement | null>(null)
 const slide5Progress = ref(0)
+const slide5Smooth = ref(0)
 const trapezoidPosition = ref(15)
 
 const videoCdn = 'https://filipsstojanovic-hub.github.io/shield-cdn/videos'
@@ -577,46 +600,131 @@ const slide5Subtitles = [
   'With 1,020 m² of available construction area, a 500 m² unit ready for repurposing, and access to the EU ASAP Programme\'s €500M public and €1B private investment pipeline — Shield is positioned to scale production rapidly within Europe\'s accelerating defense industrial base.',
 ]
 
+function animateSlideText() {
+  nextTick(() => {
+    const els = [slide5Label.value, slide5Title.value, slide5Desc.value].filter(Boolean) as HTMLElement[]
+    els.forEach(el => {
+      gsap.set(el, { opacity: 1 })
+      SplitText.create(el, {
+        type: 'words,lines',
+        linesClass: 'line',
+        autoSplit: true,
+        mask: 'lines',
+        reduceWhiteSpace: false,
+        onSplit: (self: any) => {
+          gsap.from(self.lines, {
+            duration: 0.6,
+            yPercent: 100,
+            opacity: 0,
+            stagger: 0.1,
+            ease: 'expo.out',
+          })
+        }
+      })
+    })
+  })
+}
+
 onMounted(() => {
-  // Preload hero frames from CDN (progressive loading)
+  // Initial split text animation
+  animateSlideText()
+
+  // Smooth slide progress interpolation
+  function smoothSlide() {
+    const diff = slide5Progress.value - slide5Smooth.value
+    if (Math.abs(diff) > 0.001) {
+      slide5Smooth.value += diff * 0.12
+    } else {
+      slide5Smooth.value = slide5Progress.value
+    }
+    requestAnimationFrame(smoothSlide)
+  }
+  requestAnimationFrame(smoothSlide)
+
+  // Smart hero frame loading - load in chunks around current scroll position
   const cdnBase = 'https://filipsstojanovic-hub.github.io/shield-cdn'
   const totalHeroFrames = 422
-  let heroLoadedCount = 0
+  const loadRadius = 30 // load ±30 frames around current position
+  const loadedSet = new Set<number>()
+  let lastLoadCenter = -1
+  let heroCanvasWidth = 0
+  let heroCanvasHeight = 0
 
-  for (let i = 1; i <= totalHeroFrames; i++) {
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.onload = () => {
-      heroLoadedCount++
-      if (heroLoadedCount === 1) {
-        heroLoaded = true
-        // Draw first frame and wait for it before signaling
-        drawHeroFrame(1)
-      }
-      // Signal loader after first 50 frames AND first frame is drawn
-      if (heroLoadedCount === 50) {
-        // Ensure first frame is visible before removing loader
-        requestAnimationFrame(() => {
-          drawHeroFrame(1)
-          requestAnimationFrame(() => {
-            window.dispatchEvent(new Event('hero-frames-loaded'))
-          })
-        })
-      }
-    }
-    img.src = `${cdnBase}/hero-frames/frame_${String(i).padStart(4, '0')}.webp`
-    heroImages.push(img)
+  // Initialize image array with empty slots
+  for (let i = 0; i < totalHeroFrames; i++) {
+    heroImages.push(null as any)
   }
+
+  function loadFrame(i: number): Promise<void> {
+    if (loadedSet.has(i) || i < 1 || i > totalHeroFrames) return Promise.resolve()
+    loadedSet.add(i)
+    return new Promise((resolve) => {
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.onload = () => {
+        heroImages[i - 1] = img
+        if (!heroLoaded) {
+          heroLoaded = true
+          heroCanvasWidth = img.naturalWidth
+          heroCanvasHeight = img.naturalHeight
+          drawHeroFrame(i)
+        }
+        resolve()
+      }
+      img.onerror = () => {
+        loadedSet.delete(i)
+        resolve()
+      }
+      img.src = `${cdnBase}/hero-frames/frame_${String(i).padStart(4, '0')}.webp`
+    })
+  }
+
+  async function loadChunk(center: number) {
+    if (center === lastLoadCenter) return
+    lastLoadCenter = center
+
+    // Load current frame first, then expand outward
+    const promises: Promise<void>[] = []
+    promises.push(loadFrame(center))
+    for (let offset = 1; offset <= loadRadius; offset++) {
+      promises.push(loadFrame(center + offset))
+      promises.push(loadFrame(center - offset))
+      // Batch in groups of 6 (browser connection limit)
+      if (offset % 3 === 0) await Promise.all(promises.splice(0))
+    }
+    await Promise.all(promises)
+  }
+
+  // Load first chunk and signal loader
+  loadChunk(1).then(() => {
+    requestAnimationFrame(() => {
+      drawHeroFrame(1)
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('hero-frames-loaded'))
+      })
+    })
+  })
 
   function drawHeroFrame(frame: number) {
     const canvas = heroCanvas.value
     if (!canvas || !heroLoaded) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    const img = heroImages[frame - 1]
+    // Find nearest loaded frame if current isn't ready
+    let img = heroImages[frame - 1]
+    if (!img?.complete) {
+      for (let offset = 1; offset <= 10; offset++) {
+        const before = heroImages[frame - 1 - offset]
+        if (before?.complete) { img = before; break }
+        const after = heroImages[frame - 1 + offset]
+        if (after?.complete) { img = after; break }
+      }
+    }
     if (!img?.complete) return
-    canvas.width = img.naturalWidth
-    canvas.height = img.naturalHeight
+    if (heroCanvasWidth) {
+      canvas.width = heroCanvasWidth
+      canvas.height = heroCanvasHeight
+    }
     ctx.drawImage(img, 0, 0)
   }
 
@@ -635,6 +743,8 @@ onMounted(() => {
     if (rounded !== heroLastDrawn) {
       heroLastDrawn = rounded
       drawHeroFrame(rounded)
+      // Load frames around current position
+      loadChunk(rounded)
     }
     requestAnimationFrame(smoothHeroDraw)
   }
@@ -719,7 +829,11 @@ onMounted(() => {
       const scrolled3 = -rect3.top
       const progress3 = Math.max(0, Math.min(1, scrolled3 / (height3 - window.innerHeight)))
       const textProgress = Math.min(3.5, progress3 * 3.5)
-      activePanel.value = Math.min(4, Math.floor(textProgress) + 1)
+      const newPanel = Math.min(4, Math.floor(textProgress) + 1)
+      if (newPanel !== activePanel.value) {
+        activePanelPrev.value = activePanel.value
+        activePanel.value = newPanel
+      }
       section3Progress.value = textProgress
       trapezoidPosition.value = 15 + Math.min(1, textProgress / 3) * 70
     }
@@ -763,6 +877,7 @@ onMounted(() => {
           activeSlide5.value = newSlide
           slide5Display.value = newSlide
           slide5Transitioning.value = false
+          animateSlideText()
         }, 300)
       }
     }
@@ -779,15 +894,27 @@ onMounted(() => {
 .fade-leave-to {
   opacity: 0;
 }
-.stagger-char {
-  opacity: 0;
-  will-change: opacity, transform;
-  animation: char-reveal 0.4s cubic-bezier(.19,1,.22,1) forwards;
-  animation-delay: calc(var(--i) * 0.008s);
+.num-up-enter-active,
+.num-up-leave-active,
+.num-down-enter-active,
+.num-down-leave-active {
+  transition: all 0.25s cubic-bezier(.19,1,.22,1);
 }
-@keyframes char-reveal {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+.num-up-enter-from { opacity: 0; transform: translateY(100%); }
+.num-up-leave-to { opacity: 0; transform: translateY(-100%); }
+.num-down-enter-from { opacity: 0; transform: translateY(-100%); }
+.num-down-leave-to { opacity: 0; transform: translateY(100%); }
+.split-text {
+  opacity: 0;
+}
+.split-text .line {
+  will-change: transform;
+}
+.split-text :deep(u) {
+  text-decoration: underline;
+  text-decoration-color: black;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 .panel-text {
   background-image: linear-gradient(to right, black, black);

@@ -1,6 +1,6 @@
 <template>
   <video
-    v-if="loaded"
+    v-if="ready"
     :src="src"
     muted
     autoplay
@@ -16,17 +16,32 @@ const props = defineProps<{
   poster?: string
 }>()
 
-const el = ref<HTMLElement | null>(null)
-const loaded = ref(false)
+const wrapper = ref<HTMLElement | null>(null)
+const ready = ref(false)
+const started = ref(false)
 
 onMounted(() => {
-  // Preload video in background
-  const video = document.createElement('video')
-  video.preload = 'auto'
-  video.muted = true
-  video.oncanplaythrough = () => {
-    loaded.value = true
-  }
-  video.src = props.src
+  // Find parent element to observe
+  const parent = getCurrentInstance()?.vnode.el?.parentElement
+  if (!parent) return
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && !started.value) {
+        started.value = true
+        observer.disconnect()
+        // Preload video in background
+        const video = document.createElement('video')
+        video.preload = 'auto'
+        video.muted = true
+        video.oncanplaythrough = () => {
+          ready.value = true
+        }
+        video.src = props.src
+      }
+    },
+    { rootMargin: '200px' } // Start loading 200px before visible
+  )
+  observer.observe(parent)
 })
 </script>
