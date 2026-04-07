@@ -91,18 +91,18 @@
         <!-- Vertikalne linije (gap oko tačaka) -->
         <template v-for="col in 13" :key="'vc'+col">
           <template v-for="row in 7" :key="'vl'+col+'-'+row">
-            <line :x1="((col-1)/12*100)+'%'" :y1="'calc('+((row-1)/7*100)+'% + 14px)'" :x2="((col-1)/12*100)+'%'" :y2="'calc('+(row/7*100)+'% - 14px)'" :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.07 + section4ColorShift * 0.03})` : 'rgba(2,212,255,0.15)'" stroke-width="1" />
+            <line :x1="((col-1)/12*100)+'%'" :y1="'calc('+((row-1)/7*100)+'% + 14px)'" :x2="((col-1)/12*100)+'%'" :y2="'calc('+(row/7*100)+'% - 14px)'" :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.07 + section4ColorShift * 0.03})` : `rgba(2,212,255,${0.25 * gridDotOpacity(col-1, row-1, 12, 7)})`" stroke-width="1" />
           </template>
         </template>
         <!-- Horizontalne linije (gap oko tačaka) -->
         <template v-for="row in 8" :key="'hr'+row">
           <template v-for="col in 12" :key="'hl'+row+'-'+col">
-            <line :x1="'calc('+((col-1)/12*100)+'% + 14px)'" :y1="((row-1)/7*100)+'%'" :x2="'calc('+(col/12*100)+'% - 14px)'" :y2="((row-1)/7*100)+'%'" :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.07 + section4ColorShift * 0.03})` : 'rgba(2,212,255,0.15)'" stroke-width="1" />
+            <line :x1="'calc('+((col-1)/12*100)+'% + 14px)'" :y1="((row-1)/7*100)+'%'" :x2="'calc('+(col/12*100)+'% - 14px)'" :y2="((row-1)/7*100)+'%'" :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.07 + section4ColorShift * 0.03})` : `rgba(2,212,255,${0.25 * gridDotOpacity(col-1, row-1, 12, 7)})`" stroke-width="1" />
           </template>
         </template>
         <!-- Tačkice na presecima -->
         <template v-for="row in 8" :key="'r'+row">
-          <circle v-for="col in 13" :key="'d'+row+'-'+col" :cx="((col-1)/12*100)+'%'" :cy="((row-1)/7*100)+'%'" r="3" :fill="section4ColorShift > 0 ? `rgba(0,0,0,${0.3})` : 'rgba(2,212,255,0.5)'" />
+          <circle v-for="col in 13" :key="'d'+row+'-'+col" :cx="((col-1)/12*100)+'%'" :cy="((row-1)/7*100)+'%'" r="3" :fill="section4ColorShift > 0 ? `rgba(0,0,0,${0.3})` : `rgba(2,212,255,${0.7 * gridDotOpacity(col-1, row-1, 12, 7)})`" />
         </template>
       </svg>
       </div>
@@ -496,6 +496,31 @@ const section9El = ref<HTMLElement | null>(null)
 const section8Images: HTMLImageElement[] = []
 let section8Loaded = false
 const section4Progress = ref(0)
+const pulseTime = ref(0)
+
+// Repeating dark pulses from center - like ripples in water
+function gridDotOpacity(col: number, row: number, maxCol: number, maxRow: number) {
+  const cx = col / maxCol - 0.5
+  const cy = row / maxRow - 0.5
+  const dist = Math.sqrt(cx * cx + cy * cy) * 2 // 0 to ~1
+
+  // Continuous repeating pulses from center
+  const speed = 0.15
+  const spacing = 0.5
+  const cycleLength = spacing * 3
+  const t = (pulseTime.value * speed) % cycleLength
+
+  // Create repeating waves
+  let minOpacity = 1
+  for (let wave = 0; wave < 5; wave++) {
+    const wavePos = t + wave * spacing
+    const wrappedPos = wavePos % cycleLength
+    const diff = Math.abs(dist - wrappedPos)
+    const pulse = Math.max(0, 1 - diff * 2)
+    minOpacity = Math.min(minOpacity, 1 - pulse)
+  }
+  return Math.max(0, minOpacity)
+}
 const section4Merge = ref(0)
 const section4ColorShift = ref(0)
 const activePanel = ref(1)
@@ -628,6 +653,14 @@ function animateSlideText() {
 onMounted(() => {
   // Initial split text animation
   animateSlideText()
+
+  // Grid pulse animation loop
+  let pulseStart = performance.now()
+  function animatePulse() {
+    pulseTime.value = (performance.now() - pulseStart) / 1000
+    requestAnimationFrame(animatePulse)
+  }
+  requestAnimationFrame(animatePulse)
 
   // Smooth slide progress interpolation
   function smoothSlide() {
