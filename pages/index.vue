@@ -35,7 +35,7 @@
           <transition name="fade" mode="out-in">
             <div v-if="panelVideos[activePanel]" :key="'vid-'+activePanel" class="absolute inset-0">
               <img :src="`/posters/panel${activePanel}.jpg`" class="absolute inset-0 w-full h-full object-cover" />
-              <LazyVideo :src="panelVideos[activePanel]" :poster="`/posters/panel${activePanel}.jpg`" />
+              <video :src="panelVideos[activePanel]" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
             </div>
             <span v-else :key="activePanel" class="text-[5rem] md:text-[8rem] font-bold leading-none text-black/10 select-none">
               {{ activePanel }}
@@ -115,17 +115,17 @@
           <!-- Slide 1 - uvek na dnu -->
           <div class="absolute inset-0 bg-[#02d4ff]">
             <img src="/posters/slide1.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <LazyVideo :src="`${videoCdn}/slide1.mp4`" poster="/posters/slide1.jpg" />
+            <video :src="`${videoCdn}/slide1.mp4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
           <!-- Slide 2 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#051e2e]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Smooth * 3)) * 100}%)` }">
             <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <LazyVideo :src="`${videoCdn}/slide2.mp4`" poster="/posters/slide2.jpg" />
+            <video :src="`${videoCdn}/slide2.mp4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
           <!-- Slide 3 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Smooth - 0.33) * 3)) * 100}%)` }">
             <img src="/posters/slide3.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <LazyVideo :src="`${videoCdn}/slide3.mp4`" poster="/posters/slide3.jpg" />
+            <video :src="`${videoCdn}/slide3.mp4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
           <!-- Slide indicator - line + number -->
           <div class="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-10 h-[40%] flex items-start gap-3">
