@@ -115,12 +115,12 @@
           <!-- Slide 1 - uvek na dnu -->
           <div class="absolute inset-0 bg-[#02d4ff]">
             <img src="/posters/slide1.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video :src="`${videoCdn}/slide1.mp4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+            <video :src="`${videoCdn}/slide1.mp4?v=3`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
           <!-- Slide 2 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#051e2e]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Smooth * 3)) * 100}%)` }">
             <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video :src="`${videoCdn}/slide2.mp4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+            <video :src="`${videoCdn}/slide2.mp4?v=2`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
           <!-- Slide 3 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Smooth - 0.33) * 3)) * 100}%)` }">
@@ -676,7 +676,7 @@ onMounted(() => {
 
   // Smart hero frame loading - load in chunks around current scroll position
   const cdnBase = 'https://filipsstojanovic-hub.github.io/shield-cdn'
-  const totalHeroFrames = 422
+  const totalHeroFrames = 316
   const loadRadius = 30 // load ±30 frames around current position
   const loadedSet = new Set<number>()
   let lastLoadCenter = -1
@@ -838,7 +838,7 @@ onMounted(() => {
       const heightH = heroSection.value.offsetHeight
       const scrolledH = -rectH.top
       const progressH = Math.max(0, Math.min(1, scrolledH / (heightH - window.innerHeight)))
-      heroFrame.value = Math.max(1, Math.min(422, Math.floor(progressH * 421) + 1))
+      heroFrame.value = Math.max(1, Math.min(316, Math.floor(progressH * 315) + 1))
     }
 
     const s2 = document.querySelector('section:nth-of-type(2)') as HTMLElement
