@@ -115,7 +115,7 @@
           <!-- Slide 1 - uvek na dnu -->
           <div class="absolute inset-0 bg-[#02d4ff]">
             <img src="/posters/slide1.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video :src="`${videoCdn}/slide1.mp4?v=3`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+            <video src="/ovo.mp4" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
           <!-- Slide 2 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#051e2e]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Smooth * 3)) * 100}%)` }">
