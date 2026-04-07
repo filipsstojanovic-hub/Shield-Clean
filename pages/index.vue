@@ -59,8 +59,8 @@
           </div>
         </div>
         <!-- Panel number indicator -->
-        <div class="absolute right-[20%] md:right-[25%] top-1/2 -translate-y-1/2 z-10">
-          <span class="text-sm font-mono text-black/30 flex">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="activePanel > (activePanelPrev || 1) ? 'num-up' : 'num-down'" mode="out-in"><span :key="activePanel" class="block">{{ activePanel }}</span></transition></span></span>
+        <div class="absolute right-[12%] md:right-[18%] top-1/2 -translate-y-1/2 z-10">
+          <span class="text-sm font-mono text-black/30 flex">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="activePanel > (activePanelPrev || 1) ? 'num-up' : 'num-down'"><span :key="activePanel" class="block">{{ activePanel }}</span></transition></span></span>
         </div>
       </div>
     </section>
@@ -113,17 +113,17 @@
       <div class="sticky top-0 h-screen flex flex-col">
         <div class="h-[70%] relative overflow-hidden">
           <!-- Slide 1 - uvek na dnu -->
-          <div class="absolute inset-0 bg-[#02d4ff]">
+          <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${-Math.min(1, slide5Smooth * 3) * 25}%)` }">
             <img src="/posters/slide1.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video src="/ovo.mp4" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+            <video :src="`${videoCdn}/slide1.mp4?v=4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
           <!-- Slide 2 - klizi odozgo -->
-          <div class="absolute inset-0 bg-[#051e2e]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Smooth * 3)) * 100}%)` }">
+          <div class="absolute inset-0 bg-[#051e2e] z-[1]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Smooth * 3)) * 100}%)` }">
             <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
             <video :src="`${videoCdn}/slide2.mp4?v=2`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
           <!-- Slide 3 - klizi odozgo -->
-          <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Smooth - 0.33) * 3)) * 100}%)` }">
+          <div class="absolute inset-0 bg-[#02d4ff] z-[2]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Smooth - 0.33) * 3)) * 100}%)` }">
             <img src="/posters/slide3.jpg" class="absolute inset-0 w-full h-full object-cover" />
             <video :src="`${videoCdn}/slide3.mp4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
           </div>
@@ -132,7 +132,7 @@
             <div class="w-[2px] h-full bg-white/20 rounded-full relative overflow-hidden">
               <div class="absolute top-0 left-0 w-full bg-[#02d4ff] rounded-full transition-none" :style="{ height: (slide5Smooth * 100) + '%' }"></div>
             </div>
-            <span class="text-sm font-mono text-white/60 absolute -left-8 flex" :style="{ top: (slide5Smooth * 85) + '%' }">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="slide5Direction > 0 ? 'num-up' : 'num-down'" mode="out-in"><span :key="activeSlide5" class="block">{{ activeSlide5 }}</span></transition></span></span>
+            <span class="text-sm font-mono text-white/60 absolute -left-8 flex" :style="{ top: (slide5Smooth * 85) + '%' }">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="slide5Direction > 0 ? 'num-up' : 'num-down'"><span :key="activeSlide5" class="block">{{ activeSlide5 }}</span></transition></span></span>
           </div>
         </div>
         <div class="h-[30%] bg-white flex flex-col md:flex-row items-start justify-between px-6 md:px-16 py-8 md:py-12 gap-6 overflow-hidden">
@@ -546,10 +546,10 @@ const panelVideos: Record<number, string> = {
 }
 
 const panelTexts = [
-  '9,050 m² Licensed Facility\nWith 19 Operational Units',
-  '240 Tons TNT-Equivalent\nStorage Capacity',
-  '1,020 m² Available For\nNew Production Lines',
-  'Positioned In Europe\'s\nFastest-Growing\nDefense Market',
+  '9,050 m² Licensed Facility\nWith 19 Operational Units\nAnd 5,330 m² Dedicated\nStorage Infrastructure',
+  '240 Tons TNT-Equivalent\nStorage Capacity Across\nExplosive & Pyrotechnic\nClasses With Indefinite Permits',
+  '1,020 m² Available For\nNew Production Lines\nPlus 500 m² Under Construction\nReady For Repurposing',
+  'Positioned In Europe\'s\nFastest-Growing\nDefense Market With\n60-Day Manufacturing\nLicensing Pathway',
 ]
 
 const gridLogos: Record<number, string> = {
@@ -928,10 +928,13 @@ onMounted(() => {
   opacity: 0;
 }
 .num-up-enter-active,
+.num-down-enter-active {
+  transition: transform 0.45s cubic-bezier(.19,1,.22,1), opacity 0.3s ease;
+}
 .num-up-leave-active,
-.num-down-enter-active,
 .num-down-leave-active {
-  transition: all 0.25s cubic-bezier(.19,1,.22,1);
+  position: absolute;
+  transition: transform 0.35s cubic-bezier(.55,.06,.68,.19), opacity 0.25s ease;
 }
 .num-up-enter-from { opacity: 0; transform: translateY(100%); }
 .num-up-leave-to { opacity: 0; transform: translateY(-100%); }
