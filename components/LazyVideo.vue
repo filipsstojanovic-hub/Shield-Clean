@@ -1,13 +1,15 @@
 <template>
-  <video
-    v-if="ready"
-    :src="src"
-    muted
-    autoplay
-    loop
-    playsinline
-    class="absolute inset-0 w-full h-full object-cover"
-  />
+  <div ref="wrapper" class="absolute inset-0">
+    <video
+      v-if="ready"
+      :src="src"
+      muted
+      autoplay
+      loop
+      playsinline
+      class="w-full h-full object-cover"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -21,16 +23,13 @@ const ready = ref(false)
 const started = ref(false)
 
 onMounted(() => {
-  // Find parent element to observe
-  const parent = getCurrentInstance()?.vnode.el?.parentElement
-  if (!parent) return
+  if (!wrapper.value) return
 
   const observer = new IntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting && !started.value) {
         started.value = true
         observer.disconnect()
-        // Preload video in background
         const video = document.createElement('video')
         video.preload = 'auto'
         video.muted = true
@@ -40,8 +39,8 @@ onMounted(() => {
         video.src = props.src
       }
     },
-    { rootMargin: '200px' } // Start loading 200px before visible
+    { rootMargin: '200px' }
   )
-  observer.observe(parent)
+  observer.observe(wrapper.value)
 })
 </script>
