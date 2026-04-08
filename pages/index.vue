@@ -214,7 +214,7 @@
 
     <!-- Section 8 - Video scroll -->
     <div class="h-[15vh]"></div>
-    <section ref="section8" class="relative w-full border-b border-white/10 h-[500vh]">
+    <section ref="section8" class="relative w-full border-b border-white/10 h-[400vh]">
       <div class="sticky top-0 h-screen w-full bg-black flex items-center justify-center overflow-hidden">
         <canvas ref="section8Canvas" class="w-full h-full object-cover"></canvas>
         <!-- Trapezoid gore -->
@@ -648,16 +648,30 @@ onMounted(() => {
   // Initial split text animation
   animateSlideText()
 
-  // Grid pulse animation loop
+  // Grid pulse animation loop - only runs when section 4 is visible
   let pulseStart = performance.now()
+  let pulseRunning = false
   function animatePulse() {
+    if (!pulseRunning) return
     pulseTime.value = (performance.now() - pulseStart) / 1000
     requestAnimationFrame(animatePulse)
   }
-  requestAnimationFrame(animatePulse)
+  if (section4.value) {
+    const pulseObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !pulseRunning) {
+        pulseRunning = true
+        requestAnimationFrame(animatePulse)
+      } else if (!entry.isIntersecting) {
+        pulseRunning = false
+      }
+    }, { rootMargin: '100px' })
+    pulseObserver.observe(section4.value)
+  }
 
-  // Smooth slide progress interpolation
+  // Smooth slide progress interpolation - only runs when section 5 is near
+  let slideRunning = false
   function smoothSlide() {
+    if (!slideRunning) return
     const diff = slide5Progress.value - slide5Smooth.value
     if (Math.abs(diff) > 0.001) {
       slide5Smooth.value += diff * 0.12
@@ -666,7 +680,17 @@ onMounted(() => {
     }
     requestAnimationFrame(smoothSlide)
   }
-  requestAnimationFrame(smoothSlide)
+  if (section5.value) {
+    const slideObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !slideRunning) {
+        slideRunning = true
+        requestAnimationFrame(smoothSlide)
+      } else if (!entry.isIntersecting) {
+        slideRunning = false
+      }
+    }, { rootMargin: '200px' })
+    slideObserver.observe(section5.value)
+  }
 
   // === Canvas frame sequences via Web Worker ===
   const cdnBase = 'https://filipsstojanovic-hub.github.io/shield-cdn'
@@ -685,22 +709,6 @@ onMounted(() => {
   let s8Loaded = false
   let s8CanvasW = 0
   let s8CanvasH = 0
-
-  // spliceNth - distribute indices evenly for fast preview
-  function spliceNth(total: number): number[] {
-    const indices: number[] = [1] // always load first frame first
-    const steps = [2, 4, 8, 16, 32]
-    const added = new Set([1])
-    for (const step of steps) {
-      for (let i = 1; i <= total; i += Math.max(1, Math.floor(total / step))) {
-        if (!added.has(i)) { indices.push(i); added.add(i) }
-      }
-    }
-    for (let i = 1; i <= total; i++) {
-      if (!added.has(i)) indices.push(i)
-    }
-    return indices
-  }
 
   // Load frames - try Web Worker, fallback to main thread
   function loadFrames(
