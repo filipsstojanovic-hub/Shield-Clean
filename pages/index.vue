@@ -109,23 +109,23 @@
     </section>
 
     <!-- Section 5 - Pinned slides -->
-    <section ref="section5" class="relative w-full h-[300vh]">
+    <section ref="section5" class="relative w-full h-[500vh]">
       <div class="sticky top-0 h-screen flex flex-col">
         <div class="h-[70%] relative overflow-hidden">
           <!-- Slide 1 - uvek na dnu -->
-          <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${-Math.min(1, slide5Smooth * 3) * 25}%)` }">
+          <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${-Math.min(1, Math.max(0, (slide5Smooth - 0.2) * 5)) * 25}%)` }">
             <img src="/posters/slide1.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video v-if="activeSlide5 <= 1" :src="`${videoCdn}/slide1.mp4?v=4`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
+            <video v-if="activeSlide5 <= 2" :src="`${videoCdn}/slide1.mp4?v=4`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
           </div>
-          <!-- Slide 2 - klizi odozgo -->
-          <div class="absolute inset-0 bg-[#051e2e] z-[1]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Smooth * 3)) * 100}%)` }">
+          <!-- Slide 2 - klizi odozgo, tranzicija 0.2-0.4, pauza 0.4-0.6 -->
+          <div class="absolute inset-0 bg-[#051e2e] z-[1]" :style="{ transform: `translateY(${Math.max(0, (1 - Math.min(1, (slide5Smooth - 0.2) * 5)) * 100)}%)` }">
             <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video v-if="activeSlide5 >= 1 && activeSlide5 <= 2" :src="`${videoCdn}/slide2.mp4?v=2`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
+            <video v-if="activeSlide5 >= 1 && activeSlide5 <= 3" :src="`${videoCdn}/slide2.mp4?v=3`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
           </div>
-          <!-- Slide 3 - klizi odozgo -->
-          <div class="absolute inset-0 bg-[#02d4ff] z-[2]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Smooth - 0.33) * 3)) * 100}%)` }">
+          <!-- Slide 3 - klizi odozgo, tranzicija 0.6-0.8, pauza 0.8-1.0 -->
+          <div class="absolute inset-0 bg-[#02d4ff] z-[2]" :style="{ transform: `translateY(${Math.max(0, (1 - Math.min(1, (slide5Smooth - 0.6) * 5)) * 100)}%)` }">
             <img src="/posters/slide3.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video v-if="activeSlide5 >= 2" :src="`${videoCdn}/slide3.mp4`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
+            <video v-if="activeSlide5 >= 2" :src="`${videoCdn}/slide3.mp4?v=2`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
           </div>
           <!-- Slide indicator - line + number -->
           <div class="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-10 h-[40%] flex items-start gap-3">
@@ -939,7 +939,7 @@ onMounted(() => {
       const scrolled5 = -rect5.top
       const progress5 = Math.max(0, Math.min(1, scrolled5 / (height5 - window.innerHeight)))
       slide5Progress.value = progress5
-      const newSlide = Math.min(3, Math.floor(progress5 * 3) + 1)
+      const newSlide = progress5 < 0.2 ? 1 : progress5 < 0.6 ? 2 : 3
       if (newSlide !== activeSlide5.value && !slide5Transitioning.value) {
         slide5Direction.value = newSlide > activeSlide5.value ? 1 : -1
         slide5Transitioning.value = true
