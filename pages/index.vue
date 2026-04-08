@@ -704,37 +704,85 @@ onMounted(() => {
     return indices
   }
 
-  // Load frames via Web Worker
-  function loadFramesWithWorker(
+  // Load frames - try Web Worker, fallback to main thread
+  function loadFrames(
     frameCount: number,
     urlFn: (i: number) => string,
     images: (HTMLImageElement | null)[],
     onFirstFrame: (img: HTMLImageElement) => void,
     onDone: () => void
   ) {
-    const worker = new Worker('/frame-loader.worker.js')
-    const urls = Array.from({ length: frameCount }, (_, i) => ({ index: i, url: urlFn(i + 1) }))
     let firstDone = false
 
-    worker.onmessage = (e) => {
-      if (e.data.type === 'frame') {
-        const img = new Image()
-        const url = URL.createObjectURL(e.data.blob)
-        img.onload = () => {
-          images[e.data.index] = img
-          if (!firstDone) {
-            firstDone = true
-            onFirstFrame(img)
-          }
-        }
-        img.src = url
-      } else if (e.data.type === 'done') {
-        onDone()
-        worker.terminate()
+    function onFrame(index: number, img: HTMLImageElement) {
+      images[index] = img
+      if (!firstDone) {
+        firstDone = true
+        onFirstFrame(img)
       }
     }
 
-    worker.postMessage({ urls, batchSize: 8, delayMs: 50 })
+    // Main thread fallback - simple batch loading
+    function loadMainThread() {
+      const batchSize = 6
+      let i = 0
+      function loadBatch() {
+        const batch = []
+        for (let b = 0; b < batchSize && i < frameCount; b++, i++) {
+          const idx = i
+          const img = new Image()
+          img.crossOrigin = 'anonymous'
+          img.onload = () => onFrame(idx, img)
+          img.src = urlFn(idx + 1)
+          batch.push(img)
+        }
+        if (i < frameCount) setTimeout(loadBatch, 50)
+        else onDone()
+      }
+      loadBatch()
+    }
+
+    // Try Web Worker
+    try {
+      const worker = new Worker('/frame-loader.worker.js')
+      let workerFailed = false
+
+      worker.onerror = () => {
+        if (!workerFailed) {
+          workerFailed = true
+          worker.terminate()
+          loadMainThread()
+        }
+      }
+
+      // Timeout - if no frame arrives in 5s, fallback
+      const timeout = setTimeout(() => {
+        if (!firstDone && !workerFailed) {
+          workerFailed = true
+          worker.terminate()
+          loadMainThread()
+        }
+      }, 5000)
+
+      worker.onmessage = (e) => {
+        if (workerFailed) return
+        if (e.data.type === 'frame') {
+          clearTimeout(timeout)
+          const img = new Image()
+          const url = URL.createObjectURL(e.data.blob)
+          img.onload = () => onFrame(e.data.index, img)
+          img.src = url
+        } else if (e.data.type === 'done') {
+          onDone()
+          worker.terminate()
+        }
+      }
+
+      const urls = Array.from({ length: frameCount }, (_, idx) => ({ index: idx, url: urlFn(idx + 1) }))
+      worker.postMessage({ urls, batchSize: 8, delayMs: 50 })
+    } catch {
+      loadMainThread()
+    }
   }
 
   // Draw functions
@@ -769,7 +817,7 @@ onMounted(() => {
   }
 
   // Start hero frame loading
-  loadFramesWithWorker(
+  loadFrames(
     totalHeroFrames,
     (i) => `${cdnBase}/hero-frames/frame_${String(i).padStart(4, '0')}.jpg`,
     heroImages,
@@ -789,7 +837,7 @@ onMounted(() => {
     if (entry.isIntersecting && !s8LoadStarted) {
       s8LoadStarted = true
       s8Observer.disconnect()
-      loadFramesWithWorker(
+      loadFrames(
         totalS8Frames,
         (i) => `${cdnFrames}/frames/frame_${String(i).padStart(4, '0')}.jpg`,
         s8Images,
