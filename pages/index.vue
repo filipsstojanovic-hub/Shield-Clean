@@ -673,12 +673,11 @@ onMounted(() => {
   const cdnFrames = 'https://cdn.jsdelivr.net/gh/filipsstojanovic-hub/shield-cdn@master'
 
   // Hero frames setup
-  const totalHeroFrames = 158
+  const totalHeroFrames = 264
   const heroImages: (HTMLImageElement | null)[] = new Array(totalHeroFrames).fill(null)
   let heroLoaded = false
   let heroCanvasW = 0
   let heroCanvasH = 0
-  const heroTargetFrame = ref(1)
 
   // Section 8 frames setup
   const totalS8Frames = 121
@@ -686,7 +685,6 @@ onMounted(() => {
   let s8Loaded = false
   let s8CanvasW = 0
   let s8CanvasH = 0
-  const s8TargetFrame = ref(1)
 
   // spliceNth - distribute indices evenly for fast preview
   function spliceNth(total: number): number[] {
@@ -801,7 +799,6 @@ onMounted(() => {
       }
     }
     if (!img?.complete) return
-    if (heroCanvasW) { canvas.width = heroCanvasW; canvas.height = heroCanvasH }
     ctx.drawImage(img, 0, 0)
   }
 
@@ -812,7 +809,6 @@ onMounted(() => {
     if (!ctx) return
     const img = s8Images[frame - 1]
     if (!img?.complete) return
-    if (s8CanvasW) { canvas.width = s8CanvasW; canvas.height = s8CanvasH }
     ctx.drawImage(img, 0, 0)
   }
 
@@ -825,6 +821,7 @@ onMounted(() => {
       heroLoaded = true
       heroCanvasW = img.naturalWidth
       heroCanvasH = img.naturalHeight
+      if (heroCanvas.value) { heroCanvas.value.width = heroCanvasW; heroCanvas.value.height = heroCanvasH }
       drawHero(1)
       window.dispatchEvent(new Event('hero-frames-loaded'))
     },
@@ -845,6 +842,7 @@ onMounted(() => {
           s8Loaded = true
           s8CanvasW = img.naturalWidth
           s8CanvasH = img.naturalHeight
+          if (section8Canvas.value) { section8Canvas.value.width = s8CanvasW; section8Canvas.value.height = s8CanvasH }
           drawS8(1)
         },
         () => {}
@@ -853,42 +851,27 @@ onMounted(() => {
   }, { rootMargin: '500px' })
   if (section8.value) s8Observer.observe(section8.value)
 
-  // Smooth canvas draw loops
-  let heroCurrentFrame = 1
+  // Direct draw in scroll - no watch, no rAF, minimal overhead
   let heroLastDrawn = 0
-  let s8CurrentFrame = 1
   let s8LastDrawn = 0
-
-  function animLoop() {
-    // Hero smooth draw
-    const hDiff = heroTargetFrame.value - heroCurrentFrame
-    if (Math.abs(hDiff) > 0.1) heroCurrentFrame += hDiff * 0.5
-    else heroCurrentFrame = heroTargetFrame.value
-    const hRound = Math.round(heroCurrentFrame)
-    if (hRound !== heroLastDrawn) { heroLastDrawn = hRound; drawHero(hRound) }
-
-    // Section 8 smooth draw
-    const sDiff = s8TargetFrame.value - s8CurrentFrame
-    if (Math.abs(sDiff) > 0.1) s8CurrentFrame += sDiff * 0.5
-    else s8CurrentFrame = s8TargetFrame.value
-    const sRound = Math.round(s8CurrentFrame)
-    if (sRound !== s8LastDrawn) { s8LastDrawn = sRound; drawS8(sRound) }
-
-    requestAnimationFrame(animLoop)
-  }
-  requestAnimationFrame(animLoop)
+  let scrollTicking = false
 
   window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY
+    if (scrollTicking) return
+    scrollTicking = true
+    requestAnimationFrame(() => {
+      scrollTicking = false
+      const scrollY = window.scrollY
 
-    // Hero canvas scrub
-    if (heroSection.value) {
-      const rectH = heroSection.value.getBoundingClientRect()
-      const heightH = heroSection.value.offsetHeight
-      const scrolledH = -rectH.top
-      const progressH = Math.max(0, Math.min(1, scrolledH / (heightH - window.innerHeight)))
-      heroTargetFrame.value = Math.max(1, Math.min(totalHeroFrames, Math.floor(progressH * (totalHeroFrames - 1)) + 1))
-    }
+      // Hero canvas scrub - direct draw
+      if (heroSection.value && heroLoaded) {
+        const rectH = heroSection.value.getBoundingClientRect()
+        const heightH = heroSection.value.offsetHeight
+        const scrolledH = -rectH.top
+        const progressH = Math.max(0, Math.min(1, scrolledH / (heightH - window.innerHeight)))
+        const frame = Math.max(1, Math.min(totalHeroFrames, Math.round(progressH * (totalHeroFrames - 1)) + 1))
+        if (frame !== heroLastDrawn) { heroLastDrawn = frame; drawHero(frame) }
+      }
 
     const s2 = document.querySelector('section:nth-of-type(2)') as HTMLElement
     if (s2) {
@@ -931,13 +914,14 @@ onMounted(() => {
       section4ColorShift.value = progress4 > 0.7 ? 1 : 0
     }
 
-    // Section 8 canvas scrub
-    if (section8.value) {
+    // Section 8 canvas scrub - direct draw
+    if (section8.value && s8Loaded) {
       const rect8 = section8.value.getBoundingClientRect()
       const height8 = section8.value.offsetHeight
       const scrolled8 = -rect8.top
       const progress8 = Math.max(0, Math.min(1, scrolled8 / (height8 - window.innerHeight)))
-      s8TargetFrame.value = Math.max(1, Math.min(totalS8Frames, Math.floor(progress8 * (totalS8Frames - 1)) + 1))
+      const s8Frame = Math.max(1, Math.min(totalS8Frames, Math.round(progress8 * (totalS8Frames - 1)) + 1))
+      if (s8Frame !== s8LastDrawn) { s8LastDrawn = s8Frame; drawS8(s8Frame) }
     }
 
     // Section 5
@@ -963,6 +947,7 @@ onMounted(() => {
         }, 300)
       }
     }
+    })
   })
 })
 </script>
