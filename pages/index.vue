@@ -35,7 +35,7 @@
           <transition name="fade" mode="out-in">
             <div v-if="panelVideos[activePanel]" :key="'vid-'+activePanel" class="absolute inset-0">
               <img :src="`/posters/panel${activePanel}.jpg`" class="absolute inset-0 w-full h-full object-cover" />
-              <video :src="panelVideos[activePanel]" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+              <video :src="panelVideos[activePanel]" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
             </div>
             <span v-else :key="activePanel" class="text-[5rem] md:text-[8rem] font-bold leading-none text-black/10 select-none">
               {{ activePanel }}
@@ -115,17 +115,17 @@
           <!-- Slide 1 - uvek na dnu -->
           <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${-Math.min(1, slide5Smooth * 3) * 25}%)` }">
             <img src="/posters/slide1.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video :src="`${videoCdn}/slide1.mp4?v=4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+            <video v-if="activeSlide5 <= 1" :src="`${videoCdn}/slide1.mp4?v=4`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
           </div>
           <!-- Slide 2 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#051e2e] z-[1]" :style="{ transform: `translateY(${Math.max(0, (1 - slide5Smooth * 3)) * 100}%)` }">
             <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video :src="`${videoCdn}/slide2.mp4?v=2`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+            <video v-if="activeSlide5 >= 1 && activeSlide5 <= 2" :src="`${videoCdn}/slide2.mp4?v=2`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
           </div>
           <!-- Slide 3 - klizi odozgo -->
           <div class="absolute inset-0 bg-[#02d4ff] z-[2]" :style="{ transform: `translateY(${Math.max(0, (1 - (slide5Smooth - 0.33) * 3)) * 100}%)` }">
             <img src="/posters/slide3.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video :src="`${videoCdn}/slide3.mp4`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" />
+            <video v-if="activeSlide5 >= 2" :src="`${videoCdn}/slide3.mp4`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
           </div>
           <!-- Slide indicator - line + number -->
           <div class="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-10 h-[40%] flex items-start gap-3">
@@ -479,22 +479,16 @@ useHead({
 
 const heroSection = ref<HTMLElement | null>(null)
 const heroCanvas = ref<HTMLCanvasElement | null>(null)
-const heroImages: HTMLImageElement[] = []
-let heroLoaded = false
-const heroFrame = ref(1)
 
 const section3 = ref<HTMLElement | null>(null)
 const section4 = ref<HTMLElement | null>(null)
 const section5 = ref<HTMLElement | null>(null)
 const section8 = ref<HTMLElement | null>(null)
 const section8Canvas = ref<HTMLCanvasElement | null>(null)
-const section8Frame = ref(1)
 const parallax2 = ref(0)
 const parallax6 = ref(0)
 const parallax9 = ref(0)
 const section9El = ref<HTMLElement | null>(null)
-const section8Images: HTMLImageElement[] = []
-let section8Loaded = false
 const section4Progress = ref(0)
 const pulseTime = ref(0)
 
@@ -674,171 +668,178 @@ onMounted(() => {
   }
   requestAnimationFrame(smoothSlide)
 
-  // Smart hero frame loading - load in chunks around current scroll position
+  // === Canvas frame sequences via Web Worker ===
   const cdnBase = 'https://filipsstojanovic-hub.github.io/shield-cdn'
-  const totalHeroFrames = 316
-  const loadRadius = 30 // load ±30 frames around current position
-  const loadedSet = new Set<number>()
-  let lastLoadCenter = -1
-  let heroCanvasWidth = 0
-  let heroCanvasHeight = 0
+  const cdnFrames = 'https://cdn.jsdelivr.net/gh/filipsstojanovic-hub/shield-cdn@master'
 
-  // Initialize image array with empty slots
-  for (let i = 0; i < totalHeroFrames; i++) {
-    heroImages.push(null as any)
-  }
+  // Hero frames setup
+  const totalHeroFrames = 158
+  const heroImages: (HTMLImageElement | null)[] = new Array(totalHeroFrames).fill(null)
+  let heroLoaded = false
+  let heroCanvasW = 0
+  let heroCanvasH = 0
+  const heroTargetFrame = ref(1)
 
-  function loadFrame(i: number): Promise<void> {
-    if (loadedSet.has(i) || i < 1 || i > totalHeroFrames) return Promise.resolve()
-    loadedSet.add(i)
-    return new Promise((resolve) => {
-      const img = new Image()
-      img.crossOrigin = 'anonymous'
-      img.onload = () => {
-        heroImages[i - 1] = img
-        if (!heroLoaded) {
-          heroLoaded = true
-          heroCanvasWidth = img.naturalWidth
-          heroCanvasHeight = img.naturalHeight
-          drawHeroFrame(i)
-        }
-        resolve()
+  // Section 8 frames setup
+  const totalS8Frames = 121
+  const s8Images: (HTMLImageElement | null)[] = new Array(totalS8Frames).fill(null)
+  let s8Loaded = false
+  let s8CanvasW = 0
+  let s8CanvasH = 0
+  const s8TargetFrame = ref(1)
+
+  // spliceNth - distribute indices evenly for fast preview
+  function spliceNth(total: number): number[] {
+    const indices: number[] = [1] // always load first frame first
+    const steps = [2, 4, 8, 16, 32]
+    const added = new Set([1])
+    for (const step of steps) {
+      for (let i = 1; i <= total; i += Math.max(1, Math.floor(total / step))) {
+        if (!added.has(i)) { indices.push(i); added.add(i) }
       }
-      img.onerror = () => {
-        loadedSet.delete(i)
-        resolve()
-      }
-      img.src = `${cdnBase}/hero-frames/frame_${String(i).padStart(4, '0')}.webp`
-    })
-  }
-
-  async function loadChunk(center: number) {
-    if (center === lastLoadCenter) return
-    lastLoadCenter = center
-
-    // Load current frame first, then expand outward
-    const promises: Promise<void>[] = []
-    promises.push(loadFrame(center))
-    for (let offset = 1; offset <= loadRadius; offset++) {
-      promises.push(loadFrame(center + offset))
-      promises.push(loadFrame(center - offset))
-      // Batch in groups of 6 (browser connection limit)
-      if (offset % 3 === 0) await Promise.all(promises.splice(0))
     }
-    await Promise.all(promises)
+    for (let i = 1; i <= total; i++) {
+      if (!added.has(i)) indices.push(i)
+    }
+    return indices
   }
 
-  // Load first chunk and signal loader
-  loadChunk(1).then(() => {
-    requestAnimationFrame(() => {
-      drawHeroFrame(1)
-      requestAnimationFrame(() => {
-        window.dispatchEvent(new Event('hero-frames-loaded'))
-      })
-    })
-  })
+  // Load frames via Web Worker
+  function loadFramesWithWorker(
+    frameCount: number,
+    urlFn: (i: number) => string,
+    images: (HTMLImageElement | null)[],
+    onFirstFrame: (img: HTMLImageElement) => void,
+    onDone: () => void
+  ) {
+    const worker = new Worker('/frame-loader.worker.js')
+    const urls = Array.from({ length: frameCount }, (_, i) => ({ index: i, url: urlFn(i + 1) }))
+    let firstDone = false
 
-  function drawHeroFrame(frame: number) {
+    worker.onmessage = (e) => {
+      if (e.data.type === 'frame') {
+        const img = new Image()
+        const url = URL.createObjectURL(e.data.blob)
+        img.onload = () => {
+          images[e.data.index] = img
+          if (!firstDone) {
+            firstDone = true
+            onFirstFrame(img)
+          }
+        }
+        img.src = url
+      } else if (e.data.type === 'done') {
+        onDone()
+        worker.terminate()
+      }
+    }
+
+    worker.postMessage({ urls, batchSize: 8, delayMs: 50 })
+  }
+
+  // Draw functions
+  function drawHero(frame: number) {
     const canvas = heroCanvas.value
     if (!canvas || !heroLoaded) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    // Find nearest loaded frame if current isn't ready
     let img = heroImages[frame - 1]
     if (!img?.complete) {
-      for (let offset = 1; offset <= 10; offset++) {
-        const before = heroImages[frame - 1 - offset]
-        if (before?.complete) { img = before; break }
-        const after = heroImages[frame - 1 + offset]
-        if (after?.complete) { img = after; break }
+      for (let off = 1; off <= 10; off++) {
+        const b = heroImages[frame - 1 - off]
+        if (b?.complete) { img = b; break }
+        const a = heroImages[frame - 1 + off]
+        if (a?.complete) { img = a; break }
       }
     }
     if (!img?.complete) return
-    if (heroCanvasWidth) {
-      canvas.width = heroCanvasWidth
-      canvas.height = heroCanvasHeight
-    }
+    if (heroCanvasW) { canvas.width = heroCanvasW; canvas.height = heroCanvasH }
     ctx.drawImage(img, 0, 0)
   }
 
-  let heroCurrentFrame = 1
-  let heroLastDrawn = 0
-
-  function smoothHeroDraw() {
-    const target = heroFrame.value
-    const diff = target - heroCurrentFrame
-    if (Math.abs(diff) > 0.1) {
-      heroCurrentFrame += diff * 0.5
-    } else {
-      heroCurrentFrame = target
-    }
-    const rounded = Math.round(heroCurrentFrame)
-    if (rounded !== heroLastDrawn) {
-      heroLastDrawn = rounded
-      drawHeroFrame(rounded)
-      // Load frames around current position
-      loadChunk(rounded)
-    }
-    requestAnimationFrame(smoothHeroDraw)
-  }
-  requestAnimationFrame(smoothHeroDraw)
-
-  // Preload section 8 frames from CDN
-  const cdnFrames = 'https://cdn.jsdelivr.net/gh/filipsstojanovic-hub/shield-cdn@master'
-  for (let i = 1; i <= 121; i++) {
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.src = `${cdnFrames}/frames/frame_${String(i).padStart(4, '0')}.jpg`
-    section8Images.push(img)
-  }
-  section8Images[0].onload = () => {
-    section8Loaded = true
-    drawFrame(1)
-  }
-
-  function drawFrame(frame: number) {
+  function drawS8(frame: number) {
     const canvas = section8Canvas.value
-    if (!canvas || !section8Loaded) return
+    if (!canvas || !s8Loaded) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    const img = section8Images[frame - 1]
+    const img = s8Images[frame - 1]
     if (!img?.complete) return
-    canvas.width = img.naturalWidth
-    canvas.height = img.naturalHeight
+    if (s8CanvasW) { canvas.width = s8CanvasW; canvas.height = s8CanvasH }
     ctx.drawImage(img, 0, 0)
   }
 
-  let currentFrame = 1
-  let lastDrawn = 0
+  // Start hero frame loading
+  loadFramesWithWorker(
+    totalHeroFrames,
+    (i) => `${cdnBase}/hero-frames/frame_${String(i).padStart(4, '0')}.jpg`,
+    heroImages,
+    (img) => {
+      heroLoaded = true
+      heroCanvasW = img.naturalWidth
+      heroCanvasH = img.naturalHeight
+      drawHero(1)
+      window.dispatchEvent(new Event('hero-frames-loaded'))
+    },
+    () => {}
+  )
 
-  function smoothDraw() {
-    const target = section8Frame.value
-    const diff = target - currentFrame
-    if (Math.abs(diff) > 0.1) {
-      currentFrame += diff * 0.5
-    } else {
-      currentFrame = target
+  // Start section 8 frame loading — lazy, only when near viewport
+  let s8LoadStarted = false
+  const s8Observer = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting && !s8LoadStarted) {
+      s8LoadStarted = true
+      s8Observer.disconnect()
+      loadFramesWithWorker(
+        totalS8Frames,
+        (i) => `${cdnFrames}/frames/frame_${String(i).padStart(4, '0')}.jpg`,
+        s8Images,
+        (img) => {
+          s8Loaded = true
+          s8CanvasW = img.naturalWidth
+          s8CanvasH = img.naturalHeight
+          drawS8(1)
+        },
+        () => {}
+      )
     }
-    const rounded = Math.round(currentFrame)
-    if (rounded !== lastDrawn) {
-      lastDrawn = rounded
-      drawFrame(rounded)
-    }
-    requestAnimationFrame(smoothDraw)
+  }, { rootMargin: '500px' })
+  if (section8.value) s8Observer.observe(section8.value)
+
+  // Smooth canvas draw loops
+  let heroCurrentFrame = 1
+  let heroLastDrawn = 0
+  let s8CurrentFrame = 1
+  let s8LastDrawn = 0
+
+  function animLoop() {
+    // Hero smooth draw
+    const hDiff = heroTargetFrame.value - heroCurrentFrame
+    if (Math.abs(hDiff) > 0.1) heroCurrentFrame += hDiff * 0.5
+    else heroCurrentFrame = heroTargetFrame.value
+    const hRound = Math.round(heroCurrentFrame)
+    if (hRound !== heroLastDrawn) { heroLastDrawn = hRound; drawHero(hRound) }
+
+    // Section 8 smooth draw
+    const sDiff = s8TargetFrame.value - s8CurrentFrame
+    if (Math.abs(sDiff) > 0.1) s8CurrentFrame += sDiff * 0.5
+    else s8CurrentFrame = s8TargetFrame.value
+    const sRound = Math.round(s8CurrentFrame)
+    if (sRound !== s8LastDrawn) { s8LastDrawn = sRound; drawS8(sRound) }
+
+    requestAnimationFrame(animLoop)
   }
-  requestAnimationFrame(smoothDraw)
+  requestAnimationFrame(animLoop)
 
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY
 
-    // Parallax for sections 6 and 9
-    // Hero
+    // Hero canvas scrub
     if (heroSection.value) {
       const rectH = heroSection.value.getBoundingClientRect()
       const heightH = heroSection.value.offsetHeight
       const scrolledH = -rectH.top
       const progressH = Math.max(0, Math.min(1, scrolledH / (heightH - window.innerHeight)))
-      heroFrame.value = Math.max(1, Math.min(316, Math.floor(progressH * 315) + 1))
+      heroTargetFrame.value = Math.max(1, Math.min(totalHeroFrames, Math.floor(progressH * (totalHeroFrames - 1)) + 1))
     }
 
     const s2 = document.querySelector('section:nth-of-type(2)') as HTMLElement
@@ -882,13 +883,13 @@ onMounted(() => {
       section4ColorShift.value = progress4 > 0.7 ? 1 : 0
     }
 
-    // Section 8
+    // Section 8 canvas scrub
     if (section8.value) {
       const rect8 = section8.value.getBoundingClientRect()
       const height8 = section8.value.offsetHeight
       const scrolled8 = -rect8.top
       const progress8 = Math.max(0, Math.min(1, scrolled8 / (height8 - window.innerHeight)))
-      section8Frame.value = Math.max(1, Math.min(121, Math.floor(progress8 * 120) + 1))
+      s8TargetFrame.value = Math.max(1, Math.min(totalS8Frames, Math.floor(progress8 * (totalS8Frames - 1)) + 1))
     }
 
     // Section 5
