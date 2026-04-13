@@ -4,6 +4,7 @@
     <section ref="heroSection" class="relative w-full h-[900vh]">
       <div class="sticky top-0 h-screen w-full bg-[#051e2e] flex items-center justify-center overflow-hidden">
         <canvas ref="heroCanvas" class="absolute inset-0 w-full h-full object-cover"></canvas>
+        <div v-if="!heroScrolled" ref="cursorLabel" class="fixed pointer-events-none z-50 text-white text-xs font-mono uppercase tracking-widest opacity-0 transition-opacity duration-300" style="transform: translate(-50%, -50%)">Scroll to Explore</div>
       <div class="absolute bottom-0 group cursor-pointer w-[75%] h-[55px] flex items-center justify-center">
         <svg class="absolute w-[calc(100%+50px)] h-full -left-[25px]" viewBox="0 0 850 55">
           <defs>
@@ -479,6 +480,8 @@ useHead({
 
 const heroSection = ref<HTMLElement | null>(null)
 const heroCanvas = ref<HTMLCanvasElement | null>(null)
+const cursorLabel = ref<HTMLElement | null>(null)
+const heroScrolled = ref(false)
 
 const section3 = ref<HTMLElement | null>(null)
 const section4 = ref<HTMLElement | null>(null)
@@ -648,6 +651,39 @@ onMounted(() => {
   // Initial split text animation
   animateSlideText()
 
+  // Cursor label follows mouse in hero section with easing
+  let cursorX = 0, cursorY = 0
+  let labelX = 0, labelY = 0
+  let cursorVisible = false
+
+  if (heroSection.value) {
+    heroSection.value.addEventListener('mousemove', (e) => {
+      if (!heroScrolled.value) {
+        cursorX = e.clientX
+        cursorY = e.clientY
+        cursorVisible = true
+      }
+    })
+    heroSection.value.addEventListener('mouseleave', () => {
+      cursorVisible = false
+    })
+  }
+
+  function animateCursor() {
+    if (cursorLabel.value) {
+      labelX += (cursorX - labelX) * 0.07
+      labelY += (cursorY - labelY) * 0.07
+      cursorLabel.value.style.left = labelX + 'px'
+      cursorLabel.value.style.top = labelY + 'px'
+      cursorLabel.value.style.opacity = cursorVisible && !heroScrolled.value ? '1' : '0'
+    }
+    requestAnimationFrame(animateCursor)
+  }
+  requestAnimationFrame(animateCursor)
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300 && !heroScrolled.value) heroScrolled.value = true
+  })
+
   // Grid pulse animation loop - only runs when section 4 is visible
   let pulseStart = performance.now()
   let pulseRunning = false
@@ -700,15 +736,11 @@ onMounted(() => {
   const totalHeroFrames = 264
   const heroImages: (HTMLImageElement | null)[] = new Array(totalHeroFrames).fill(null)
   let heroLoaded = false
-  let heroCanvasW = 0
-  let heroCanvasH = 0
 
   // Section 8 frames setup
   const totalS8Frames = 121
   const s8Images: (HTMLImageElement | null)[] = new Array(totalS8Frames).fill(null)
   let s8Loaded = false
-  let s8CanvasW = 0
-  let s8CanvasH = 0
 
   // Load frames - try Web Worker, fallback to main thread
   function loadFrames(
@@ -791,12 +823,36 @@ onMounted(() => {
     }
   }
 
+  // Cover draw — scales image to fill canvas like CSS object-fit: cover
+  function drawCover(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, img: HTMLImageElement) {
+    const cw = canvas.width
+    const ch = canvas.height
+    const iw = img.naturalWidth
+    const ih = img.naturalHeight
+    const scale = Math.max(cw / iw, ch / ih)
+    const sw = iw * scale
+    const sh = ih * scale
+    ctx.drawImage(img, (cw - sw) / 2, (ch - sh) / 2, sw, sh)
+  }
+
+  // Resize canvas to match screen
+  function sizeCanvas(canvas: HTMLCanvasElement) {
+    const dpr = window.devicePixelRatio || 1
+    const w = canvas.offsetWidth
+    const h = canvas.offsetHeight
+    if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+      canvas.width = w * dpr
+      canvas.height = h * dpr
+    }
+  }
+
   // Draw functions
   function drawHero(frame: number) {
     const canvas = heroCanvas.value
     if (!canvas || !heroLoaded) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+    sizeCanvas(canvas)
     let img = heroImages[frame - 1]
     if (!img?.complete) {
       for (let off = 1; off <= 10; off++) {
@@ -807,7 +863,7 @@ onMounted(() => {
       }
     }
     if (!img?.complete) return
-    ctx.drawImage(img, 0, 0)
+    drawCover(canvas, ctx, img)
   }
 
   function drawS8(frame: number) {
@@ -815,9 +871,10 @@ onMounted(() => {
     if (!canvas || !s8Loaded) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+    sizeCanvas(canvas)
     const img = s8Images[frame - 1]
     if (!img?.complete) return
-    ctx.drawImage(img, 0, 0)
+    drawCover(canvas, ctx, img)
   }
 
   // Start hero frame loading
@@ -827,9 +884,6 @@ onMounted(() => {
     heroImages,
     (img) => {
       heroLoaded = true
-      heroCanvasW = img.naturalWidth
-      heroCanvasH = img.naturalHeight
-      if (heroCanvas.value) { heroCanvas.value.width = heroCanvasW; heroCanvas.value.height = heroCanvasH }
       drawHero(1)
       window.dispatchEvent(new Event('hero-frames-loaded'))
     },
@@ -848,9 +902,6 @@ onMounted(() => {
         s8Images,
         (img) => {
           s8Loaded = true
-          s8CanvasW = img.naturalWidth
-          s8CanvasH = img.naturalHeight
-          if (section8Canvas.value) { section8Canvas.value.width = s8CanvasW; section8Canvas.value.height = s8CanvasH }
           drawS8(1)
         },
         () => {}
