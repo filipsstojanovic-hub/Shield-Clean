@@ -119,9 +119,9 @@
             <video v-if="activeSlide5 <= 2" :src="`${videoCdn}/slide1.mp4?v=4`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
           </div>
           <!-- Slide 2 - klizi odozgo, tranzicija 0.2-0.4, pauza 0.4-0.6 -->
-          <div class="absolute inset-0 bg-[#051e2e] z-[1]" :style="{ transform: `translateY(${Math.max(0, (1 - Math.min(1, (slide5Smooth - 0.2) * 5)) * 100)}%)` }">
+          <div class="absolute inset-0 bg-[#051e2e] z-[1]" :style="{ transform: `translateY(${Math.max(0, (1 - Math.min(1, (slide5Smooth - 0.2) * 5)) * 100) + (-Math.min(1, Math.max(0, (slide5Smooth - 0.6) * 5)) * 25)}%)` }">
             <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video v-if="activeSlide5 >= 1 && activeSlide5 <= 3" :src="`${videoCdn}/slide2.mp4?v=3`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
+            <video v-if="activeSlide5 >= 1 && activeSlide5 <= 3" :src="`${videoCdn}/slide2.mp4?v=3`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
           </div>
           <!-- Slide 3 - klizi odozgo, tranzicija 0.6-0.8, pauza 0.8-1.0 -->
           <div class="absolute inset-0 bg-[#02d4ff] z-[2]" :style="{ transform: `translateY(${Math.max(0, (1 - Math.min(1, (slide5Smooth - 0.6) * 5)) * 100)}%)` }">
@@ -544,7 +544,7 @@ const panelVideos: Record<number, string> = {
 
 const panelTexts = [
   '9,050 m² Licensed Facility\nWith 19 Operational Units\nAnd 5,330 m² Dedicated\nStorage Infrastructure',
-  '240 Tons TNT-Equivalent\nStorage Capacity Across\nExplosive & Pyrotechnic\nClasses With Indefinite Permits',
+  '240,000 kg TNT-Equivalent\nStorage Capacity Across\nExplosive & Pyrotechnic\nClasses With Indefinite Permits',
   '1,020 m² Available For\nNew Production Lines\nPlus 500 m² Under Construction\nReady For Repurposing',
   'Positioned In Europe\'s\nFastest-Growing\nDefense Market With\n60-Day Manufacturing\nLicensing Pathway',
 ]
@@ -910,10 +910,41 @@ onMounted(() => {
   }, { rootMargin: '500px' })
   if (section8.value) s8Observer.observe(section8.value)
 
-  // Direct draw in scroll - no watch, no rAF, minimal overhead
+  // Direct draw in scroll with smooth snap
   let heroLastDrawn = 0
   let s8LastDrawn = 0
   let scrollTicking = false
+  let heroSmoothedProgress = 0
+  const heroSnaps = [15/264, 70/264, 160/264, 228/264, 260/264]
+  const snapZone = 0.06
+
+  function getSnappedProgress(raw: number): number {
+    for (let i = 0; i < heroSnaps.length; i++) {
+      const snap = heroSnaps[i]
+      // First snap: only catch from above, not at start
+      if (i === 0 && raw < snap) continue
+      // Last snap: only catch from below, allow reaching end
+      if (i === heroSnaps.length - 1 && raw > snap + snapZone) continue
+      if (Math.abs(raw - snap) < snapZone) return snap
+    }
+    return raw
+  }
+
+  // Smooth hero draw loop
+  function heroSmoothLoop() {
+    const target = getSnappedProgress(heroRawProgress)
+    const diff = target - heroSmoothedProgress
+    if (Math.abs(diff) > 0.0005) {
+      heroSmoothedProgress += diff * 0.15
+    } else {
+      heroSmoothedProgress = target
+    }
+    const frame = Math.max(1, Math.min(totalHeroFrames, Math.round(heroSmoothedProgress * (totalHeroFrames - 1)) + 1))
+    if (frame !== heroLastDrawn) { heroLastDrawn = frame; drawHero(frame) }
+    requestAnimationFrame(heroSmoothLoop)
+  }
+  let heroRawProgress = 0
+  requestAnimationFrame(heroSmoothLoop)
 
   window.addEventListener('scroll', () => {
     if (scrollTicking) return
@@ -922,14 +953,12 @@ onMounted(() => {
       scrollTicking = false
       const scrollY = window.scrollY
 
-      // Hero canvas scrub - direct draw
+      // Hero canvas scrub - update raw progress
       if (heroSection.value && heroLoaded) {
         const rectH = heroSection.value.getBoundingClientRect()
         const heightH = heroSection.value.offsetHeight
         const scrolledH = -rectH.top
-        const progressH = Math.max(0, Math.min(1, scrolledH / (heightH - window.innerHeight)))
-        const frame = Math.max(1, Math.min(totalHeroFrames, Math.round(progressH * (totalHeroFrames - 1)) + 1))
-        if (frame !== heroLastDrawn) { heroLastDrawn = frame; drawHero(frame) }
+        heroRawProgress = Math.max(0, Math.min(1, scrolledH / (heightH - window.innerHeight)))
       }
 
     const s2 = document.querySelector('section:nth-of-type(2)') as HTMLElement
