@@ -16,31 +16,46 @@
 
     <!-- Section 3 - Two panels -->
     <section class="relative flex items-start justify-center w-full bg-white px-6 md:px-8 pb-20 pt-10">
-      <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Panel 1 - 155mm -->
+      <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Panel 1 - 5.56mm -->
         <div class="group cursor-pointer">
           <div class="bg-[#051e2e] text-white rounded-2xl p-8 md:p-10 min-h-[400px] relative overflow-hidden">
             <img src="/about-panel1.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" />
             <img src="/about-panel1-hover.webp" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <h3 class="text-2xl md:text-3xl font-bold relative z-10">155mm Artillery</h3>
+            <h3 class="text-2xl md:text-3xl font-bold relative z-10">5.56×45mm NATO</h3>
           </div>
           <div class="flex items-start mt-6 gap-4">
-            <p class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">The highest-growth segment in European defense. 155mm demand is growing at ~17% CAGR, driven by NATO restocking, Ukraine-related donations, and heavy land warfare requirements across Europe.</p>
+            <p class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">The standard infantry round across NATO forces. Lightweight, high-velocity, and optimized for modern assault rifles — 5.56mm remains the backbone of small arms ammunition with sustained demand driven by training cycles and stockpile replenishment.</p>
             <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-all duration-400 ease-out w-10 group-hover:w-14 overflow-hidden relative h-8">
               <svg class="w-4 h-4 text-black/20 group-hover:text-[#02d4ff] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in group-hover:translate-x-[150%] group-hover:opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
               <svg class="w-4 h-4 text-[#02d4ff] absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[350%] opacity-0 transition-all duration-300 ease-out delay-150 group-hover:-translate-x-1/2 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
             </div>
           </div>
         </div>
-        <!-- Panel 2 - 30mm -->
+        <!-- Panel 2 - 7.62mm -->
         <div class="group cursor-pointer">
           <div class="bg-[#051e2e] text-white rounded-2xl p-8 md:p-10 min-h-[400px] relative overflow-hidden">
             <img src="/about-panel2.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" />
             <img src="/about-panel2-hover.webp" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <h3 class="text-2xl md:text-3xl font-bold relative z-10">30mm Medium Caliber</h3>
+            <h3 class="text-2xl md:text-3xl font-bold relative z-10">7.62×51mm NATO</h3>
           </div>
           <div class="flex items-start mt-6 gap-4">
-            <p class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">Emerging as a leading medium-caliber segment at ~11% CAGR, supported by shifting mission profiles toward air-burst and HE rounds for C-UAS roles and expanding IFV fleets across NATO.</p>
+            <p class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">The full-power battle rifle and machine gun round. Heavier and harder-hitting than 5.56mm, 7.62×51mm serves as the primary medium machine gun and designated marksman cartridge across NATO — critical for suppressive fire and extended-range engagements.</p>
+            <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-all duration-400 ease-out w-10 group-hover:w-14 overflow-hidden relative h-8">
+              <svg class="w-4 h-4 text-black/20 group-hover:text-[#02d4ff] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in group-hover:translate-x-[150%] group-hover:opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
+              <svg class="w-4 h-4 text-[#02d4ff] absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[350%] opacity-0 transition-all duration-300 ease-out delay-150 group-hover:-translate-x-1/2 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
+            </div>
+          </div>
+        </div>
+        <!-- Panel 3 - .50 cal -->
+        <div class="group cursor-pointer">
+          <div class="bg-[#051e2e] text-white rounded-2xl p-8 md:p-10 min-h-[400px] relative overflow-hidden">
+            <img src="/about-panel3.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" />
+            <img src="/about-panel3-hover.webp" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <h3 class="text-2xl md:text-3xl font-bold relative z-10">.50 BMG</h3>
+          </div>
+          <div class="flex items-start mt-6 gap-4">
+            <p class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">The heavy machine gun and anti-materiel standard. 12.7×99mm delivers devastating stopping power at extreme range — used in vehicle-mounted weapon systems, sniper platforms, and perimeter defense across every NATO theatre of operation.</p>
             <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-all duration-400 ease-out w-10 group-hover:w-14 overflow-hidden relative h-8">
               <svg class="w-4 h-4 text-black/20 group-hover:text-[#02d4ff] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in group-hover:translate-x-[150%] group-hover:opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
               <svg class="w-4 h-4 text-[#02d4ff] absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[350%] opacity-0 transition-all duration-300 ease-out delay-150 group-hover:-translate-x-1/2 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
@@ -72,12 +87,15 @@ useHead({
 const heroSection = ref<HTMLElement | null>(null)
 const heroCanvas = ref<HTMLCanvasElement | null>(null)
 
+let cleanupFn: (() => void) | null = null
+
 onMounted(() => {
   const cdnBase = 'https://filipsstojanovic-hub.github.io/shield-cdn'
   const totalFrames = 121
   const images: (HTMLImageElement | null)[] = new Array(totalFrames).fill(null)
   let loaded = false
   let lastDrawn = 0
+  let alive = true
 
   // Cover draw
   function drawCover(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, img: HTMLImageElement) {
@@ -92,12 +110,11 @@ onMounted(() => {
   }
 
   function sizeCanvas(canvas: HTMLCanvasElement) {
-    const dpr = window.devicePixelRatio || 1
     const w = canvas.offsetWidth
     const h = canvas.offsetHeight
-    if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
-      canvas.width = w * dpr
-      canvas.height = h * dpr
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w
+      canvas.height = h
     }
   }
 
@@ -117,11 +134,13 @@ onMounted(() => {
   const batchSize = 6
   let i = 0
   function loadBatch() {
+    if (!alive) return
     for (let b = 0; b < batchSize && i < totalFrames; b++, i++) {
       const idx = i
       const img = new Image()
       img.crossOrigin = 'anonymous'
       img.onload = () => {
+        if (!alive) return
         images[idx] = img
         if (!firstDone) {
           firstDone = true
@@ -136,9 +155,9 @@ onMounted(() => {
   }
   loadBatch()
 
-  // Scroll handler
+  // Scroll handler (named so it can be removed)
   let scrollTicking = false
-  window.addEventListener('scroll', () => {
+  function onScroll() {
     if (scrollTicking) return
     scrollTicking = true
     requestAnimationFrame(() => {
@@ -152,7 +171,17 @@ onMounted(() => {
         if (frame !== lastDrawn) { lastDrawn = frame; draw(frame) }
       }
     })
-  })
+  }
+  window.addEventListener('scroll', onScroll)
+
+  cleanupFn = () => {
+    alive = false
+    window.removeEventListener('scroll', onScroll)
+  }
+})
+
+onUnmounted(() => {
+  cleanupFn?.()
 })
 </script>
 

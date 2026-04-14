@@ -647,6 +647,8 @@ function animateSlideText() {
   })
 }
 
+let indexCleanup: (() => void) | null = null
+
 onMounted(() => {
   // Initial split text animation
   animateSlideText()
@@ -669,7 +671,9 @@ onMounted(() => {
     })
   }
 
+  let alive = true
   function animateCursor() {
+    if (!alive) return
     if (cursorLabel.value) {
       labelX += (cursorX - labelX) * 0.07
       labelY += (cursorY - labelY) * 0.07
@@ -680,9 +684,10 @@ onMounted(() => {
     requestAnimationFrame(animateCursor)
   }
   requestAnimationFrame(animateCursor)
-  window.addEventListener('scroll', () => {
+  function onHeroScroll() {
     if (window.scrollY > 300 && !heroScrolled.value) heroScrolled.value = true
-  })
+  }
+  window.addEventListener('scroll', onHeroScroll)
 
   // Grid pulse animation loop - only runs when section 4 is visible
   let pulseStart = performance.now()
@@ -932,6 +937,7 @@ onMounted(() => {
 
   // Smooth hero draw loop
   function heroSmoothLoop() {
+    if (!alive) return
     const target = getSnappedProgress(heroRawProgress)
     const diff = target - heroSmoothedProgress
     if (Math.abs(diff) > 0.0005) {
@@ -946,7 +952,7 @@ onMounted(() => {
   let heroRawProgress = 0
   requestAnimationFrame(heroSmoothLoop)
 
-  window.addEventListener('scroll', () => {
+  function onMainScroll() {
     if (scrollTicking) return
     scrollTicking = true
     requestAnimationFrame(() => {
@@ -1036,7 +1042,18 @@ onMounted(() => {
       }
     }
     })
-  })
+  }
+  window.addEventListener('scroll', onMainScroll)
+
+  indexCleanup = () => {
+    alive = false
+    window.removeEventListener('scroll', onHeroScroll)
+    window.removeEventListener('scroll', onMainScroll)
+  }
+})
+
+onUnmounted(() => {
+  indexCleanup?.()
 })
 </script>
 
