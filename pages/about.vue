@@ -20,8 +20,8 @@
         <!-- Panel 1 - 155mm -->
         <div class="group cursor-pointer">
           <div class="bg-[#051e2e] text-white rounded-2xl p-8 md:p-10 min-h-[400px] relative overflow-hidden">
-            <img src="/about-panel1.png" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" />
-            <img src="/about-panel1-hover.png" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <img src="/about-panel1.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" />
+            <img src="/about-panel1-hover.webp" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <h3 class="text-2xl md:text-3xl font-bold relative z-10">155mm Artillery</h3>
           </div>
           <div class="flex items-start mt-6 gap-4">
@@ -35,8 +35,8 @@
         <!-- Panel 2 - 30mm -->
         <div class="group cursor-pointer">
           <div class="bg-[#051e2e] text-white rounded-2xl p-8 md:p-10 min-h-[400px] relative overflow-hidden">
-            <img src="/about-panel2.png" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" />
-            <img src="/about-panel2-hover.png" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <img src="/about-panel2.webp" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0" />
+            <img src="/about-panel2-hover.webp" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <h3 class="text-2xl md:text-3xl font-bold relative z-10">30mm Medium Caliber</h3>
           </div>
           <div class="flex items-start mt-6 gap-4">
