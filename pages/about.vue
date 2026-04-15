@@ -379,7 +379,7 @@ const activeS4PanelPrev = ref(1)
 let cleanupFn: (() => void) | null = null
 
 onMounted(() => {
-  const cdnBase = 'https://filipsstojanovic-hub.github.io/shield-cdn'
+  const cdnBase = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com'
   const totalFrames = 121
   const images: (HTMLImageElement | null)[] = new Array(totalFrames).fill(null)
   let loaded = false

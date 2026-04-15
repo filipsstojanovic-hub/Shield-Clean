@@ -543,7 +543,7 @@ const slide5Progress = ref(0)
 const slide5Smooth = ref(0)
 const trapezoidPosition = ref(15)
 
-const videoCdn = 'https://filipsstojanovic-hub.github.io/shield-cdn/videos'
+const videoCdn = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com/videos'
 const panelVideos: Record<number, string> = {
   1: `${videoCdn}/panel1.mp4`,
   2: `${videoCdn}/panel2.mp4`,
@@ -743,8 +743,8 @@ onMounted(() => {
   }
 
   // === Canvas frame sequences via Web Worker ===
-  const cdnBase = 'https://filipsstojanovic-hub.github.io/shield-cdn'
-  const cdnFrames = 'https://cdn.jsdelivr.net/gh/filipsstojanovic-hub/shield-cdn@master'
+  const cdnBase = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com'
+  const cdnFrames = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com'
 
   // Hero frames setup
   const totalHeroFrames = 264
