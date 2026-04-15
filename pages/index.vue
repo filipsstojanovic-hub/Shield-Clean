@@ -481,10 +481,15 @@ if (import.meta.client) {
   gsap.registerPlugin(SplitText)
 }
 
+const blobBase = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com'
 useHead({
   bodyAttrs: {
     class: 'bg-white text-black',
   },
+  link: [
+    { rel: 'preload', href: `${blobBase}/videos/panel1.mp4`, as: 'video', type: 'video/mp4' },
+    { rel: 'preload', href: `${blobBase}/videos/panel2.mp4`, as: 'video', type: 'video/mp4' },
+  ],
 })
 
 const heroSection = ref<HTMLElement | null>(null)
@@ -771,7 +776,7 @@ onMounted(() => {
 
     // Main thread fallback - simple batch loading
     function loadMainThread() {
-      const batchSize = 6
+      const batchSize = 15
       let i = 0
       function loadBatch() {
         const batch = []
@@ -783,7 +788,7 @@ onMounted(() => {
           img.src = urlFn(idx + 1)
           batch.push(img)
         }
-        if (i < frameCount) setTimeout(loadBatch, 50)
+        if (i < frameCount) setTimeout(loadBatch, 20)
         else onDone()
       }
       loadBatch()

@@ -420,7 +420,7 @@ onMounted(() => {
 
   // Load frames in batches
   let firstDone = false
-  const batchSize = 6
+  const batchSize = 15
   let i = 0
   function loadBatch() {
     if (!alive) return
@@ -443,7 +443,7 @@ onMounted(() => {
       }
       img.src = `${cdnBase}/about-frames/frame_${String(idx + 1).padStart(4, '0')}.jpg`
     }
-    if (i < totalFrames) setTimeout(loadBatch, 50)
+    if (i < totalFrames) setTimeout(loadBatch, 20)
   }
   loadBatch()
 
