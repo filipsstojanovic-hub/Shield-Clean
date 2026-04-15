@@ -363,7 +363,10 @@ onMounted(() => {
         if (!firstDone) {
           firstDone = true
           loaded = true
-          draw(1)
+          requestAnimationFrame(() => {
+            draw(1)
+            if (!lastDrawn) requestAnimationFrame(() => draw(1))
+          })
           window.dispatchEvent(new Event('hero-frames-loaded'))
         }
       }
