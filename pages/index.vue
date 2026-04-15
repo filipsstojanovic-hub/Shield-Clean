@@ -213,23 +213,28 @@
       <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, white 0%, transparent 25%, transparent 75%, white 100%), linear-gradient(to bottom, white 0%, transparent 25%, transparent 75%, white 100%);"></div>
     </section>
 
-    <!-- Section 8 - Video scroll -->
+    <!-- Section 8 - Bullet parallax -->
     <div class="h-[15vh]"></div>
-    <section ref="section8" class="relative w-full border-b border-white/10 h-[400vh]">
-      <div class="sticky top-0 h-screen w-full bg-black flex items-center justify-center overflow-hidden">
-        <canvas ref="section8Canvas" class="w-full h-full object-cover"></canvas>
-        <!-- Trapezoid gore -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none rotate-180">
-          <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
-            <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
-          </svg>
+    <section ref="section8" class="relative w-full border-b border-white/10 h-screen overflow-hidden">
+      <img src="/bullet-hero.webp" class="absolute inset-0 w-full h-full object-cover scale-110" :style="{ transform: `scale(1.1) translateY(${parallax8}px)` }" />
+      <div class="absolute inset-0 bg-black/40"></div>
+      <div class="relative z-10 flex items-center justify-center h-full">
+        <div class="text-center max-w-4xl px-6">
+          <span class="text-sm text-white/50 font-mono uppercase tracking-wider">Precision Engineering</span>
+          <h2 class="text-4xl md:text-6xl font-bold text-white mt-4 leading-tight">Built to perform.<br/>Designed to protect.</h2>
         </div>
-        <!-- Trapezoid dole -->
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none">
-          <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
-            <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
-          </svg>
-        </div>
+      </div>
+      <!-- Trapezoid gore -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none rotate-180">
+        <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
+          <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
+        </svg>
+      </div>
+      <!-- Trapezoid dole -->
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none">
+        <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
+          <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
+        </svg>
       </div>
     </section>
 
@@ -487,9 +492,9 @@ const section3 = ref<HTMLElement | null>(null)
 const section4 = ref<HTMLElement | null>(null)
 const section5 = ref<HTMLElement | null>(null)
 const section8 = ref<HTMLElement | null>(null)
-const section8Canvas = ref<HTMLCanvasElement | null>(null)
 const parallax2 = ref(0)
 const parallax6 = ref(0)
+const parallax8 = ref(0)
 const parallax9 = ref(0)
 const section9El = ref<HTMLElement | null>(null)
 const section4Progress = ref(0)
@@ -742,11 +747,6 @@ onMounted(() => {
   const heroImages: (HTMLImageElement | null)[] = new Array(totalHeroFrames).fill(null)
   let heroLoaded = false
 
-  // Section 8 frames setup
-  const totalS8Frames = 121
-  const s8Images: (HTMLImageElement | null)[] = new Array(totalS8Frames).fill(null)
-  let s8Loaded = false
-
   // Load frames - try Web Worker, fallback to main thread
   function loadFrames(
     frameCount: number,
@@ -871,17 +871,6 @@ onMounted(() => {
     drawCover(canvas, ctx, img)
   }
 
-  function drawS8(frame: number) {
-    const canvas = section8Canvas.value
-    if (!canvas || !s8Loaded) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    sizeCanvas(canvas)
-    const img = s8Images[frame - 1]
-    if (!img?.complete) return
-    drawCover(canvas, ctx, img)
-  }
-
   // Start hero frame loading
   loadFrames(
     totalHeroFrames,
@@ -895,29 +884,8 @@ onMounted(() => {
     () => {}
   )
 
-  // Start section 8 frame loading — lazy, only when near viewport
-  let s8LoadStarted = false
-  const s8Observer = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting && !s8LoadStarted) {
-      s8LoadStarted = true
-      s8Observer.disconnect()
-      loadFrames(
-        totalS8Frames,
-        (i) => `${cdnFrames}/frames/frame_${String(i).padStart(4, '0')}.jpg`,
-        s8Images,
-        (img) => {
-          s8Loaded = true
-          drawS8(1)
-        },
-        () => {}
-      )
-    }
-  }, { rootMargin: '500px' })
-  if (section8.value) s8Observer.observe(section8.value)
-
   // Direct draw in scroll with smooth snap
   let heroLastDrawn = 0
-  let s8LastDrawn = 0
   let scrollTicking = false
   let heroSmoothedProgress = 0
   const heroSnaps = [15/264, 70/264, 160/264, 228/264, 260/264]
@@ -1008,14 +976,10 @@ onMounted(() => {
       section4ColorShift.value = progress4 > 0.7 ? 1 : 0
     }
 
-    // Section 8 canvas scrub - direct draw
-    if (section8.value && s8Loaded) {
+    // Section 8 parallax
+    if (section8.value) {
       const rect8 = section8.value.getBoundingClientRect()
-      const height8 = section8.value.offsetHeight
-      const scrolled8 = -rect8.top
-      const progress8 = Math.max(0, Math.min(1, scrolled8 / (height8 - window.innerHeight)))
-      const s8Frame = Math.max(1, Math.min(totalS8Frames, Math.round(progress8 * (totalS8Frames - 1)) + 1))
-      if (s8Frame !== s8LastDrawn) { s8LastDrawn = s8Frame; drawS8(s8Frame) }
+      parallax8.value = rect8.top * -0.15
     }
 
     // Section 5

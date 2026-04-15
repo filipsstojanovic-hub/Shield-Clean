@@ -15,7 +15,7 @@
     </section>
 
     <!-- Section 3 - Two panels -->
-    <section class="relative flex items-start justify-center w-full bg-white px-6 md:px-8 pb-20 pt-10">
+    <section class="relative flex items-start justify-center w-full bg-white px-6 md:px-8 pt-10">
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Panel 1 - 5.56mm -->
         <div class="group cursor-pointer">
@@ -24,9 +24,9 @@
             <img src="/about-panel1-hover.webp" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <h3 class="text-2xl md:text-3xl font-bold relative z-10">5.56×45mm NATO</h3>
           </div>
-          <div class="flex items-start mt-6 gap-4">
+          <div class="flex items-start mt-6 gap-4 min-h-[120px]">
             <p class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">The standard infantry round across NATO forces. Lightweight, high-velocity, and optimized for modern assault rifles — 5.56mm remains the backbone of small arms ammunition with sustained demand driven by training cycles and stockpile replenishment.</p>
-            <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-all duration-400 ease-out w-10 group-hover:w-14 overflow-hidden relative h-8">
+            <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-colors duration-400 ease-out w-14 overflow-hidden relative h-8">
               <svg class="w-4 h-4 text-black/20 group-hover:text-[#02d4ff] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in group-hover:translate-x-[150%] group-hover:opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
               <svg class="w-4 h-4 text-[#02d4ff] absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[350%] opacity-0 transition-all duration-300 ease-out delay-150 group-hover:-translate-x-1/2 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
             </div>
@@ -39,9 +39,9 @@
             <img src="/about-panel2-hover.webp" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <h3 class="text-2xl md:text-3xl font-bold relative z-10">7.62×51mm NATO</h3>
           </div>
-          <div class="flex items-start mt-6 gap-4">
+          <div class="flex items-start mt-6 gap-4 min-h-[120px]">
             <p class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">The full-power battle rifle and machine gun round. Heavier and harder-hitting than 5.56mm, 7.62×51mm serves as the primary medium machine gun and designated marksman cartridge across NATO — critical for suppressive fire and extended-range engagements.</p>
-            <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-all duration-400 ease-out w-10 group-hover:w-14 overflow-hidden relative h-8">
+            <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-colors duration-400 ease-out w-14 overflow-hidden relative h-8">
               <svg class="w-4 h-4 text-black/20 group-hover:text-[#02d4ff] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in group-hover:translate-x-[150%] group-hover:opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
               <svg class="w-4 h-4 text-[#02d4ff] absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[350%] opacity-0 transition-all duration-300 ease-out delay-150 group-hover:-translate-x-1/2 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
             </div>
@@ -54,9 +54,9 @@
             <img src="/about-panel3-hover.webp" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             <h3 class="text-2xl md:text-3xl font-bold relative z-10">.50 BMG</h3>
           </div>
-          <div class="flex items-start mt-6 gap-4">
+          <div class="flex items-start mt-6 gap-4 min-h-[120px]">
             <p class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">The heavy machine gun and anti-materiel standard. 12.7×99mm delivers devastating stopping power at extreme range — used in vehicle-mounted weapon systems, sniper platforms, and perimeter defense across every NATO theatre of operation.</p>
-            <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-all duration-400 ease-out w-10 group-hover:w-14 overflow-hidden relative h-8">
+            <div class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-colors duration-400 ease-out w-14 overflow-hidden relative h-8">
               <svg class="w-4 h-4 text-black/20 group-hover:text-[#02d4ff] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-in group-hover:translate-x-[150%] group-hover:opacity-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
               <svg class="w-4 h-4 text-[#02d4ff] absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-[350%] opacity-0 transition-all duration-300 ease-out delay-150 group-hover:-translate-x-1/2 group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L13 6M19 12L13 18" /></svg>
             </div>
@@ -66,14 +66,229 @@
     </section>
 
     <!-- Section 4 -->
-    <section class="relative flex items-center justify-center h-screen w-full bg-white">
-      <span class="text-[12rem] font-bold text-black/5 select-none">04</span>
+    <section ref="section4El" class="relative h-[250vh] w-full bg-white">
+      <!-- Text left side - sticky -->
+      <div class="sticky top-0 h-screen flex items-center pointer-events-none">
+        <!-- Panel number -->
+        <span class="absolute left-[15%] text-sm font-mono text-black/30 flex -mt-[10vh]">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="activeS4Panel > activeS4PanelPrev ? 'num-up' : 'num-down'"><span :key="activeS4Panel" class="block">{{ activeS4Panel }}</span></transition></span></span>
+        <!-- Text -->
+        <div class="max-w-md pointer-events-auto -mt-[10vh] ml-[28%]">
+          <h3 class="text-sm font-mono uppercase tracking-wider text-black/40">What We Do</h3>
+          <h1 class="text-4xl md:text-5xl font-bold text-[#051e2e] leading-tight mt-4">End-to-End Capability</h1>
+          <h2 class="text-lg md:text-xl text-black/50 mt-4 leading-relaxed">From raw material to finished round — fully integrated manufacturing, storage, and compliance under one roof.</h2>
+        </div>
+      </div>
+      <div class="absolute right-[10%] top-[10%] w-[400px] h-[400px] md:w-[550px] md:h-[550px]">
+        <img src="/panel-manufacturing.webp" class="absolute top-[22%] right-[37%] w-[45%] h-[45%] object-contain z-[5] pointer-events-none" />
+        <div class="absolute top-16 right-20 text-right z-10 space-y-4">
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">60M+</span>
+            <p class="text-xs text-black/30 font-mono uppercase">rounds / year</p>
+          </div>
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">3</span>
+            <p class="text-xs text-black/30 font-mono uppercase">production lines</p>
+          </div>
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">2×</span>
+            <p class="text-xs text-black/30 font-mono uppercase">shift operations</p>
+          </div>
+        </div>
+        <div class="absolute inset-0 flex flex-col justify-end pb-16 px-14 md:px-20 z-10">
+          <span class="text-xs font-mono uppercase tracking-wider text-black/30">01 — Manufacturing</span>
+          <h3 class="text-xl md:text-2xl font-bold text-[#051e2e] mt-3 leading-snug">Three production lines</h3>
+          <p class="text-xs text-black/40 mt-2 leading-relaxed">Dual-shift operations with full case forming, loading, and QC inspection.</p>
+        </div>
+        <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none">
+          <defs>
+            <filter id="panelGlow" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="25" />
+            </filter>
+          </defs>
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="rgba(0,0,0,0.08)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" />
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#panelGlow)" stroke-dasharray="12 1588" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-1600" dur="3s" repeatCount="indefinite" />
+          </path>
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="#051e2e" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1592" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-1600" dur="3s" repeatCount="indefinite" />
+          </path>
+        </svg>
+      </div>
+      <div class="absolute right-[10%] top-[35%] w-[400px] h-[400px] md:w-[550px] md:h-[550px]">
+        <img src="/panel-logistics.webp" class="absolute top-[22%] right-[25%] w-[45%] h-[45%] object-contain z-[5] pointer-events-none" />
+        <div class="absolute top-16 left-14 text-left z-10 space-y-4">
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">240K</span>
+            <p class="text-xs text-black/30 font-mono uppercase">kg tnt capacity</p>
+          </div>
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">19</span>
+            <p class="text-xs text-black/30 font-mono uppercase">storage units</p>
+          </div>
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">9,050</span>
+            <p class="text-xs text-black/30 font-mono uppercase">m² facility</p>
+          </div>
+        </div>
+        <div class="absolute inset-0 flex flex-col justify-end pb-16 px-14 md:px-20 z-10">
+          <span class="text-xs font-mono uppercase tracking-wider text-black/30">02 — Storage & Logistics</span>
+          <h3 class="text-xl md:text-2xl font-bold text-[#051e2e] mt-3 leading-snug">Raw material to delivery</h3>
+          <p class="text-xs text-black/40 mt-2 leading-relaxed">On-site storage for brass, lead, powder, and primers. Licensed warehousing and European distribution.</p>
+        </div>
+        <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none" style="transform: scaleX(-1)">
+          <defs>
+            <filter id="panelGlow2" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="25" />
+            </filter>
+          </defs>
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="rgba(0,0,0,0.08)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" />
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#panelGlow2)" stroke-dasharray="12 1588" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-1600" dur="3.5s" repeatCount="indefinite" />
+          </path>
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="#051e2e" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1592" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-1600" dur="3.5s" repeatCount="indefinite" />
+          </path>
+        </svg>
+      </div>
+      <div class="absolute right-[10%] top-[60%] w-[400px] h-[400px] md:w-[550px] md:h-[550px]">
+        <img src="/panel-compliance.webp" class="absolute top-[22%] right-[22%] w-[45%] h-[45%] object-contain z-[5] pointer-events-none" />
+        <div class="absolute top-16 left-14 text-left z-10 space-y-4">
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">60</span>
+            <p class="text-xs text-black/30 font-mono uppercase">days to authorize</p>
+          </div>
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">1,020</span>
+            <p class="text-xs text-black/30 font-mono uppercase">m² expansion ready</p>
+          </div>
+          <div>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">€500M</span>
+            <p class="text-xs text-black/30 font-mono uppercase">investment pipeline</p>
+          </div>
+        </div>
+        <div class="absolute inset-0 flex flex-col justify-end pb-24 px-14 md:px-20 z-10">
+          <span class="text-xs font-mono uppercase tracking-wider text-black/30">03 — Compliance & Scale</span>
+          <h3 class="text-xl md:text-2xl font-bold text-[#051e2e] mt-3 leading-snug">Production-ready in 60 days</h3>
+          <p class="text-xs text-black/40 mt-2 leading-relaxed">Pre-licensed facility aligned with EU ASAP Programme. Established P&L per caliber.</p>
+        </div>
+        <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none" style="transform: rotate(180deg)">
+          <defs>
+            <filter id="panelGlow3" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="25" />
+            </filter>
+          </defs>
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="rgba(0,0,0,0.08)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" />
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#panelGlow3)" stroke-dasharray="12 1588" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-1600" dur="4s" repeatCount="indefinite" />
+          </path>
+          <path d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z" stroke="#051e2e" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1592" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-1600" dur="4s" repeatCount="indefinite" />
+          </path>
+        </svg>
+      </div>
     </section>
 
-    <!-- Section 5 -->
-    <section class="relative flex items-center justify-center h-screen w-full bg-white">
-      <span class="text-[12rem] font-bold text-black/5 select-none">05</span>
-    </section>
+    <!-- Footer -->
+    <footer class="relative flex flex-col min-h-screen w-full bg-[#051e2e] text-white overflow-hidden">
+      <!-- Trapezoid vrh -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none rotate-180">
+        <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
+          <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
+        </svg>
+      </div>
+
+      <!-- Circuit linije -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 800" preserveAspectRatio="none" fill="none" stroke-width="1.5">
+        <defs>
+          <filter id="aboutFooterGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="25" />
+          </filter>
+        </defs>
+        <path d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296" stroke="rgba(255,255,255,0.15)" stroke-linecap="round" />
+        <path d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#aboutFooterGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3s" repeatCount="indefinite" />
+        </path>
+        <path d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3s" repeatCount="indefinite" />
+        </path>
+        <path d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360" stroke="rgba(255,255,255,0.15)" stroke-linecap="round" />
+        <path d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#aboutFooterGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3.5s" repeatCount="indefinite" />
+        </path>
+        <path d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3.5s" repeatCount="indefinite" />
+        </path>
+        <path d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800" stroke="rgba(255,255,255,0.15)" stroke-linecap="round" />
+        <path d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#aboutFooterGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.8s" repeatCount="indefinite" />
+        </path>
+        <path d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.8s" repeatCount="indefinite" />
+        </path>
+        <path d="M0,520 L240,520 Q360,520 282,611 L120,800" stroke="rgba(255,255,255,0.15)" stroke-linecap="round" />
+        <path d="M0,520 L240,520 Q360,520 282,611 L120,800" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#aboutFooterGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.5s" repeatCount="indefinite" />
+        </path>
+        <path d="M0,520 L240,520 Q360,520 282,611 L120,800" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
+          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.5s" repeatCount="indefinite" />
+        </path>
+      </svg>
+
+      <!-- Heading + CTA -->
+      <div class="flex flex-col items-center text-center px-6 pt-32 md:pt-40">
+        <h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2>
+        <a href="#" class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group">
+          <span class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+          <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300">Request A Briefing</span>
+        </a>
+      </div>
+
+      <!-- Logo + linkovi -->
+      <div class="flex flex-col md:flex-row items-start justify-between px-6 md:px-16 pb-8 pt-16 gap-12 mt-auto">
+        <div>
+          <h3 class="text-3xl font-bold mb-8">Shield</h3>
+          <p class="text-white/40 text-sm mb-1">Defense Manufacturing</p>
+          <p class="text-white/40 text-sm mb-1">Ammunition Production</p>
+          <p class="text-white/40 text-sm">NATO Aligned</p>
+        </div>
+        <div class="flex gap-16 md:gap-24">
+          <div>
+            <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Products</h3>
+            <ul class="space-y-3 text-white/60">
+              <li>5.56×45mm NATO</li>
+              <li>7.62×51mm NATO</li>
+              <li>.50 BMG</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Company</h3>
+            <ul class="space-y-3 text-white/60">
+              <li><NuxtLink to="/" class="hover:text-[#02d4ff] transition-colors">Home</NuxtLink></li>
+              <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About</NuxtLink></li>
+              <li><a href="#" class="hover:text-[#02d4ff] transition-colors">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Reach Us</h3>
+          <p class="text-white/60 mb-2">Ready to scale production?</p>
+          <p class="text-white/60 mb-6">Connect with our defense team.</p>
+          <div class="flex gap-4">
+            <a href="#" class="text-white/60 hover:text-[#02d4ff] transition-colors text-lg font-bold">in</a>
+            <a href="#" class="text-white/60 hover:text-[#02d4ff] transition-colors text-lg font-bold">X</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="px-6 md:px-16 py-6 flex flex-col md:flex-row items-center justify-between text-white/40 text-sm gap-4 md:gap-0">
+        <p>&copy; 2026 Shield. All rights reserved.</p>
+        <div class="flex gap-6">
+          <span>Privacy Policy</span>
+          <span>Terms of Service</span>
+        </div>
+      </div>
+    </footer>
   </main>
 </template>
 
@@ -86,6 +301,9 @@ useHead({
 
 const heroSection = ref<HTMLElement | null>(null)
 const heroCanvas = ref<HTMLCanvasElement | null>(null)
+const section4El = ref<HTMLElement | null>(null)
+const activeS4Panel = ref(1)
+const activeS4PanelPrev = ref(1)
 
 let cleanupFn: (() => void) | null = null
 
@@ -170,6 +388,18 @@ onMounted(() => {
         const frame = Math.max(1, Math.min(totalFrames, Math.round(progress * (totalFrames - 1)) + 1))
         if (frame !== lastDrawn) { lastDrawn = frame; draw(frame) }
       }
+      // Section 4 panel number
+      if (section4El.value) {
+        const rect4 = section4El.value.getBoundingClientRect()
+        const height4 = section4El.value.offsetHeight
+        const scrolled4 = -rect4.top
+        const progress4 = Math.max(0, Math.min(1, scrolled4 / (height4 - window.innerHeight)))
+        const newPanel = progress4 < 0.33 ? 1 : progress4 < 0.66 ? 2 : 3
+        if (newPanel !== activeS4Panel.value) {
+          activeS4PanelPrev.value = activeS4Panel.value
+          activeS4Panel.value = newPanel
+        }
+      }
     })
   }
   window.addEventListener('scroll', onScroll)
@@ -184,4 +414,20 @@ onUnmounted(() => {
   cleanupFn?.()
 })
 </script>
+
+<style scoped>
+.num-up-enter-active,
+.num-down-enter-active {
+  transition: transform 0.45s cubic-bezier(.19,1,.22,1), opacity 0.3s ease;
+}
+.num-up-leave-active,
+.num-down-leave-active {
+  position: absolute;
+  transition: transform 0.35s cubic-bezier(.55,.06,.68,.19), opacity 0.25s ease;
+}
+.num-up-enter-from { transform: translateY(100%); opacity: 0; }
+.num-up-leave-to { transform: translateY(-100%); opacity: 0; }
+.num-down-enter-from { transform: translateY(-100%); opacity: 0; }
+.num-down-leave-to { transform: translateY(100%); opacity: 0; }
+</style>
 
