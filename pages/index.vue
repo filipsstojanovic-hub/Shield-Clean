@@ -220,8 +220,12 @@
       <div class="absolute inset-0 bg-black/40"></div>
       <div class="relative z-10 flex items-center justify-center h-full">
         <div class="text-center max-w-4xl px-6">
-          <span class="text-sm text-white/50 font-mono uppercase tracking-wider">Precision Engineering</span>
-          <h2 class="text-4xl md:text-6xl font-bold text-white mt-4 leading-tight">Built to perform.<br/>Designed to protect.</h2>
+          <svg class="w-8 h-8 text-[#02d4ff]/40 mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C9.591 11.69 11 13.196 11 15c0 1.933-1.567 3.5-3.5 3.5-1.198 0-2.307-.603-2.917-1.179zM14.583 17.321C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C19.591 11.69 21 13.196 21 15c0 1.933-1.567 3.5-3.5 3.5-1.198 0-2.307-.603-2.917-1.179z"/></svg>
+          <p class="text-xl md:text-2xl text-white/90 leading-relaxed max-w-3xl italic">"Amateurs talk strategy. Professionals talk logistics. No army in history has ever won a war without a secure and sufficient supply of ammunition."</p>
+          <div class="mt-6">
+            <span class="text-sm text-white/60 font-semibold">Gen. Omar Bradley</span>
+            <p class="text-xs text-white/30 font-mono uppercase tracking-wider mt-1">Former Chairman of the Joint Chiefs of Staff</p>
+          </div>
         </div>
       </div>
       <!-- Trapezoid gore -->

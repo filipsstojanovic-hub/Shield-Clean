@@ -65,6 +65,26 @@
       </div>
     </section>
 
+    <section class="relative flex items-end justify-center h-[50vh] w-full pb-16 overflow-visible">
+      <div class="absolute left-0 right-0 top-0 h-[calc(100%+30vh)] pointer-events-none" style="mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 100%); -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 100%);">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dotGrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <line x1="20" y1="0" x2="20" y2="16" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
+              <line x1="20" y1="24" x2="20" y2="40" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
+              <line x1="0" y1="20" x2="16" y2="20" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
+              <line x1="24" y1="20" x2="40" y2="20" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
+              <circle cx="20" cy="20" r="1.5" fill="rgba(0,0,0,0.15)" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dotGrid)" />
+        </svg>
+      </div>
+      <div class="max-w-6xl px-6 md:px-8 text-center relative z-10">
+        <h2 class="text-3xl md:text-5xl font-bold leading-snug">Three integrated capabilities — manufacturing, logistics, and regulatory compliance — operating from a single licensed facility.</h2>
+      </div>
+    </section>
+
     <!-- Section 4 -->
     <section ref="section4El" class="relative h-[250vh] w-full bg-white">
       <!-- Text left side - sticky -->
@@ -185,6 +205,57 @@
             <animate attributeName="stroke-dashoffset" from="0" to="-1600" dur="4s" repeatCount="indefinite" />
           </path>
         </svg>
+      </div>
+    </section>
+
+    <!-- Section 5 - Contact -->
+    <section class="relative flex items-center justify-center w-full -mt-[15vh] px-6 pb-16">
+      <div class="w-full max-w-2xl">
+        <div class="flex flex-col items-center mb-12">
+          <div class="flex gap-2 mb-4">
+            <span class="w-3 h-3 rounded-full bg-[#02d4ff]"></span>
+            <span class="w-3 h-3 rounded-full bg-black/15"></span>
+          </div>
+          <h2 class="text-3xl md:text-5xl font-bold text-center">Tell us a bit about you:</h2>
+        </div>
+        <form class="space-y-10">
+          <div>
+            <label class="block text-base font-semibold text-[#051e2e] mb-2">Full Name *</label>
+            <input type="text" placeholder="John Doe" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-[#051e2e] mb-2">Role or position *</label>
+            <input type="text" placeholder="Project manager" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-[#051e2e] mb-2">Phone number</label>
+            <input type="tel" placeholder="(323) 555-0147" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-[#051e2e] mb-2">Email *</label>
+            <input type="email" placeholder="name@email.com" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-[#051e2e] mb-2">Company name *</label>
+            <input type="text" placeholder="Acme" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-[#051e2e] mb-2">How Can We Help? *</label>
+            <div class="relative">
+              <select class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none appearance-none focus:border-[#02d4ff] transition-colors">
+                <option value="">Select options</option>
+                <option value="general">General inquiry</option>
+                <option value="partnership">Partnership</option>
+                <option value="procurement">Procurement</option>
+              </select>
+              <span class="absolute right-0 bottom-3 text-black/30">&#8595;</span>
+            </div>
+          </div>
+          <button type="submit" class="relative overflow-hidden w-full bg-black/5 text-black/30 py-5 text-sm font-semibold uppercase tracking-widest font-mono group rounded-lg mt-4">
+            <span class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+            <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300">Send Message</span>
+          </button>
+        </form>
       </div>
     </section>
 
