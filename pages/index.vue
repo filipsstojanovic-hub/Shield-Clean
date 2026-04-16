@@ -762,15 +762,24 @@ onMounted(() => {
     urlFn: (i: number) => string,
     images: (HTMLImageElement | null)[],
     onFirstFrame: (img: HTMLImageElement) => void,
-    onDone: () => void
+    onReady: () => void,
+    onDone: () => void,
+    readyThreshold = 50
   ) {
     let firstDone = false
+    let loadedCount = 0
+    let readyFired = false
 
     function onFrame(index: number, img: HTMLImageElement) {
       images[index] = img
+      loadedCount++
       if (!firstDone) {
         firstDone = true
         onFirstFrame(img)
+      }
+      if (!readyFired && loadedCount >= readyThreshold) {
+        readyFired = true
+        onReady()
       }
     }
 
@@ -869,7 +878,7 @@ onMounted(() => {
     sizeCanvas(canvas)
     let img = heroImages[frame - 1]
     if (!img?.complete) {
-      for (let off = 1; off <= 10; off++) {
+      for (let off = 1; off <= 50; off++) {
         const b = heroImages[frame - 1 - off]
         if (b?.complete) { img = b; break }
         const a = heroImages[frame - 1 + off]
@@ -888,9 +897,12 @@ onMounted(() => {
     (img) => {
       heroLoaded = true
       drawHero(1)
+    },
+    () => {
       window.dispatchEvent(new Event('hero-frames-loaded'))
     },
-    () => {}
+    () => {},
+    50
   )
 
   // Direct draw in scroll with smooth snap

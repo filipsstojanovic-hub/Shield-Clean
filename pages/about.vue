@@ -413,13 +413,23 @@ onMounted(() => {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     sizeCanvas(canvas)
-    const img = images[frame - 1]
+    let img = images[frame - 1]
+    if (!img?.complete) {
+      for (let off = 1; off <= 50; off++) {
+        const b = images[frame - 1 - off]
+        if (b?.complete) { img = b; break }
+        const a = images[frame - 1 + off]
+        if (a?.complete) { img = a; break }
+      }
+    }
     if (!img?.complete) return
     drawCover(canvas, ctx, img)
   }
 
   // Load frames in batches
   let firstDone = false
+  let loadedCount = 0
+  let readyFired = false
   const batchSize = 15
   let i = 0
   function loadBatch() {
@@ -431,6 +441,7 @@ onMounted(() => {
       img.onload = () => {
         if (!alive) return
         images[idx] = img
+        loadedCount++
         if (!firstDone) {
           firstDone = true
           loaded = true
@@ -438,6 +449,9 @@ onMounted(() => {
             draw(1)
             if (!lastDrawn) requestAnimationFrame(() => draw(1))
           })
+        }
+        if (!readyFired && loadedCount >= 50) {
+          readyFired = true
           window.dispatchEvent(new Event('hero-frames-loaded'))
         }
       }
