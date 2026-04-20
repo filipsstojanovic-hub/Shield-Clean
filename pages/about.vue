@@ -1,7 +1,7 @@
 <template>
   <main>
     <!-- Section 1 - Hero with metak animation -->
-    <section ref="heroSection" class="relative w-full h-[400vh]">
+    <section id="overview" ref="heroSection" class="relative w-full h-[400vh]">
       <div class="sticky top-0 h-screen w-full bg-black flex items-center justify-center overflow-hidden">
         <canvas ref="heroCanvas" class="w-full h-full object-cover"></canvas>
       </div>
@@ -15,7 +15,7 @@
     </section>
 
     <!-- Section 3 - Two panels -->
-    <section class="relative flex items-start justify-center w-full bg-white px-6 md:px-8 pt-10">
+    <section id="ammunition" class="relative flex items-start justify-center w-full bg-white px-6 md:px-8 pt-10">
       <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Panel 1 - 5.56mm -->
         <div class="group cursor-pointer">
@@ -86,7 +86,7 @@
     </section>
 
     <!-- Section 4 -->
-    <section ref="section4El" class="relative h-[250vh] w-full bg-white">
+    <section id="about-capabilities" ref="section4El" class="relative h-[250vh] w-full bg-white">
       <!-- Text left side - sticky -->
       <div class="sticky top-0 h-screen flex items-center pointer-events-none">
         <!-- Panel number -->
@@ -209,7 +209,7 @@
     </section>
 
     <!-- Section 5 - Contact -->
-    <section class="relative flex items-center justify-center w-full -mt-[15vh] px-6 pb-16">
+    <section id="about-contact" class="relative flex items-center justify-center w-full -mt-[15vh] px-6 pb-16">
       <div class="w-full max-w-2xl">
         <div class="flex flex-col items-center mb-12">
           <div class="flex gap-2 mb-4">
@@ -308,10 +308,10 @@
       <!-- Heading + CTA -->
       <div class="flex flex-col items-center text-center px-6 pt-32 md:pt-40">
         <h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2>
-        <a href="#" class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group">
+        <NuxtLink to="/contact" class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group">
           <span class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
           <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300">Request A Briefing</span>
-        </a>
+        </NuxtLink>
       </div>
 
       <!-- Logo + linkovi -->
@@ -336,7 +336,7 @@
             <ul class="space-y-3 text-white/60">
               <li><NuxtLink to="/" class="hover:text-[#02d4ff] transition-colors">Home</NuxtLink></li>
               <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About</NuxtLink></li>
-              <li><a href="#" class="hover:text-[#02d4ff] transition-colors">Contact</a></li>
+              <li><NuxtLink to="/contact" class="hover:text-[#02d4ff] transition-colors">Contact</NuxtLink></li>
             </ul>
           </div>
         </div>

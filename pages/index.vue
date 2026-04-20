@@ -1,7 +1,7 @@
 <template>
   <main>
     <!-- Hero -->
-    <section ref="heroSection" class="relative w-full h-[900vh]">
+    <section id="hero" ref="heroSection" class="relative w-full h-[900vh]">
       <div class="sticky top-0 h-screen w-full bg-[#051e2e] flex items-center justify-center overflow-hidden">
         <canvas ref="heroCanvas" class="absolute inset-0 w-full h-full object-cover"></canvas>
         <div v-if="!heroScrolled" ref="cursorLabel" class="fixed pointer-events-none z-50 text-white text-xs font-mono uppercase tracking-widest opacity-0 transition-opacity duration-300" style="transform: translate(-50%, -50%)">Scroll to Explore</div>
@@ -30,7 +30,7 @@
     </section>
 
     <!-- Section 3 - Pinned panels -->
-    <section ref="section3" class="relative w-full border-b border-black/10 h-[350vh]">
+    <section id="capabilities" ref="section3" class="relative w-full border-b border-black/10 h-[350vh]">
       <div class="sticky top-0 h-screen flex flex-col md:flex-row items-center pl-4 pr-4 md:pl-8 md:pr-8 py-12 md:py-0">
         <div class="w-full md:w-2/5 bg-black/5 rounded-2xl flex items-center justify-center h-[60vh] md:h-[87%] relative overflow-hidden">
           <transition name="fade" mode="out-in">
@@ -110,7 +110,7 @@
     </section>
 
     <!-- Section 5 - Pinned slides -->
-    <section ref="section5" class="relative w-full h-[500vh]">
+    <section id="production" ref="section5" class="relative w-full h-[500vh]">
       <div class="sticky top-0 h-screen flex flex-col">
         <div class="h-[70%] relative overflow-hidden">
           <!-- Slide 1 - uvek na dnu -->
@@ -309,7 +309,7 @@
       </section>
 
       <!-- Section 10 - Contact -->
-      <section class="relative flex items-center justify-center w-full py-24 md:py-32 px-6">
+      <section id="contact" class="relative flex items-center justify-center w-full py-24 md:py-32 px-6">
         <div class="w-full max-w-2xl">
           <div class="flex flex-col items-center mb-12">
             <div class="flex gap-2 mb-4">
@@ -416,10 +416,10 @@
       <!-- Gornji deo - heading + CTA -->
       <div class="flex flex-col items-center text-center px-6 pt-32 md:pt-40">
         <h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2>
-        <a href="#" class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group">
+        <NuxtLink to="/contact" class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group">
           <span class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
           <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300">Request A Briefing</span>
-        </a>
+        </NuxtLink>
       </div>
 
       <!-- Donji deo - logo + linkovi -->
@@ -443,9 +443,8 @@
           <div>
             <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Company</h3>
             <ul class="space-y-3 text-white/60">
-              <li>About</li>
-              <li>Resources</li>
-              <li>Contact</li>
+              <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About</NuxtLink></li>
+              <li><NuxtLink to="/contact" class="hover:text-[#02d4ff] transition-colors">Contact</NuxtLink></li>
             </ul>
           </div>
         </div>
