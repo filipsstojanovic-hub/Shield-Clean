@@ -20,7 +20,7 @@
             </span>
             <span
               class="text-white text-[10px] font-mono uppercase tracking-wider border border-white/50 px-2 py-0.5 bg-black/30 backdrop-blur-sm"
-              >01 · text</span
+              >01 · B-5 · Manufacturing</span
             >
           </div>
           <div class="flex items-center gap-2 translate-x-32 translate-y-16" :style="{ opacity: elem2Opacity }">
@@ -30,7 +30,7 @@
             </span>
             <span
               class="text-white text-[10px] font-mono uppercase tracking-wider border border-white/50 px-2 py-0.5 bg-black/30 backdrop-blur-sm"
-              >02 · text</span
+              >02 · B-34 · 120,000 kg</span
             >
           </div>
           <div class="flex items-center gap-2 translate-x-40 -translate-y-[200px]" :style="{ opacity: elem3Opacity }">
@@ -40,7 +40,7 @@
             </span>
             <span
               class="text-white text-[10px] font-mono uppercase tracking-wider border border-white/50 px-2 py-0.5 bg-black/30 backdrop-blur-sm"
-              >03 · text</span
+              >03 · B-29 · Expansion</span
             >
           </div>
         </div>
@@ -49,8 +49,8 @@
           :style="leftTextStyle"
         >
           <div ref="heroHeadingRef" class="text-4xl md:text-6xl font-bold uppercase leading-tight tracking-tight">
-            <span class="block overflow-hidden"><span class="block hero-line">Balatonfűzfő</span></span>
-            <span class="block overflow-hidden"><span class="block hero-line">47.5°N 18.4°E</span></span>
+            <span class="block overflow-hidden"><span class="block hero-line">Europe rearms fast.</span></span>
+            <span class="block overflow-hidden"><span class="block hero-line">We scale faster.</span></span>
           </div>
           <a
             href="#"
@@ -72,10 +72,10 @@
             <span ref="statusLabelText">Status</span>
           </div>
           <div ref="statusLine1" class="text-xl md:text-2xl leading-snug text-white/90 max-w-sm">
-            Placeholder line one goes here with a bit of content.
+            19 operational units, all indefinite-licensed.
           </div>
           <div ref="statusLine2" class="text-xl md:text-2xl leading-snug text-white/90 max-w-sm mt-2">
-            Placeholder line two with more details.
+            B-5 anchors the active manufacturing core.
           </div>
         </div>
         <div
@@ -90,7 +90,8 @@
             <span ref="profileLabelText">Profile</span>
           </div>
           <div ref="profileBody" class="text-xl md:text-2xl leading-snug max-w-sm">
-            Licensed defense-park capacity engineered for strategic partnerships across NATO-aligned industries.
+            240 tons TNT-equivalent across 13 licensed warehouses — one of Europe's largest single-site defense storage
+            footprints.
           </div>
         </div>
         <div
@@ -105,10 +106,10 @@
             <span ref="briefingLabelText">Briefing</span>
           </div>
           <div ref="briefingLine1" class="text-xl md:text-2xl leading-snug text-white/90 max-w-sm">
-            Placeholder line one goes here with a bit of content.
+            1,020 m² build-ready land — B-29 under construction.
           </div>
           <div ref="briefingLine2" class="text-xl md:text-2xl leading-snug text-white/90 max-w-sm mt-2">
-            Placeholder line two with more details.
+            Positioned for joint ventures across the EU defense ecosystem.
           </div>
         </div>
         <!-- Scroll progress indicator -->
@@ -676,7 +677,7 @@
             ref="slide4Title3"
             class="text-2xl md:text-4xl font-bold leading-tight split-text mb-6"
             v-html="
-              'Built to scale across <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>Europe's defense ecosystem</u>'
+              `Built to scale across <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>Europe's defense ecosystem</u>`
             "
           ></h3>
           <!-- Panel below title -->
