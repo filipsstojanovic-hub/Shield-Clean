@@ -1300,8 +1300,9 @@ function charRevealBlock(els: (HTMLElement | null)[]) {
     els.filter(Boolean).forEach((el) => {
       gsap.set(el, { opacity: 1 })
       SplitText.create(el as HTMLElement, {
-        type: 'chars',
+        type: 'words, chars',
         charsClass: 'char',
+        wordsClass: 'word',
         mask: 'chars',
         reduceWhiteSpace: false,
         onSplit: (self: any) => {
@@ -1369,8 +1370,9 @@ function btdStyleCharReveal(el: HTMLElement | null) {
   nextTick(() => {
     gsap.set(el, { opacity: 1 })
     SplitText.create(el, {
-      type: 'chars',
+      type: 'words, chars',
       charsClass: 'char',
+      wordsClass: 'word',
       reduceWhiteSpace: false,
       onSplit: (self: any) => {
         gsap.from(self.chars, {
@@ -1624,8 +1626,9 @@ function animateSlide4(slideNum: number) {
     els.forEach((el) => {
       gsap.set(el, { opacity: 1 })
       SplitText.create(el, {
-        type: 'chars',
+        type: 'words, chars',
         charsClass: 'char',
+        wordsClass: 'word',
         reduceWhiteSpace: false,
         onSplit: (self: any) => {
           gsap.from(self.chars, {
