@@ -12,9 +12,39 @@
           class="w-full h-full object-cover"
         ></video>
 
+        <!-- Top Left text -->
+        <div class="absolute top-10 left-[8%] md:top-16 md:left-[11%] text-left z-10 text-white pointer-events-none">
+          <div
+            class="flex items-center gap-3 text-xs md:text-sm font-mono uppercase tracking-[0.3em] text-[#02d4ff] mb-3"
+          >
+            <span class="w-2 h-2 rounded-full bg-[#02d4ff] dot-blink"></span>
+            <span>[ Status · Active ]</span>
+          </div>
+          <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Continuous Ops</div>
+          <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mt-3 max-w-xs">
+            &gt; 24/7 · Tier-1 access
+          </div>
+        </div>
+
+        <!-- Top Right text -->
+        <div
+          class="absolute top-10 right-[12%] md:top-16 md:right-[16%] text-right z-10 text-white pointer-events-none"
+        >
+          <div
+            class="flex items-center justify-end gap-3 text-xs md:text-sm font-mono uppercase tracking-[0.3em] text-[#02d4ff] mb-3"
+          >
+            <span>[ Asset · Defense ]</span>
+            <span class="w-2 h-2 rounded-full bg-[#02d4ff] dot-blink"></span>
+          </div>
+          <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">NATO-Aligned</div>
+          <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mt-3 max-w-xs ml-auto">
+            &gt; 240 tons TNT · Licensed
+          </div>
+        </div>
+
         <!-- Left text -->
         <div
-          class="absolute bottom-10 left-[12%] md:bottom-16 md:left-[16%] text-left z-10 text-white pointer-events-none"
+          class="absolute bottom-10 left-[8%] md:bottom-16 md:left-[11%] text-left z-10 text-white pointer-events-none"
         >
           <div
             class="flex items-center gap-3 text-xs md:text-sm font-mono uppercase tracking-[0.3em] text-[#02d4ff] mb-3"
