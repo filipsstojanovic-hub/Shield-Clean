@@ -500,16 +500,17 @@ function signalReady() {
 }
 
 onMounted(() => {
-  // HUD animation takes ~2.8s
+  // HUD animation takes ~2.8s. As soon as it's done, fire loader-ready so
+  // the Identity Gate can appear — frames keep loading in background while
+  // the user interacts with the gate (10-30s of "free" preload time).
   setTimeout(() => {
     animationDone.value = true
-    if (framesReady.value) signalReady()
+    signalReady()
   }, 2800)
 
-  // Listen for frames loaded event from index.vue
+  // Still track frames arriving for anything else that cares
   window.addEventListener('hero-frames-loaded', () => {
     framesReady.value = true
-    if (animationDone.value) signalReady()
   })
 
   // External signal to actually fade out (e.g., after Identity Gate passes)
