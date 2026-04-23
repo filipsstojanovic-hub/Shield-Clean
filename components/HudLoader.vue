@@ -1,16 +1,23 @@
 <template>
   <div
     v-if="!gone"
-    class="fixed inset-0 z-[9999] bg-[#051e2e] flex items-center justify-center"
-    :class="{ 'loader-fadeout': fading }"
+    class="fixed inset-0 z-[9999] overflow-hidden flex items-center justify-center"
+    :class="{ 'loader-reversing': reversing }"
   >
+    <!-- Sequential reveal overlays: 4 quadrants + center circle -->
+    <div class="reveal-overlay quad-right" :class="{ 'reveal-fire': phase >= 1 }"></div>
+    <div class="reveal-overlay quad-left" :class="{ 'reveal-fire': phase >= 2 }"></div>
+    <div class="reveal-overlay quad-top" :class="{ 'reveal-fire': phase >= 3 }"></div>
+    <div class="reveal-overlay quad-bottom" :class="{ 'reveal-fire': phase >= 4 }"></div>
+    <div class="reveal-circle" :class="{ 'reveal-fire-circle': phase >= 5 }"></div>
+
     <svg
       width="237"
       height="220"
       viewBox="0 0 237 220"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class="w-[500px] h-auto overflow-visible"
+      class="w-[500px] h-auto overflow-visible relative z-10"
     >
       <!-- TOP ROUNDED PATTERN -->
       <g transform="translate(90, 50)" class="pattern-group">
@@ -479,24 +486,49 @@
 </template>
 
 <script setup lang="ts">
-const fading = ref(false)
 const gone = ref(false)
 const animationDone = ref(false)
 const framesReady = ref(false)
 const readyEmitted = ref(false)
-
-function fadeOut() {
-  fading.value = true
-  setTimeout(() => {
-    gone.value = true
-    window.dispatchEvent(new Event('loader-gone'))
-  }, 600)
-}
+const phase = ref(0) // 0 = none, 1 = right, 2 = left, 3 = top, 4 = bottom, 5 = center
+const reversing = ref(false)
 
 function signalReady() {
   if (readyEmitted.value) return
   readyEmitted.value = true
   window.dispatchEvent(new Event('loader-ready'))
+}
+
+function startRevealSequence() {
+  // Sequential quadrant reveal with glitch, then center, then HUD reverse
+  const STEP_MS = 380
+  // phase 1: right
+  phase.value = 1
+  setTimeout(() => {
+    phase.value = 2
+  }, STEP_MS) // left
+  setTimeout(() => {
+    phase.value = 3
+  }, STEP_MS * 2) // top
+  setTimeout(() => {
+    phase.value = 4
+  }, STEP_MS * 3) // bottom
+  setTimeout(() => {
+    phase.value = 5
+  }, STEP_MS * 4) // center circle
+  setTimeout(
+    () => {
+      reversing.value = true
+    },
+    STEP_MS * 4 + 700,
+  ) // start HUD retract
+  setTimeout(
+    () => {
+      gone.value = true
+      window.dispatchEvent(new Event('loader-gone'))
+    },
+    STEP_MS * 4 + 700 + 1200,
+  ) // wait for HUD reverse to finish
 }
 
 onMounted(() => {
@@ -513,8 +545,8 @@ onMounted(() => {
     framesReady.value = true
   })
 
-  // External signal to actually fade out (e.g., after Identity Gate passes)
-  window.addEventListener('loader-fade', fadeOut, { once: true })
+  // External signal to actually fade out (from Identity Gate passing)
+  window.addEventListener('loader-fade', startRevealSequence, { once: true })
 })
 </script>
 
@@ -556,9 +588,168 @@ onMounted(() => {
   opacity: 0;
   animation: fade-in 0.4s ease-out var(--del) forwards;
 }
-.loader-fadeout {
-  transition: opacity 0.6s ease;
-  opacity: 0;
+/* === Reveal overlays === */
+.reveal-overlay {
+  position: absolute;
+  inset: 0;
+  background: #051e2e;
+  z-index: 1;
+  pointer-events: none;
+}
+/* 4 quadrant triangles meeting at viewport center */
+.quad-right {
+  clip-path: polygon(100% 0, 50% 50%, 100% 100%);
+}
+.quad-left {
+  clip-path: polygon(0 0, 50% 50%, 0 100%);
+}
+.quad-top {
+  clip-path: polygon(0 0, 50% 50%, 100% 0);
+}
+.quad-bottom {
+  clip-path: polygon(0 100%, 50% 50%, 100% 100%);
+}
+
+.reveal-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 520px;
+  height: 520px;
+  background: #051e2e;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.reveal-fire {
+  animation: glitchReveal 0.6s steps(8, end) forwards;
+}
+.reveal-fire-circle {
+  animation: glitchRevealCircle 0.7s steps(8, end) forwards;
+}
+
+@keyframes glitchReveal {
+  0% {
+    opacity: 1;
+    filter: none;
+    transform: translate(0, 0);
+  }
+  8% {
+    opacity: 0.95;
+    filter: hue-rotate(120deg) saturate(3) brightness(1.3);
+    transform: translate(-4px, 2px);
+  }
+  16% {
+    opacity: 0.8;
+    filter: hue-rotate(-60deg) contrast(1.6);
+    transform: translate(5px, -3px);
+  }
+  24% {
+    opacity: 0.9;
+    filter: hue-rotate(200deg) saturate(4);
+    transform: translate(-2px, 4px);
+  }
+  32% {
+    opacity: 0.6;
+    filter: brightness(2.2) contrast(1.8);
+    transform: translate(3px, -1px);
+  }
+  44% {
+    opacity: 0.8;
+    filter: hue-rotate(-30deg) saturate(2);
+    transform: translate(-1px, 0);
+  }
+  60% {
+    opacity: 0.4;
+    filter: none;
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    filter: none;
+    transform: translate(0, 0);
+  }
+}
+@keyframes glitchRevealCircle {
+  0% {
+    opacity: 1;
+    filter: none;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  8% {
+    opacity: 0.95;
+    filter: hue-rotate(120deg) saturate(3) brightness(1.3);
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+  16% {
+    opacity: 0.8;
+    filter: hue-rotate(-60deg) contrast(1.6);
+    transform: translate(calc(-50% + 5px), -50%) scale(0.98);
+  }
+  24% {
+    opacity: 0.9;
+    filter: hue-rotate(200deg) saturate(4);
+    transform: translate(calc(-50% - 3px), calc(-50% + 2px)) scale(1.01);
+  }
+  32% {
+    opacity: 0.6;
+    filter: brightness(2.2) contrast(1.8);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  44% {
+    opacity: 0.8;
+    filter: hue-rotate(-30deg) saturate(2);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  60% {
+    opacity: 0.4;
+    filter: none;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    filter: none;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* === HUD reverse animations === */
+.loader-reversing .draw-line,
+.loader-reversing .draw-line-center {
+  animation: drawOut 0.7s ease-in 0s forwards !important;
+}
+.loader-reversing .draw-circle,
+.loader-reversing .draw-circle-reverse {
+  animation: drawOut 0.8s ease-in 0.1s forwards !important;
+}
+.loader-reversing .pattern-tick {
+  animation: fadeOut 0.4s ease-in calc(var(--i) * 0.01s) forwards !important;
+}
+.loader-reversing .dot,
+.loader-reversing .chamber {
+  animation: fadeOut 0.4s ease-in 0s forwards !important;
+}
+.loader-reversing .outer-shape {
+  animation: rotateOut 0.9s ease-in 0.2s forwards !important;
+}
+
+@keyframes drawOut {
+  to {
+    stroke-dashoffset: var(--len);
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes rotateOut {
+  to {
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
 }
 
 @keyframes draw {
