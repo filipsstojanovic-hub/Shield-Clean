@@ -2183,8 +2183,8 @@ onMounted(() => {
         const scrolled4 = -rect4.top
         const progress4 = Math.max(0, Math.min(1, scrolled4 / (height4 - window.innerHeight)))
         section4Progress.value = progress4
-        section4Merge.value = Math.max(0, Math.min(1, progress4 * 3.33))
-        section4ColorShift.value = progress4 > 0.3 ? 0 : 1
+        section4Merge.value = Math.max(0, Math.min(1, progress4 * 2.0))
+        section4ColorShift.value = progress4 > 0.5 ? 0 : 1
         // Active slide for section 4
         // Hysteresis state machine — different thresholds for entering vs leaving a slide
         // Prevents scroll jitter from re-triggering animation at boundaries
