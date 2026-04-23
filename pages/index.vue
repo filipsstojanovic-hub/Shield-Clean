@@ -1504,15 +1504,15 @@ const elem2Opacity = computed(() => dotFade(heroProgress.value, 0.36))
 const elem3Opacity = computed(() => dotFade(heroProgress.value, 0.44))
 
 const leftTextStyle = computed(() => textAnim(heroProgress.value, -0.1, 0))
-const rightTextStyle = computed(() => textAnim(heroProgress.value, 0.25, 0.38))
-const leftText2Style = computed(() => textAnim(heroProgress.value, 0.55, 0.68))
+const rightTextStyle = computed(() => textAnim(heroProgress.value, 0.2, 0.33))
+const leftText2Style = computed(() => textAnim(heroProgress.value, 0.48, 0.61))
 const rightText2Style = computed(() => {
   const p = heroProgress.value
   const ep = heroExitProgress.value
   let ty: number
-  if (p < 0.82) ty = 300
-  else if (p < 0.95) {
-    const t = (p - 0.82) / 0.13
+  if (p < 0.76) ty = 300
+  else if (p < 0.89) {
+    const t = (p - 0.76) / 0.13
     ty = 300 - t * 300
   } else {
     ty = -ep * 1200
@@ -2114,17 +2114,17 @@ onMounted(() => {
         // Exit/overlap phase: 0 at scroll 300vh, 1 at scroll 400vh — drives bg parallax
         heroExitProgress.value = Math.max(0, Math.min(1, (scrolledH - 3 * window.innerHeight) / window.innerHeight))
         // Trigger char-reveal animations when hero text blocks become visible
-        if (!statusAnimated.value && heroRawProgress >= 0.25) {
+        if (!statusAnimated.value && heroRawProgress >= 0.2) {
           statusAnimated.value = true
           if (statusLabelText.value) scrambleElement(statusLabelText.value)
           charRevealBlock([statusLine1.value, statusLine2.value])
         }
-        if (!profileAnimated.value && heroRawProgress >= 0.55) {
+        if (!profileAnimated.value && heroRawProgress >= 0.48) {
           profileAnimated.value = true
           if (profileLabelText.value) scrambleElement(profileLabelText.value)
           charRevealBlock([profileBody.value])
         }
-        if (!briefingAnimated.value && heroRawProgress >= 0.82) {
+        if (!briefingAnimated.value && heroRawProgress >= 0.76) {
           briefingAnimated.value = true
           if (briefingLabelText.value) scrambleElement(briefingLabelText.value)
           charRevealBlock([briefingLine1.value, briefingLine2.value])
