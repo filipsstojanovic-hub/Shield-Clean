@@ -1506,7 +1506,21 @@ const elem3Opacity = computed(() => dotFade(heroProgress.value, 0.44))
 const leftTextStyle = computed(() => textAnim(heroProgress.value, -0.1, 0))
 const rightTextStyle = computed(() => textAnim(heroProgress.value, 0.2, 0.33))
 const leftText2Style = computed(() => textAnim(heroProgress.value, 0.48, 0.61))
-const rightText2Style = computed(() => textAnim(heroProgress.value, 0.76, 0.89))
+const rightText2Style = computed(() => {
+  // Briefing — same slide-in as others, but halved exit distance so it doesn't "fly"
+  // in the short 0.89 → 1.0 runway (11% progress vs 67% for Status).
+  const p = heroProgress.value
+  let ty: number
+  if (p < 0.76) ty = 300
+  else if (p < 0.89) {
+    const t = (p - 0.76) / 0.13
+    ty = 300 - t * 300
+  } else {
+    const t = (p - 0.89) / 0.11
+    ty = -t * 600
+  }
+  return { transform: `translateY(${ty}px)` }
+})
 
 // Repeating dark pulses from center - like ripples in water
 function gridDotOpacity(col: number, row: number, maxCol: number, maxRow: number) {
