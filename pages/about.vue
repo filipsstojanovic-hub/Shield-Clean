@@ -21,7 +21,7 @@
         </div>
 
         <!-- Top Right — Propellant -->
-        <div class="absolute top-10 right-[8%] md:top-16 md:right-[12%] text-right z-10 text-white pointer-events-none">
+        <div class="absolute top-10 right-[6%] md:top-16 md:right-[10%] text-right z-10 text-white pointer-events-none">
           <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Powder</div>
           <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mt-3 max-w-xs ml-auto">
             &gt; Smokeless charge — burns to launch the bullet.
