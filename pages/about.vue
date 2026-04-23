@@ -42,7 +42,7 @@
 
         <!-- Bottom Right — Primer -->
         <div
-          class="absolute bottom-14 right-[12%] md:bottom-20 md:right-[16%] text-right z-10 text-white pointer-events-none"
+          class="absolute bottom-14 right-[10%] md:bottom-20 md:right-[14%] text-right z-10 text-white pointer-events-none"
         >
           <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mb-3 max-w-xs ml-auto">
             &gt; Struck by firing pin — sparks the powder.
