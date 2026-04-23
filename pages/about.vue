@@ -13,7 +13,9 @@
         ></video>
 
         <!-- Left text -->
-        <div class="absolute bottom-10 left-8 md:bottom-16 md:left-12 text-left z-10 text-white pointer-events-none">
+        <div
+          class="absolute bottom-10 left-[12%] md:bottom-16 md:left-[16%] text-left z-10 text-white pointer-events-none"
+        >
           <div
             class="flex items-center gap-3 text-xs md:text-sm font-mono uppercase tracking-[0.3em] text-[#02d4ff] mb-3"
           >
@@ -27,7 +29,9 @@
         </div>
 
         <!-- Right text -->
-        <div class="absolute bottom-10 right-8 md:bottom-16 md:right-12 text-right z-10 text-white pointer-events-none">
+        <div
+          class="absolute bottom-10 right-[12%] md:bottom-16 md:right-[16%] text-right z-10 text-white pointer-events-none"
+        >
           <div
             class="flex items-center justify-end gap-3 text-xs md:text-sm font-mono uppercase tracking-[0.3em] text-[#02d4ff] mb-3"
           >
