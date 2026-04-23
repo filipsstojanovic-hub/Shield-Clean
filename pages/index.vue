@@ -977,7 +977,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="relative flex flex-col min-h-screen w-full bg-[#051e2e] text-white overflow-hidden">
+    <footer data-nav-dark class="relative flex flex-col min-h-screen w-full bg-[#051e2e] text-white overflow-hidden">
       <!-- Circuit linije -->
       <svg
         class="absolute inset-0 w-full h-full pointer-events-none"

@@ -1,6 +1,7 @@
 <template>
   <div>
     <HudLoader v-if="showLoader" />
+    <IdentityGate v-if="!gatePassed" :wait-for-loader="showLoader" @passed="onGatePassed" />
 
     <!-- Logo top-left -->
     <NuxtLink
@@ -84,6 +85,12 @@ import Lenis from 'lenis'
 const menuOpen = ref(false)
 const route = useRoute()
 const showLoader = computed(() => route.path === '/' || route.path === '/about')
+
+// Identity gate — session-scoped password protection
+const gatePassed = ref(false)
+function onGatePassed() {
+  gatePassed.value = true
+}
 
 const isOverDark = ref(true)
 const navColorClass = computed(() => (isOverDark.value ? 'text-white' : 'text-[#051e2e]'))

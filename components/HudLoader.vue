@@ -10,7 +10,7 @@
       viewBox="0 0 237 220"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      class="w-[500px] h-auto"
+      class="w-[500px] h-auto overflow-visible"
     >
       <!-- TOP ROUNDED PATTERN -->
       <g transform="translate(90, 50)" class="pattern-group">
@@ -137,16 +137,16 @@
         />
       </g>
 
-      <!-- Left diagonal line -->
+      <!-- Top-left diagonal extended from viewport edge into HUD corner -->
       <line
-        x1="0.176777"
-        y1="0.823223"
+        x1="-1400"
+        y1="-1400"
         x2="74.1768"
         y2="74.8232"
         stroke="white"
         stroke-width="0.5"
         class="draw-line"
-        style="--len: 104; --dur: 0.8s; --del: 0.2s"
+        style="--len: 2100; --dur: 1.4s; --del: 0.2s"
       />
       <!-- Middle horizontal line -->
       <line
@@ -157,18 +157,18 @@
         stroke="white"
         stroke-width="0.5"
         class="draw-line-center"
-        style="--len: 90; --dur: 0.6s; --del: 0s"
+        style="--len: 90; --dur: 0.6s; --del: 1.2s"
       />
-      <!-- Right diagonal line -->
+      <!-- Top-right diagonal extended from viewport edge into HUD corner -->
       <line
-        x1="236.822"
-        y1="0.82443"
+        x1="1637"
+        y1="-1400"
         x2="163.822"
         y2="74.8244"
         stroke="white"
         stroke-width="0.5"
         class="draw-line"
-        style="--len: 104; --dur: 0.8s; --del: 0.2s"
+        style="--len: 2100; --dur: 1.4s; --del: 0.2s"
       />
 
       <!-- Top L-shaped dots left -->
@@ -436,16 +436,16 @@
         />
       </g>
 
-      <!-- Bottom lines -->
+      <!-- Bottom-left diagonal extended from viewport edge into HUD corner -->
       <line
-        x1="0.176777"
-        y1="219.176777"
+        x1="-1400"
+        y1="1620"
         x2="74.1768"
         y2="145.1768"
         stroke="white"
         stroke-width="0.5"
         class="draw-line"
-        style="--len: 104; --dur: 0.8s; --del: 0.2s"
+        style="--len: 2100; --dur: 1.4s; --del: 0.2s"
       />
       <line
         x1="74"
@@ -455,17 +455,18 @@
         stroke="white"
         stroke-width="0.5"
         class="draw-line-center"
-        style="--len: 90; --dur: 0.6s; --del: 0s"
+        style="--len: 90; --dur: 0.6s; --del: 1.2s"
       />
+      <!-- Bottom-right diagonal extended from viewport edge into HUD corner -->
       <line
-        x1="236.822"
-        y1="219.17557"
+        x1="1637"
+        y1="1620"
         x2="163.822"
         y2="145.1756"
         stroke="white"
         stroke-width="0.5"
         class="draw-line"
-        style="--len: 104; --dur: 0.8s; --del: 0.2s"
+        style="--len: 2100; --dur: 1.4s; --del: 0.2s"
       />
       <circle cx="78" cy="154" r=".75" fill="white" class="dot" style="--del: 1.2s" />
       <circle cx="78" cy="150" r=".75" fill="white" class="dot" style="--del: 1.3s" />
@@ -482,6 +483,7 @@ const fading = ref(false)
 const gone = ref(false)
 const animationDone = ref(false)
 const framesReady = ref(false)
+const readyEmitted = ref(false)
 
 function fadeOut() {
   fading.value = true
@@ -491,18 +493,27 @@ function fadeOut() {
   }, 600)
 }
 
+function signalReady() {
+  if (readyEmitted.value) return
+  readyEmitted.value = true
+  window.dispatchEvent(new Event('loader-ready'))
+}
+
 onMounted(() => {
   // HUD animation takes ~2.8s
   setTimeout(() => {
     animationDone.value = true
-    if (framesReady.value) fadeOut()
+    if (framesReady.value) signalReady()
   }, 2800)
 
   // Listen for frames loaded event from index.vue
   window.addEventListener('hero-frames-loaded', () => {
     framesReady.value = true
-    if (animationDone.value) fadeOut()
+    if (animationDone.value) signalReady()
   })
+
+  // External signal to actually fade out (e.g., after Identity Gate passes)
+  window.addEventListener('loader-fade', fadeOut, { once: true })
 })
 </script>
 
