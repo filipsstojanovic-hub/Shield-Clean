@@ -1507,17 +1507,23 @@ const leftTextStyle = computed(() => textAnim(heroProgress.value, -0.1, 0))
 const rightTextStyle = computed(() => textAnim(heroProgress.value, 0.2, 0.33))
 const leftText2Style = computed(() => textAnim(heroProgress.value, 0.48, 0.61))
 const rightText2Style = computed(() => {
-  // Briefing — same slide-in as others, but halved exit distance so it doesn't "fly"
-  // in the short 0.89 → 1.0 runway (11% progress vs 67% for Status).
+  // Briefing — slide-in synced with others, exit split in two phases so it
+  // doesn't "pin" during the hero overlap. First half of exit runs through
+  // hero's 0.89→1.0 window (-0 → -600). Second half continues across
+  // heroExitProgress (300-400vh), reaching -1200 by the time Section 3 has
+  // fully risen.
   const p = heroProgress.value
+  const ep = heroExitProgress.value
   let ty: number
   if (p < 0.76) ty = 300
   else if (p < 0.89) {
     const t = (p - 0.76) / 0.13
     ty = 300 - t * 300
-  } else {
+  } else if (p < 1.0) {
     const t = (p - 0.89) / 0.11
     ty = -t * 600
+  } else {
+    ty = -600 - ep * 600
   }
   return { transform: `translateY(${ty}px)` }
 })
