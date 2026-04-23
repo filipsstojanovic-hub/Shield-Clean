@@ -13,7 +13,7 @@
         ></video>
 
         <!-- Top Left — Projectile -->
-        <div class="absolute top-10 left-[8%] md:top-16 md:left-[11%] text-left z-10 text-white pointer-events-none">
+        <div class="absolute top-14 left-[8%] md:top-24 md:left-[11%] text-left z-10 text-white pointer-events-none">
           <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Bullet</div>
           <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mt-3 max-w-xs">
             &gt; Copper-jacketed lead core — the part that flies out.
