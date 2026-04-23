@@ -32,7 +32,7 @@
 
         <!-- Bottom Left — Case -->
         <div
-          class="absolute bottom-10 left-[8%] md:bottom-16 md:left-[11%] text-left z-10 text-white pointer-events-none"
+          class="absolute bottom-10 left-[6%] md:bottom-16 md:left-[9%] text-left z-10 text-white pointer-events-none"
         >
           <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mb-3 max-w-xs">
             &gt; Holds powder + chambers in the weapon.
