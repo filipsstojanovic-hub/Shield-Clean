@@ -1,9 +1,9 @@
 <template>
   <main>
-    <!-- Section 1 - Hero with metak animation -->
+    <!-- Section 1 - Hero with reverse video -->
     <section id="overview" ref="heroSection" data-nav-dark class="relative w-full h-[300vh]">
       <div class="sticky top-0 h-screen w-full bg-black flex items-center justify-center overflow-hidden">
-        <canvas ref="heroCanvas" class="w-full h-full object-cover"></canvas>
+        <video src="/videos/about-hero.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
       </div>
     </section>
 
