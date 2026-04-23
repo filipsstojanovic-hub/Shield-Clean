@@ -5,12 +5,12 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Shield',
-      meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      ],
+      meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }],
       link: [
-        { rel: 'stylesheet', href: 'https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;500;600;700;900&display=swap',
+        },
       ],
     },
   },

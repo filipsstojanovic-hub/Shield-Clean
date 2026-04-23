@@ -1,414 +1,1105 @@
 <template>
   <main>
     <!-- Hero -->
-    <section id="hero" ref="heroSection" class="relative w-full h-[900vh]">
+    <section id="hero" ref="heroSection" data-nav-dark class="relative w-full h-[500vh] z-0">
       <div class="sticky top-0 h-screen w-full bg-[#051e2e] flex items-center justify-center overflow-hidden">
-        <canvas ref="heroCanvas" class="absolute inset-0 w-full h-full object-cover"></canvas>
-        <div v-if="!heroScrolled" ref="cursorLabel" class="fixed pointer-events-none z-50 text-white text-xs font-mono uppercase tracking-widest opacity-0 transition-opacity duration-300" style="transform: translate(-50%, -50%)">Scroll to Explore</div>
-      <div class="absolute bottom-0 group cursor-pointer w-[75%] h-[55px] flex items-center justify-center">
-        <svg class="absolute w-[calc(100%+50px)] h-full -left-[25px]" viewBox="0 0 850 55">
-          <defs>
-            <clipPath id="trapezoidClip">
-              <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" />
-            </clipPath>
-          </defs>
-          <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
-          <rect x="0" y="0" width="850" height="55" fill="#02d4ff" clip-path="url(#trapezoidClip)" class="translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-        </svg>
-        <span class="relative z-10 text-[#051e2e] text-xl font-semibold uppercase tracking-wider font-mono">Get Started</span>
-      </div>
-      </div>
-    </section>
-
-    <!-- Section 2 -->
-    <section
-      class="relative flex items-center justify-center h-[50vh] w-full overflow-hidden"
-    >
-      <div class="max-w-6xl px-6 md:px-8 text-center">
-          <h2 class="text-3xl md:text-5xl font-bold leading-snug">Building Europe's next ammunition facility from the ground up — 9,050 m² licensed, NATO-aligned, expansion-ready.</h2>
-      </div>
-    </section>
-
-    <!-- Section 3 - Pinned panels -->
-    <section id="capabilities" ref="section3" class="relative w-full border-b border-black/10 h-[350vh]">
-      <div class="sticky top-0 h-screen flex flex-col md:flex-row items-center pl-4 pr-4 md:pl-8 md:pr-8 py-12 md:py-0">
-        <div class="w-full md:w-2/5 bg-black/5 rounded-2xl flex items-center justify-center h-[60vh] md:h-[87%] relative overflow-hidden">
-          <transition name="fade" mode="out-in">
-            <div v-if="panelVideos[activePanel]" :key="'vid-'+activePanel" class="absolute inset-0">
-              <img :src="`/posters/panel${activePanel}.jpg`" class="absolute inset-0 w-full h-full object-cover" />
-              <video :src="panelVideos[activePanel]" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
-            </div>
-            <span v-else :key="activePanel" class="text-[5rem] md:text-[8rem] font-bold leading-none text-black/10 select-none">
-              {{ activePanel }}
+        <canvas
+          ref="heroCanvas"
+          class="absolute inset-0 w-full h-full object-cover will-change-transform"
+          :style="heroCanvasStyle"
+        ></canvas>
+        <div class="absolute inset-0 bg-black/25 pointer-events-none"></div>
+        <div class="absolute inset-0 flex items-center justify-center gap-3 pointer-events-none z-10">
+          <div
+            class="flex items-center gap-2 -translate-x-[152px] translate-y-[104px]"
+            :style="{ opacity: elem1Opacity }"
+          >
+            <span class="relative flex items-center justify-center w-2 h-2">
+              <span class="absolute w-8 h-8 rounded-full border border-white animate-ping"></span>
+              <span class="relative w-2 h-2 rounded-full bg-white"></span>
             </span>
-          </transition>
-          <div class="absolute -right-3 rotate-180 w-[55px] h-[460px] pointer-events-none transition-all duration-300 ease-out" :style="{ top: trapezoidPosition + '%', transform: 'translateY(-50%) rotate(180deg)' }">
-            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 65 200">
-              <path d="M0,8 C0,3 3,0 8,0 L55,30 C60,32 65,35 65,40 L65,160 C65,165 60,168 55,170 L8,200 C3,200 0,197 0,192 Z" fill="white" />
+            <span
+              class="text-white text-[10px] font-mono uppercase tracking-wider border border-white/50 px-2 py-0.5 bg-black/30 backdrop-blur-sm"
+              >01 · text</span
+            >
+          </div>
+          <div class="flex items-center gap-2 translate-x-32 translate-y-16" :style="{ opacity: elem2Opacity }">
+            <span class="relative flex items-center justify-center w-2 h-2">
+              <span class="absolute w-8 h-8 rounded-full border border-white animate-ping"></span>
+              <span class="relative w-2 h-2 rounded-full bg-white"></span>
+            </span>
+            <span
+              class="text-white text-[10px] font-mono uppercase tracking-wider border border-white/50 px-2 py-0.5 bg-black/30 backdrop-blur-sm"
+              >02 · text</span
+            >
+          </div>
+          <div class="flex items-center gap-2 translate-x-40 -translate-y-[200px]" :style="{ opacity: elem3Opacity }">
+            <span class="relative flex items-center justify-center w-2 h-2">
+              <span class="absolute w-8 h-8 rounded-full border border-white animate-ping"></span>
+              <span class="relative w-2 h-2 rounded-full bg-white"></span>
+            </span>
+            <span
+              class="text-white text-[10px] font-mono uppercase tracking-wider border border-white/50 px-2 py-0.5 bg-black/30 backdrop-blur-sm"
+              >03 · text</span
+            >
+          </div>
+        </div>
+        <div
+          class="absolute bottom-10 left-8 md:bottom-16 md:left-12 text-left z-10 text-white will-change-transform"
+          :style="leftTextStyle"
+        >
+          <div ref="heroHeadingRef" class="text-4xl md:text-6xl font-bold uppercase leading-tight tracking-tight">
+            <span class="block overflow-hidden"><span class="block hero-line">Balatonfűzfő</span></span>
+            <span class="block overflow-hidden"><span class="block hero-line">47.5°N 18.4°E</span></span>
+          </div>
+          <a
+            href="#"
+            @mouseenter="scrambleText"
+            @mouseleave="scrambleText"
+            class="btn-notch-clip inline-block bg-[#02d4ff] text-[#051e2e] text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
+            >Learn More</a
+          >
+        </div>
+        <div
+          class="absolute bottom-10 right-14 md:bottom-16 md:right-24 text-right z-10 pointer-events-none text-white will-change-transform"
+          :style="rightTextStyle"
+        >
+          <div
+            ref="statusLabel"
+            class="flex items-center justify-end gap-3 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#02d4ff] mb-4"
+          >
+            <span class="w-2 h-2 rounded-full bg-[#02d4ff] dot-blink"></span>
+            <span ref="statusLabelText">Status</span>
+          </div>
+          <div ref="statusLine1" class="text-xl md:text-2xl leading-snug text-white/90 max-w-sm">
+            Placeholder line one goes here with a bit of content.
+          </div>
+          <div ref="statusLine2" class="text-xl md:text-2xl leading-snug text-white/90 max-w-sm mt-2">
+            Placeholder line two with more details.
+          </div>
+        </div>
+        <div
+          class="absolute bottom-10 left-8 md:bottom-16 md:left-12 text-left z-10 pointer-events-none text-white will-change-transform"
+          :style="leftText2Style"
+        >
+          <div
+            ref="profileLabel"
+            class="flex items-center gap-3 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#02d4ff] mb-4"
+          >
+            <span class="w-2 h-2 rounded-full bg-[#02d4ff] dot-blink"></span>
+            <span ref="profileLabelText">Profile</span>
+          </div>
+          <div ref="profileBody" class="text-xl md:text-2xl leading-snug max-w-sm">
+            240,000 kg TNT-equivalent capacity across explosive and pyrotechnic classes.
+          </div>
+        </div>
+        <div
+          class="absolute bottom-10 right-14 md:bottom-16 md:right-24 text-right z-10 pointer-events-none text-white will-change-transform"
+          :style="rightText2Style"
+        >
+          <div
+            ref="briefingLabel"
+            class="flex items-center justify-end gap-3 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#02d4ff] mb-4"
+          >
+            <span class="w-2 h-2 rounded-full bg-[#02d4ff] dot-blink"></span>
+            <span ref="briefingLabelText">Briefing</span>
+          </div>
+          <div ref="briefingLine1" class="text-xl md:text-2xl leading-snug text-white/90 max-w-sm">
+            Placeholder line one goes here with a bit of content.
+          </div>
+          <div ref="briefingLine2" class="text-xl md:text-2xl leading-snug text-white/90 max-w-sm mt-2">
+            Placeholder line two with more details.
+          </div>
+        </div>
+        <!-- Scroll progress indicator -->
+        <div
+          class="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-10 h-[22%] flex items-start gap-2 pointer-events-none"
+        >
+          <!-- HUD top cap: ⊓ bracket -->
+          <svg
+            class="absolute -top-2 left-1/2 -translate-x-1/2 w-5 h-3 overflow-visible"
+            viewBox="0 0 20 12"
+            fill="none"
+          >
+            <path
+              d="M0,0 L0,5 M0,0 L7,0 M13,0 L20,0 M20,0 L20,5"
+              stroke="white"
+              stroke-opacity="0.7"
+              stroke-width="1"
+              stroke-linecap="square"
+            />
+          </svg>
+          <div class="w-[1px] h-full bg-white/70 relative overflow-hidden">
+            <div
+              class="absolute top-0 left-0 w-full bg-[#02d4ff] transition-none"
+              :style="{ height: heroProgress * 100 + '%' }"
+            ></div>
+          </div>
+          <!-- HUD bottom cap: ⊔ bracket -->
+          <svg
+            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-3 overflow-visible"
+            viewBox="0 0 20 12"
+            fill="none"
+          >
+            <path
+              d="M0,7 L0,12 M0,12 L7,12 M13,12 L20,12 M20,12 L20,7"
+              stroke="white"
+              stroke-opacity="0.7"
+              stroke-width="1"
+              stroke-linecap="square"
+            />
+          </svg>
+          <span class="text-xs font-mono text-white/60 absolute -left-8" :style="{ top: heroProgress * 85 + '%' }"
+            >{{ String(Math.round(heroProgress * 100)).padStart(2, '0') }}%</span
+          >
+        </div>
+        <div
+          v-if="!heroScrolled"
+          ref="cursorLabel"
+          class="fixed pointer-events-none z-50 text-white text-xs font-mono uppercase tracking-widest opacity-0 transition-opacity duration-300"
+          style="transform: translate(-50%, -50%)"
+        >
+          Scroll to Explore
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3 - Zigzag panels -->
+    <section id="capabilities" class="relative w-full bg-white z-20 -mt-[100vh] pt-32 md:pt-40 pb-32 px-6 md:px-16">
+      <div class="max-w-7xl mx-auto mb-12 md:mb-16">
+        <h2 ref="capIntroHeadingRef" class="max-w-2xl text-3xl md:text-5xl font-bold text-[#051e2e] leading-[1.15]">
+          Placeholder heading text about Shield's position in European defense manufacturing.
+        </h2>
+      </div>
+      <div class="max-w-6xl mx-auto flex flex-col gap-8">
+        <!-- Panel 2 — right panel, left text -->
+        <div class="flex flex-row-reverse items-center gap-10 md:gap-16 -mr-24 md:-mr-40">
+          <div ref="capPanel2Ref" class="relative w-[600px] h-[600px] md:w-[800px] md:h-[800px] flex-shrink-0">
+            <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none">
+              <defs>
+                <clipPath id="capPanel2Clip">
+                  <path
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/cap2.webp"
+                x="0"
+                :y="capPanel2ParallaxY"
+                width="400"
+                height="700"
+                clip-path="url(#capPanel2Clip)"
+                preserveAspectRatio="xMidYMid slice"
+              />
+              <path
+                d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                stroke="rgba(0,0,0,0.08)"
+                stroke-width="1.5"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
             </svg>
           </div>
-        </div>
-        <div class="w-full md:w-1/2 flex items-start px-6 md:pl-24 md:pr-16 text-left mt-8 md:mt-0 h-[60vh] md:h-[87%] overflow-hidden pt-[22vh]">
-          <div class="flex flex-col" :style="{ transform: `translateY(${-section3Progress * 50}vh)` }">
-            <div v-for="(text, idx) in panelTexts" :key="idx" class="h-[50vh] flex flex-col justify-center">
-              <h2
-                class="text-2xl md:text-3xl font-bold leading-tight panel-text whitespace-pre-line"
-                :style="{ backgroundSize: `${Math.min(100, Math.max(0, (section3Progress - idx) * 200))}% 100%` }"
-              >{{ text }}</h2>
-              <span v-if="idx < panelTexts.length - 1" class="text-black/10 text-2xl mt-6 select-none">"</span>
+          <div class="max-w-sm">
+            <div
+              class="flex items-baseline gap-4 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#051e2e]"
+            >
+              <span class="text-[#051e2e]/40">01</span><span ref="capPanel2LabelWord">Storage</span>
             </div>
+            <p ref="capPanel2DescRef" class="text-xl md:text-2xl text-[#051e2e] mt-8 leading-snug">
+              240,000 kg TNT-equivalent storage capacity across explosive and pyrotechnic classes, with indefinite
+              permits for continuous operations.
+            </p>
+            <a
+              href="#"
+              @mouseenter="scrambleText"
+              @mouseleave="scrambleText"
+              class="btn-notch-clip inline-block bg-[#051e2e] text-white text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
+              >Learn More</a
+            >
           </div>
         </div>
-        <!-- Panel number indicator -->
-        <div class="absolute right-[12%] md:right-[18%] top-1/2 -translate-y-1/2 z-10">
-          <span class="text-sm font-mono text-black/30 flex">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="activePanel > (activePanelPrev || 1) ? 'num-up' : 'num-down'"><span :key="activePanel" class="block">{{ activePanel }}</span></transition></span></span>
+
+        <!-- Panel 1 — left panel, right text -->
+        <div class="flex items-center gap-10 md:gap-16 -ml-24 md:-ml-40">
+          <div ref="capPanel1Ref" class="relative w-[600px] h-[600px] md:w-[800px] md:h-[800px] flex-shrink-0">
+            <svg
+              class="w-full h-full scale-x-[-1]"
+              viewBox="-40 -40 480 480"
+              fill="none"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <defs>
+                <clipPath id="capPanel1Clip">
+                  <path
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/cap1.webp"
+                x="0"
+                :y="capPanel1ParallaxY"
+                width="400"
+                height="700"
+                clip-path="url(#capPanel1Clip)"
+                preserveAspectRatio="xMidYMid slice"
+              />
+              <path
+                d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                stroke="rgba(0,0,0,0.08)"
+                stroke-width="1.5"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <div class="max-w-sm">
+            <div
+              class="flex items-baseline gap-4 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#051e2e]"
+            >
+              <span class="text-[#051e2e]/40">02</span><span ref="capPanel1LabelWord">Facility</span>
+            </div>
+            <p ref="capPanel1DescRef" class="text-xl md:text-2xl text-[#051e2e] mt-8 leading-snug">
+              9,050 m² licensed facility with 19 operational units and 5,330 m² dedicated storage infrastructure,
+              positioned to scale production rapidly.
+            </p>
+            <a
+              href="#"
+              @mouseenter="scrambleText"
+              @mouseleave="scrambleText"
+              class="btn-notch-clip inline-block bg-[#051e2e] text-white text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
+              >Learn More</a
+            >
+          </div>
+        </div>
+
+        <!-- Panel 4 — right panel, left text (path flipped vertical, image upright) -->
+        <div class="flex flex-row-reverse items-center gap-10 md:gap-16 -mr-24 md:-mr-40">
+          <div ref="capPanel4Ref" class="relative w-[600px] h-[600px] md:w-[800px] md:h-[800px] flex-shrink-0">
+            <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none">
+              <defs>
+                <clipPath id="capPanel4Clip">
+                  <path
+                    transform="matrix(1 0 0 -1 0 400)"
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/cap4.webp"
+                x="0"
+                :y="capPanel4ParallaxY"
+                width="400"
+                height="700"
+                clip-path="url(#capPanel4Clip)"
+                preserveAspectRatio="xMidYMid slice"
+              />
+              <g transform="matrix(1 0 0 -1 0 400)">
+                <path
+                  d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  stroke="rgba(0,0,0,0.08)"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                />
+              </g>
+            </svg>
+          </div>
+          <div class="max-w-sm">
+            <div
+              class="flex items-baseline gap-4 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#051e2e]"
+            >
+              <span class="text-[#051e2e]/40">03</span><span ref="capPanel4LabelWord">Licensing</span>
+            </div>
+            <p ref="capPanel4DescRef" class="text-xl md:text-2xl text-[#051e2e] mt-8 leading-snug">
+              60-day manufacturing licensing pathway positions Shield in Europe's fastest-growing defense market, with
+              EU ASAP Programme backing.
+            </p>
+            <a
+              href="#"
+              @mouseenter="scrambleText"
+              @mouseleave="scrambleText"
+              class="btn-notch-clip inline-block bg-[#051e2e] text-white text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
+              >Learn More</a
+            >
+          </div>
+        </div>
+
+        <!-- Panel 3 — left panel, right text (path rotated 180, image upright) -->
+        <div class="flex items-center gap-10 md:gap-16 -ml-24 md:-ml-40">
+          <div ref="capPanel3Ref" class="relative w-[600px] h-[600px] md:w-[800px] md:h-[800px] flex-shrink-0">
+            <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none">
+              <defs>
+                <clipPath id="capPanel3Clip">
+                  <path
+                    transform="rotate(180 200 200)"
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/cap3.webp"
+                x="0"
+                :y="capPanel3ParallaxY"
+                width="400"
+                height="700"
+                clip-path="url(#capPanel3Clip)"
+                preserveAspectRatio="xMidYMid slice"
+              />
+              <g transform="rotate(180 200 200)">
+                <path
+                  d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  stroke="rgba(0,0,0,0.08)"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                />
+              </g>
+            </svg>
+          </div>
+          <div class="max-w-sm">
+            <div
+              class="flex items-baseline gap-4 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#051e2e]"
+            >
+              <span class="text-[#051e2e]/40">04</span><span ref="capPanel3LabelWord">Expansion</span>
+            </div>
+            <p ref="capPanel3DescRef" class="text-xl md:text-2xl text-[#051e2e] mt-8 leading-snug">
+              1,020 m² available for new production lines plus 500 m² under construction — ready for repurposing to meet
+              growing NATO demand.
+            </p>
+            <a
+              href="#"
+              @mouseenter="scrambleText"
+              @mouseleave="scrambleText"
+              class="btn-notch-clip inline-block bg-[#051e2e] text-white text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
+              >Learn More</a
+            >
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Section 4 -->
-    <section ref="section4" class="relative w-full border-b border-white/10 h-[200vh]">
-      <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden transition-colors duration-300" :style="{ backgroundColor: section4ColorShift > 0 ? `rgb(${5 + section4ColorShift * 250}, ${30 + section4ColorShift * 225}, ${46 + section4ColorShift * 209})` : '#051e2e' }">
-        <div class="absolute z-10 top-[38%] left-1/2 -translate-x-1/2">
-          <span class="text-sm font-mono uppercase tracking-wider transition-colors duration-300" :style="{ color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'rgba(255,255,255,0.4)' }">Our Mission</span>
+    <section ref="section4" :data-nav-dark="section4ColorShift === 0 ? '' : null" class="relative w-full h-[500vh]">
+      <div
+        class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden transition-colors duration-300"
+        :style="{
+          backgroundColor:
+            section4ColorShift > 0
+              ? `rgb(${5 + section4ColorShift * 250}, ${30 + section4ColorShift * 225}, ${46 + section4ColorShift * 209})`
+              : '#051e2e',
+        }"
+      >
+        <!-- Scroll progress indicator (3 dots, active one expands into filling line) -->
+        <div class="absolute left-6 md:left-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3 z-30">
+          <template v-for="i in 3" :key="'s4dot' + i">
+            <div
+              class="w-[3px] rounded-full overflow-hidden transition-[height] duration-500 ease-out"
+              :style="{
+                height: section4DotActive(i - 1) ? '28px' : '3px',
+                backgroundColor:
+                  section4ColorShift > 0 ? `rgba(0,0,0,${0.12 + section4ColorShift * 0.08})` : 'rgba(255,255,255,0.22)',
+              }"
+            >
+              <div
+                class="w-full"
+                :style="{
+                  height: section4DotFill(i - 1) * 100 + '%',
+                  backgroundColor: section4ColorShift > 0 ? '#051e2e' : '#02d4ff',
+                }"
+              ></div>
+            </div>
+          </template>
         </div>
-        <div class="relative z-10 text-5xl md:text-9xl font-bold whitespace-nowrap" :style="{ color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'white', transform: `scale(${1 + section4Merge * 0.5})` }">
+        <div
+          class="absolute z-10 top-[38%] left-1/2 -translate-x-1/2"
+          :style="{
+            transform: `translate(-50%, ${-Math.max(0, Math.min(1, (section4Progress - 0.37) / 0.08)) * 30}vh)`,
+          }"
+        >
+          <span
+            class="text-sm font-mono uppercase tracking-wider transition-colors duration-300"
+            :style="{ color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'rgba(255,255,255,0.4)' }"
+            >Our Mission</span
+          >
+        </div>
+        <div
+          class="relative z-10 text-5xl md:text-9xl font-bold whitespace-nowrap"
+          :style="{
+            color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'white',
+            transform: `translateY(${-Math.max(0, Math.min(1, (section4Progress - 0.37) / 0.08)) * 30}vh) scale(${(1 + section4Merge * 0.5) * (1 - Math.max(0, Math.min(1, (section4Progress - 0.37) / 0.08)) * 0.6)})`,
+          }"
+        >
           <span class="inline-flex">
             <span>B</span>
-            <span class="inline-block overflow-hidden" :style="{ maxWidth: (1 - section4Merge) * 5 + 'em', opacity: Math.max(0, 1 - section4Merge * 3) }">uilt</span>
+            <span
+              class="inline-block overflow-hidden"
+              :style="{ maxWidth: (1 - section4Merge) * 5 + 'em', opacity: Math.max(0, 1 - section4Merge * 3) }"
+              >uilt</span
+            >
           </span>
           <span class="inline-block" :style="{ width: (1 - section4Merge) * 0.6 + 'em' }"></span>
           <span class="inline-flex">
             <span>T</span>
-            <span class="inline-block overflow-hidden" :style="{ maxWidth: (1 - section4Merge) * 5 + 'em', opacity: Math.max(0, 1 - section4Merge * 3) }">o</span>
+            <span
+              class="inline-block overflow-hidden"
+              :style="{ maxWidth: (1 - section4Merge) * 5 + 'em', opacity: Math.max(0, 1 - section4Merge * 3) }"
+              >o</span
+            >
           </span>
           <span class="inline-block" :style="{ width: (1 - section4Merge) * 0.6 + 'em' }"></span>
           <span class="inline-flex">
             <span>D</span>
-            <span class="inline-block overflow-hidden" :style="{ maxWidth: (1 - section4Merge) * 5 + 'em', opacity: Math.max(0, 1 - section4Merge * 3) }">efend</span>
+            <span
+              class="inline-block overflow-hidden"
+              :style="{ maxWidth: (1 - section4Merge) * 5 + 'em', opacity: Math.max(0, 1 - section4Merge * 3) }"
+              >efend</span
+            >
           </span>
         </div>
-      <svg class="absolute inset-0 w-full h-full">
-        <!-- Vertikalne linije (gap oko tačaka) -->
-        <template v-for="col in 13" :key="'vc'+col">
-          <template v-for="row in 7" :key="'vl'+col+'-'+row">
-            <line :x1="((col-1)/12*100)+'%'" :y1="'calc('+((row-1)/7*100)+'% + 14px)'" :x2="((col-1)/12*100)+'%'" :y2="'calc('+(row/7*100)+'% - 14px)'" :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.07 + section4ColorShift * 0.03})` : `rgba(2,212,255,${0.25 * gridDotOpacity(col-1, row-1, 12, 7)})`" stroke-width="1" />
-          </template>
-        </template>
-        <!-- Horizontalne linije (gap oko tačaka) -->
-        <template v-for="row in 8" :key="'hr'+row">
-          <template v-for="col in 12" :key="'hl'+row+'-'+col">
-            <line :x1="'calc('+((col-1)/12*100)+'% + 14px)'" :y1="((row-1)/7*100)+'%'" :x2="'calc('+(col/12*100)+'% - 14px)'" :y2="((row-1)/7*100)+'%'" :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.07 + section4ColorShift * 0.03})` : `rgba(2,212,255,${0.25 * gridDotOpacity(col-1, row-1, 12, 7)})`" stroke-width="1" />
-          </template>
-        </template>
-        <!-- Tačkice na presecima -->
-        <template v-for="row in 8" :key="'r'+row">
-          <circle v-for="col in 13" :key="'d'+row+'-'+col" :cx="((col-1)/12*100)+'%'" :cy="((row-1)/7*100)+'%'" r="3" :fill="section4ColorShift > 0 ? `rgba(0,0,0,${0.3})` : `rgba(2,212,255,${0.7 * gridDotOpacity(col-1, row-1, 12, 7)})`" />
-        </template>
-      </svg>
-      </div>
-    </section>
-
-    <!-- Section 5 - Pinned slides -->
-    <section id="production" ref="section5" class="relative w-full h-[500vh]">
-      <div class="sticky top-0 h-screen flex flex-col">
-        <div class="h-[70%] relative overflow-hidden">
-          <!-- Slide 1 - uvek na dnu -->
-          <div class="absolute inset-0 bg-[#02d4ff]" :style="{ transform: `translateY(${-Math.min(1, Math.max(0, (slide5Smooth - 0.2) * 5)) * 25}%)` }">
-            <img src="/posters/slide1.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video v-if="activeSlide5 <= 2" :src="`${videoCdn}/slide1.mp4?v=4`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
-          </div>
-          <!-- Slide 2 - klizi odozgo, tranzicija 0.2-0.4, pauza 0.4-0.6 -->
-          <div class="absolute inset-0 bg-[#051e2e] z-[1]" :style="{ transform: `translateY(${Math.max(0, (1 - Math.min(1, (slide5Smooth - 0.2) * 5)) * 100) + (-Math.min(1, Math.max(0, (slide5Smooth - 0.6) * 5)) * 25)}%)` }">
-            <img src="/posters/slide2.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video v-if="activeSlide5 >= 1 && activeSlide5 <= 3" :src="`${videoCdn}/slide2.mp4?v=3`" muted autoplay loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
-          </div>
-          <!-- Slide 3 - klizi odozgo, tranzicija 0.6-0.8, pauza 0.8-1.0 -->
-          <div class="absolute inset-0 bg-[#02d4ff] z-[2]" :style="{ transform: `translateY(${Math.max(0, (1 - Math.min(1, (slide5Smooth - 0.6) * 5)) * 100)}%)` }">
-            <img src="/posters/slide3.jpg" class="absolute inset-0 w-full h-full object-cover" />
-            <video v-if="activeSlide5 >= 2" :src="`${videoCdn}/slide3.mp4?v=2`" muted loop playsinline class="absolute inset-0 w-full h-full object-cover" @loadeddata="($event.target as HTMLVideoElement).play().catch(() => {})" />
-          </div>
-          <!-- Slide indicator - line + number -->
-          <div class="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-10 h-[40%] flex items-start gap-3">
-            <div class="w-[2px] h-full bg-white/20 rounded-full relative overflow-hidden">
-              <div class="absolute top-0 left-0 w-full bg-[#02d4ff] rounded-full transition-none" :style="{ height: (slide5Smooth * 100) + '%' }"></div>
-            </div>
-            <span class="text-sm font-mono text-white/60 absolute -left-8 flex" :style="{ top: (slide5Smooth * 85) + '%' }">0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"><transition :name="slide5Direction > 0 ? 'num-up' : 'num-down'"><span :key="activeSlide5" class="block">{{ activeSlide5 }}</span></transition></span></span>
-          </div>
-        </div>
-        <div class="h-[30%] bg-white flex flex-col md:flex-row items-start justify-between px-6 md:px-16 py-8 md:py-12 gap-6 overflow-hidden">
-          <div :key="'h1-'+slide5Display" class="md:w-2/5">
-            <span ref="slide5Label" class="text-sm text-black/30 font-mono uppercase tracking-wider split-text">Capability {{ String(slide5Display).padStart(2, '0') }}</span>
-            <h1 ref="slide5Title" class="text-2xl md:text-4xl font-bold mt-2 leading-tight split-text" v-html="slide5Titles[slide5Display - 1]"></h1>
-          </div>
-          <div :key="'h2-'+slide5Display" class="md:w-1/2">
-            <p ref="slide5Desc" class="text-base md:text-lg text-black/60 leading-relaxed split-text">{{ slide5Subtitles[slide5Display - 1] }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 6 -->
-    <section class="relative flex items-center justify-center h-[50vh] w-full overflow-hidden">
-      <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 600" preserveAspectRatio="none" fill="none" stroke-width="1.5">
-        <defs>
-          <filter id="gridGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="25" />
-          </filter>
-        </defs>
-        <!-- Leva linija -->
-        <path d="M0,80 L150,80 Q200,80 200,130 L200,450 Q200,500 250,500 L400,500" stroke="rgba(0,0,0,0.07)" stroke-linecap="round" />
-        <path d="M0,80 L150,80 Q200,80 200,130 L200,450 Q200,500 250,500 L400,500" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#gridGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.5s" repeatCount="indefinite" />
-        </path>
-        <path d="M0,80 L150,80 Q200,80 200,130 L200,450 Q200,500 250,500 L400,500" stroke="black" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.5s" repeatCount="indefinite" />
-        </path>
-        <!-- Desna linija -->
-        <path d="M1200,100 L1050,100 Q1000,100 1000,150 L1000,450 Q1000,500 950,500 L800,500" stroke="rgba(0,0,0,0.07)" stroke-linecap="round" />
-        <path d="M1200,100 L1050,100 Q1000,100 1000,150 L1000,450 Q1000,500 950,500 L800,500" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#gridGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3s" repeatCount="indefinite" />
-        </path>
-        <path d="M1200,100 L1050,100 Q1000,100 1000,150 L1000,450 Q1000,500 950,500 L800,500" stroke="black" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3s" repeatCount="indefinite" />
-        </path>
-      </svg>
-        <div class="text-center relative z-10">
-          <span class="text-sm text-black/30 font-mono uppercase tracking-wider">Our Partners & Licenses</span>
-          <h1 class="text-3xl md:text-5xl font-bold px-6 mt-3">Powering European Defense</h1>
-        </div>
-    </section>
-
-    <!-- Section 7 -->
-    <section class="relative flex items-center justify-center h-screen w-full overflow-hidden">
-        <div class="relative grid grid-cols-5 grid-rows-5 w-[110%] h-[110%]">
+        <!-- Section 4 slides — lines reveal animation on active slide change -->
         <div
-          v-for="i in 25"
-          :key="i"
-          class="flex items-center justify-center border border-black/10 relative"
-          @mousemove="(e) => { if ([7,8,9,12,13,14,17,18,19].includes(i)) handleGlowMove(e, i) }"
-          @mouseleave="() => { delete glowPositions[i] }"
+          :class="[
+            'absolute bottom-[22%] left-[8%] md:left-[10%] max-w-md z-10 pointer-events-none transition-opacity duration-[1200ms]',
+            activeSlide4 === 1 ? 'opacity-100' : 'opacity-0',
+          ]"
+          :style="{ color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'white' }"
         >
+          <!-- Panel above title (matches zigzag panel 1 pattern) -->
           <div
-            v-if="[7,8,9,12,13,14,17,18,19].includes(i) && glowPositions[i]"
-            class="absolute pointer-events-none w-full h-full transition-opacity duration-300"
-            :style="{ background: `radial-gradient(circle at ${glowPositions[i].x}% ${glowPositions[i].y}%, rgba(2,212,255,0.3) 0%, transparent 60%)`, boxShadow: 'inset 0 0 30px rgba(2,212,255,0.15)' }"
-          ></div>
-          <img v-if="gridLogos[i]" :src="gridLogos[i]" :alt="'Partner logo'" class="w-[60%] h-auto select-none relative z-10" />
-          <span v-else-if="gridLabels[i]" class="text-[10px] md:text-xs font-semibold text-black/40 select-none relative z-10 text-center px-2 leading-tight">{{ gridLabels[i] }}</span>
-          <span v-else class="select-none relative z-10"></span>
+            class="w-[240px] h-[240px] md:w-[340px] md:h-[340px] mb-6"
+            :style="{ transform: `translate(${s4MouseX * 22}px, ${s4MouseY * 14}px)` }"
+          >
+            <svg class="w-full h-full scale-x-[-1]" viewBox="-40 -40 480 480" fill="none" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="s4Panel1Clip">
+                  <path
+                    transform="matrix(0 1 1 0 0 0)"
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/zz-panel1.webp"
+                x="0"
+                y="0"
+                width="400"
+                height="400"
+                clip-path="url(#s4Panel1Clip)"
+                preserveAspectRatio="xMidYMid slice"
+                :style="{ opacity: s4Slide1ImageP }"
+              />
+              <g transform="matrix(0 1 1 0 0 0)">
+                <path
+                  d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.4 * section4ColorShift})` : 'rgba(255,255,255,0.6)'"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  :stroke-dasharray="S4_PANEL_PATH_LEN"
+                  :stroke-dashoffset="S4_PANEL_PATH_LEN - s4Slide1StrokeP * S4_PANEL_PATH_LEN"
+                />
+              </g>
+            </svg>
+          </div>
+          <h3
+            ref="slide4Title1"
+            class="text-2xl md:text-4xl font-bold leading-tight split-text"
+            v-html="
+              'A licensed facility for large-scale <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>ammunition manufacturing</u>'
+            "
+          ></h3>
         </div>
-        <!-- Krstići na presecima glow kocki -->
-        <svg
-          v-for="(pos, idx) in allCrossPositions"
-          :key="'cross-'+idx"
-          class="absolute w-3 h-3 pointer-events-none z-20 transition-transform duration-300 ease-out"
-          :style="{ left: pos.x + '%', top: pos.y + '%', transform: `translate(-50%, -50%) scale(${activeCrossKeys.has(pos.x+'-'+pos.y) ? 1 : 0})` }"
-          viewBox="0 0 12 12"
+        <div
+          :class="[
+            'absolute bottom-[14%] right-[4%] md:right-[5%] max-w-md z-10 pointer-events-none transition-opacity duration-[1200ms]',
+            activeSlide4 === 1 ? 'opacity-100' : 'opacity-0',
+          ]"
+          :style="{
+            color: section4ColorShift > 0 ? `rgba(0,0,0,${0.6 * section4ColorShift})` : 'rgba(255,255,255,0.7)',
+          }"
         >
-          <line x1="6" y1="1" x2="6" y2="11" stroke="black" stroke-opacity="0.6" stroke-width="1.5" />
-          <line x1="1" y1="6" x2="11" y2="6" stroke="black" stroke-opacity="0.6" stroke-width="1.5" />
+          <!-- Panel above right description -->
+          <div
+            class="w-[280px] h-[280px] md:w-[400px] md:h-[400px] mb-6 ml-auto"
+            :style="{ transform: `translate(${-s4MouseX * 28}px, ${-s4MouseY * 18}px)` }"
+          >
+            <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="s4Panel1RClip">
+                  <path
+                    transform="matrix(0 1 1 0 0 0)"
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/zz-panel1r.webp"
+                x="0"
+                y="0"
+                width="400"
+                height="400"
+                clip-path="url(#s4Panel1RClip)"
+                preserveAspectRatio="xMidYMid slice"
+                :style="{ opacity: s4Slide1ImageP }"
+              />
+              <g transform="matrix(0 1 1 0 0 0)">
+                <path
+                  d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.4 * section4ColorShift})` : 'rgba(255,255,255,0.6)'"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  :stroke-dasharray="S4_PANEL_PATH_LEN"
+                  :stroke-dashoffset="S4_PANEL_PATH_LEN - s4Slide1StrokeP * S4_PANEL_PATH_LEN"
+                />
+              </g>
+            </svg>
+          </div>
+          <p ref="slide4Desc1" class="text-base md:text-lg leading-relaxed split-text">
+            Our facility is positioned to manufacture 155mm artillery and 30mm medium-caliber ammunition — the two
+            highest-demand segments in European defense.
+          </p>
+        </div>
+
+        <div
+          :class="[
+            'absolute bottom-[22%] left-[8%] md:left-[10%] max-w-md z-10 pointer-events-none transition-opacity duration-[1200ms]',
+            activeSlide4 === 2 ? 'opacity-100' : 'opacity-0',
+          ]"
+          :style="{ color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'white' }"
+        >
+          <!-- Panel above title -->
+          <div
+            class="w-[280px] h-[280px] md:w-[400px] md:h-[400px] mb-6"
+            :style="{ transform: `translate(${s4MouseX * 22}px, ${s4MouseY * 14}px) rotate(-90deg)` }"
+          >
+            <svg class="w-full h-full scale-x-[-1]" viewBox="-40 -40 480 480" fill="none" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="s4Panel2Clip">
+                  <path
+                    transform="matrix(0 1 1 0 0 0)"
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/zz-panel2.webp"
+                x="0"
+                y="0"
+                width="400"
+                height="400"
+                clip-path="url(#s4Panel2Clip)"
+                preserveAspectRatio="xMidYMid slice"
+                :style="{ opacity: s4Slide2ImageP }"
+              />
+              <g transform="matrix(0 1 1 0 0 0)">
+                <path
+                  d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.4 * section4ColorShift})` : 'rgba(255,255,255,0.6)'"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  :stroke-dasharray="S4_PANEL_PATH_LEN"
+                  :stroke-dashoffset="S4_PANEL_PATH_LEN - s4Slide2StrokeP * S4_PANEL_PATH_LEN"
+                />
+              </g>
+            </svg>
+          </div>
+          <h3
+            ref="slide4Title2"
+            class="text-2xl md:text-4xl font-bold leading-tight split-text"
+            v-html="
+              'Sustained demand driven by NATO <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>rearmament</u> and restocking'
+            "
+          ></h3>
+        </div>
+        <div
+          :class="[
+            'absolute bottom-[14%] right-[4%] md:right-[5%] max-w-md z-10 pointer-events-none transition-opacity duration-[1200ms]',
+            activeSlide4 === 2 ? 'opacity-100' : 'opacity-0',
+          ]"
+          :style="{
+            color: section4ColorShift > 0 ? `rgba(0,0,0,${0.6 * section4ColorShift})` : 'rgba(255,255,255,0.7)',
+          }"
+        >
+          <p ref="slide4Desc2" class="text-base md:text-lg leading-relaxed split-text mb-6">
+            European ammunition demand is undergoing a generational surge — 155mm artillery at 17% CAGR and 30mm
+            medium-caliber at 11% CAGR driven by NATO rearmament.
+          </p>
+          <!-- Panel below right description -->
+          <div
+            class="w-[280px] h-[280px] md:w-[400px] md:h-[400px] ml-auto"
+            :style="{ transform: `translate(${-s4MouseX * 28}px, ${-s4MouseY * 18}px)` }"
+          >
+            <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="s4Panel2RClip">
+                  <path
+                    transform="matrix(0 -1 -1 0 400 400)"
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/zz-panel2r.webp"
+                x="0"
+                y="0"
+                width="400"
+                height="400"
+                clip-path="url(#s4Panel2RClip)"
+                preserveAspectRatio="xMidYMid slice"
+                :style="{ opacity: s4Slide2ImageP }"
+              />
+              <g transform="matrix(0 -1 -1 0 400 400)">
+                <path
+                  d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.4 * section4ColorShift})` : 'rgba(255,255,255,0.6)'"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  :stroke-dasharray="S4_PANEL_PATH_LEN"
+                  :stroke-dashoffset="S4_PANEL_PATH_LEN - s4Slide2StrokeP * S4_PANEL_PATH_LEN"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div
+          :class="[
+            'absolute bottom-[12%] left-[8%] md:left-[10%] max-w-md z-10 pointer-events-none transition-opacity duration-[1200ms]',
+            activeSlide4 === 3 ? 'opacity-100' : 'opacity-0',
+          ]"
+          :style="{ color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'white' }"
+        >
+          <h3
+            ref="slide4Title3"
+            class="text-2xl md:text-4xl font-bold leading-tight split-text mb-6"
+            v-html="
+              'Built to scale with EU-backed funding and <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>expansion capacity</u>'
+            "
+          ></h3>
+          <!-- Panel below title -->
+          <div
+            class="w-[240px] h-[240px] md:w-[340px] md:h-[340px]"
+            :style="{ transform: `translate(${s4MouseX * 22}px, ${s4MouseY * 14}px)` }"
+          >
+            <svg class="w-full h-full scale-x-[-1]" viewBox="-40 -40 480 480" fill="none" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="s4Panel3Clip">
+                  <path
+                    transform="matrix(0 1 1 0 0 0)"
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/zz-panel3.webp"
+                x="0"
+                y="0"
+                width="400"
+                height="400"
+                clip-path="url(#s4Panel3Clip)"
+                preserveAspectRatio="xMidYMid slice"
+                :style="{ opacity: s4Slide3ImageP }"
+              />
+              <g transform="matrix(0 1 1 0 0 0)">
+                <path
+                  d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.4 * section4ColorShift})` : 'rgba(255,255,255,0.6)'"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  :stroke-dasharray="S4_PANEL_PATH_LEN"
+                  :stroke-dashoffset="S4_PANEL_PATH_LEN - s4Slide3StrokeP * S4_PANEL_PATH_LEN"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div
+          :class="[
+            'absolute bottom-[14%] right-[4%] md:right-[5%] max-w-md z-10 pointer-events-none transition-opacity duration-[1200ms]',
+            activeSlide4 === 3 ? 'opacity-100' : 'opacity-0',
+          ]"
+          :style="{
+            color: section4ColorShift > 0 ? `rgba(0,0,0,${0.6 * section4ColorShift})` : 'rgba(255,255,255,0.7)',
+          }"
+        >
+          <!-- Panel above right description -->
+          <div
+            class="w-[280px] h-[280px] md:w-[400px] md:h-[400px] mb-6 ml-auto"
+            :style="{ transform: `translate(${-s4MouseX * 28}px, ${-s4MouseY * 18}px)` }"
+          >
+            <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none" preserveAspectRatio="none">
+              <defs>
+                <clipPath id="s4Panel3RClip">
+                  <path
+                    transform="matrix(0 1 1 0 0 0)"
+                    d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  />
+                </clipPath>
+              </defs>
+              <image
+                href="/posters/zz-panel3r.webp"
+                x="0"
+                y="0"
+                width="400"
+                height="400"
+                clip-path="url(#s4Panel3RClip)"
+                preserveAspectRatio="xMidYMid slice"
+                :style="{ opacity: s4Slide3ImageP }"
+              />
+              <g transform="matrix(0 1 1 0 0 0)">
+                <path
+                  d="M0 45 Q0 35 10 35 L82.5 35 Q90 35 95 28 L120 5 Q125 0 135 0 L380 0 Q400 0 400 20 L400 380 Q400 400 380 400 L20 400 Q0 400 0 380 L0 300 Q0 290 10 280 L20 270 Q30 260 30 250 L30 150 Q30 140 20 130 L10 120 Q0 110 0 100 Z"
+                  :stroke="section4ColorShift > 0 ? `rgba(0,0,0,${0.4 * section4ColorShift})` : 'rgba(255,255,255,0.6)'"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  :stroke-dasharray="S4_PANEL_PATH_LEN"
+                  :stroke-dashoffset="S4_PANEL_PATH_LEN - s4Slide3StrokeP * S4_PANEL_PATH_LEN"
+                />
+              </g>
+            </svg>
+          </div>
+          <p ref="slide4Desc3" class="text-base md:text-lg leading-relaxed split-text">
+            Access to EU ASAP Programme's €500M public and €1B private investment pipeline — positioning Shield to scale
+            production rapidly within Europe's defense industrial base.
+          </p>
+        </div>
+        <svg
+          class="absolute inset-0 w-full h-full"
+          style="
+            mask-image: radial-gradient(ellipse 65% 60% at 50% 50%, black 30%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 65% 60% at 50% 50%, black 30%, transparent 100%);
+          "
+        >
+          <!-- Vertikalne linije (gap oko tačaka) — puls -->
+          <template v-for="col in 25" :key="'vc' + col">
+            <template v-for="row in 13" :key="'vl' + col + '-' + row">
+              <line
+                :x1="((col - 1) / 24) * 100 + '%'"
+                :y1="'calc(' + ((row - 1) / 13) * 100 + '% + 8px)'"
+                :x2="((col - 1) / 24) * 100 + '%'"
+                :y2="'calc(' + (row / 13) * 100 + '% - 8px)'"
+                :stroke="
+                  section4ColorShift > 0
+                    ? `rgba(0,0,0,${0.05 + section4ColorShift * 0.03})`
+                    : `rgba(2,212,255,${0.18 * gridDotOpacity(col - 1, row - 1, 24, 13)})`
+                "
+                stroke-width="1"
+              />
+            </template>
+          </template>
+          <!-- Horizontalne linije (gap oko tačaka) — puls -->
+          <template v-for="row in 14" :key="'hr' + row">
+            <template v-for="col in 24" :key="'hl' + row + '-' + col">
+              <line
+                :x1="'calc(' + ((col - 1) / 24) * 100 + '% + 8px)'"
+                :y1="((row - 1) / 13) * 100 + '%'"
+                :x2="'calc(' + (col / 24) * 100 + '% - 8px)'"
+                :y2="((row - 1) / 13) * 100 + '%'"
+                :stroke="
+                  section4ColorShift > 0
+                    ? `rgba(0,0,0,${0.05 + section4ColorShift * 0.03})`
+                    : `rgba(2,212,255,${0.18 * gridDotOpacity(col - 1, row - 1, 24, 13)})`
+                "
+                stroke-width="1"
+              />
+            </template>
+          </template>
+          <!-- Tačkice na presecima -->
+          <template v-for="row in 14" :key="'r' + row">
+            <circle
+              v-for="col in 25"
+              :key="'d' + row + '-' + col"
+              :cx="((col - 1) / 24) * 100 + '%'"
+              :cy="((row - 1) / 13) * 100 + '%'"
+              r="1.5"
+              :fill="
+                section4ColorShift > 0
+                  ? `rgba(0,0,0,${0.2})`
+                  : `rgba(2,212,255,${0.6 * gridDotOpacity(col - 1, row - 1, 24, 13)})`
+              "
+            />
+          </template>
         </svg>
       </div>
-      <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to right, white 0%, transparent 25%, transparent 75%, white 100%), linear-gradient(to bottom, white 0%, transparent 25%, transparent 75%, white 100%);"></div>
     </section>
 
-    <!-- Section 8 - Bullet parallax -->
-    <div class="h-[15vh]"></div>
-    <section ref="section8" class="relative w-full border-b border-white/10 h-screen overflow-hidden">
-      <img src="/bullet-hero.webp" class="absolute inset-0 w-full h-full object-cover scale-110" :style="{ transform: `scale(1.1) translateY(${parallax8}px)` }" />
-      <div class="absolute inset-0 bg-black/40"></div>
-      <div class="relative z-10 flex items-center justify-center h-full">
-        <div class="text-center max-w-4xl px-6">
-          <svg class="w-8 h-8 text-[#02d4ff]/40 mb-4" viewBox="0 0 24 24" fill="currentColor"><path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C9.591 11.69 11 13.196 11 15c0 1.933-1.567 3.5-3.5 3.5-1.198 0-2.307-.603-2.917-1.179zM14.583 17.321C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311C19.591 11.69 21 13.196 21 15c0 1.933-1.567 3.5-3.5 3.5-1.198 0-2.307-.603-2.917-1.179z"/></svg>
-          <p class="text-xl md:text-2xl text-white/90 leading-relaxed max-w-3xl italic">"Amateurs talk strategy. Professionals talk logistics. No army in history has ever won a war without a secure and sufficient supply of ammunition."</p>
-          <div class="mt-6">
-            <span class="text-sm text-white/60 font-semibold">Gen. Omar Bradley</span>
-            <p class="text-xs text-white/30 font-mono uppercase tracking-wider mt-1">Former Chairman of the Joint Chiefs of Staff</p>
+    <!-- Partners & Licenses slider -->
+    <section
+      ref="plSection"
+      class="relative w-full min-h-screen bg-[#02d4ff] text-[#051e2e] overflow-hidden cursor-pointer"
+      @click="nextPartnerPage"
+      @mousemove="onPartnerMouseMove"
+      @mouseenter="partnerCursorVisible = true"
+      @mouseleave="partnerCursorVisible = false"
+    >
+      <!-- Horizontal indicator with single line + number on left -->
+      <div class="absolute right-10 md:right-14 top-28 md:top-32 z-20 flex items-center gap-4 pointer-events-none">
+        <span class="text-sm md:text-base font-mono tracking-widest text-[#051e2e]">0{{ partnerPage + 1 }}</span>
+        <div class="w-64 md:w-80 h-[1px] bg-[#051e2e]/20 relative overflow-hidden">
+          <div
+            class="absolute top-0 left-0 h-full bg-[#051e2e]"
+            :style="{ width: partnerAutoProgress * 100 + '%' }"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Slider pages -->
+      <div
+        class="flex h-full min-h-screen transition-transform duration-700 ease-[cubic-bezier(0.77,0,0.175,1)]"
+        :style="{ transform: `translateX(-${partnerPage * 100}%)` }"
+      >
+        <!-- Page 1 - Nammo -->
+        <div class="w-full flex-shrink-0 min-h-screen flex items-center px-6 md:px-20">
+          <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-[auto_1fr] gap-12 md:gap-20 items-center">
+            <img src="/logos/nammo.svg" alt="Nammo" class="h-16 md:h-24 w-auto" />
+            <div class="max-w-2xl">
+              <p class="text-base md:text-lg leading-relaxed">
+                Nordic NATO ammunition supplier with deep production ties across Europe's defense network.
+              </p>
+              <p class="text-base md:text-lg leading-relaxed mt-6">
+                Joint venture rooted in Finland and Norway, producing small- and medium-caliber rounds for NATO partners
+                — a strategic supply partner for Shield's European distribution.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 2 - BAE -->
+        <div class="w-full flex-shrink-0 min-h-screen flex items-center px-6 md:px-20">
+          <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-[auto_1fr] gap-12 md:gap-20 items-center">
+            <img src="/logos/bae.svg" alt="BAE" class="h-16 md:h-24 w-auto" />
+            <div class="max-w-2xl">
+              <p class="text-base md:text-lg leading-relaxed">
+                UK-based global defense systems leader in munitions, naval, and aerospace manufacturing.
+              </p>
+              <p class="text-base md:text-lg leading-relaxed mt-6">
+                BAE Systems operates critical munitions programs across Europe and North America — technical and
+                supply-chain collaboration that underpins Shield's 155mm artillery capability.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 3 - Thales -->
+        <div class="w-full flex-shrink-0 min-h-screen flex items-center px-6 md:px-20">
+          <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-[auto_1fr] gap-12 md:gap-20 items-center">
+            <img src="/logos/thales.svg" alt="Thales" class="h-16 md:h-24 w-auto" />
+            <div class="max-w-2xl">
+              <p class="text-base md:text-lg leading-relaxed">
+                French multinational in aerospace, defense electronics, and integrated weapon systems.
+              </p>
+              <p class="text-base md:text-lg leading-relaxed mt-6">
+                Thales brings command-and-control systems expertise to NATO-aligned defense programs — a key integration
+                partner for Shield's 30mm medium-caliber ammunition and C-UAS platforms.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 4 - Licenses -->
+        <div class="w-full flex-shrink-0 min-h-screen flex items-center px-6 md:px-20 py-24 md:py-32">
+          <div class="w-full max-w-6xl flex flex-col gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,260px)_1fr] gap-6 md:gap-12 items-start">
+              <span
+                class="text-sm md:text-base font-mono uppercase tracking-wider border border-[#051e2e]/30 px-4 py-2 justify-self-start"
+                >Pyrotechnic Storage</span
+              >
+              <p class="text-base md:text-lg leading-relaxed max-w-2xl">
+                Licensed production of fireworks, flares, and pyrotechnic ammunition components for commercial and
+                defense applications.
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,260px)_1fr] gap-6 md:gap-12 items-start">
+              <span
+                class="text-sm md:text-base font-mono uppercase tracking-wider border border-[#051e2e]/30 px-4 py-2 justify-self-start"
+                >Explosive Storage</span
+              >
+              <p class="text-base md:text-lg leading-relaxed max-w-2xl">
+                240,000 kg TNT-equivalent capacity across regulated explosive classes with indefinite validity.
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,260px)_1fr] gap-6 md:gap-12 items-start">
+              <span
+                class="text-sm md:text-base font-mono uppercase tracking-wider border border-[#051e2e]/30 px-4 py-2 justify-self-start"
+                >Disaster Management</span
+              >
+              <p class="text-base md:text-lg leading-relaxed max-w-2xl">
+                Emergency response and containment certification for handling high-consequence materials on-site.
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,260px)_1fr] gap-6 md:gap-12 items-start">
+              <span
+                class="text-sm md:text-base font-mono uppercase tracking-wider border border-[#051e2e]/30 px-4 py-2 justify-self-start"
+                >Defense Industry</span
+              >
+              <p class="text-base md:text-lg leading-relaxed max-w-2xl">
+                Authorization to manufacture and distribute defense-grade munitions across NATO-aligned markets.
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,260px)_1fr] gap-6 md:gap-12 items-start">
+              <span
+                class="text-sm md:text-base font-mono uppercase tracking-wider border border-[#051e2e]/30 px-4 py-2 justify-self-start"
+                >Explosive Disposal</span
+              >
+              <p class="text-base md:text-lg leading-relaxed max-w-2xl">
+                Regulated decommissioning and neutralization of expired or surplus explosive inventory.
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-[minmax(0,260px)_1fr] gap-6 md:gap-12 items-start">
+              <span
+                class="text-sm md:text-base font-mono uppercase tracking-wider border border-[#051e2e]/30 px-4 py-2 justify-self-start"
+                >Mining Authority</span
+              >
+              <p class="text-base md:text-lg leading-relaxed max-w-2xl">
+                Blasting and industrial charge production clearance for mining and construction applications.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      <!-- Trapezoid gore -->
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none rotate-180">
-        <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
-          <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
-        </svg>
-      </div>
-      <!-- Trapezoid dole -->
-      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none">
-        <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
-          <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
-        </svg>
+
+      <!-- "Next" label following cursor (hero-style) -->
+      <div
+        v-show="partnerCursorVisible"
+        class="fixed pointer-events-none z-30 text-[#051e2e] text-xs font-mono uppercase tracking-widest transition-opacity duration-200"
+        :style="{ left: partnerCursorX + 20 + 'px', top: partnerCursorY + 20 + 'px' }"
+      >
+        {{ partnerPage === 3 ? 'Restart' : 'Next →' }}
       </div>
     </section>
-
-    <!-- Section 9 + 10 wrapper with circuit lines -->
-    <div class="relative">
-      <svg class="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 1200 1000" preserveAspectRatio="none" fill="none" stroke-width="1.5">
-        <defs>
-          <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="rgba(0,0,0,0.08)" />
-            <stop offset="70%" stop-color="rgba(0,0,0,0.08)" />
-            <stop offset="100%" stop-color="rgba(0,0,0,0)" />
-          </linearGradient>
-          <linearGradient id="fadeRight" x1="1" y1="0" x2="0" y2="0">
-            <stop offset="0%" stop-color="rgba(0,0,0,0.08)" />
-            <stop offset="70%" stop-color="rgba(0,0,0,0.08)" />
-            <stop offset="100%" stop-color="rgba(0,0,0,0)" />
-          </linearGradient>
-          <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="25" />
-          </filter>
-        </defs>
-
-        <!-- Gore levo -->
-        <path d="M0,80 L120,80 Q140,80 140,100 L140,280 Q140,300 160,300 L300,300" stroke="url(#fadeLeft)" stroke-linecap="round" />
-        <!-- Glow + linija gore levo -->
-        <path d="M0,80 L120,80 Q140,80 140,100 L140,280 Q140,300 160,300 L300,300" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#softGlow)" stroke-dasharray="12 588" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="2s" repeatCount="indefinite" />
-        </path>
-        <path d="M0,80 L120,80 Q140,80 140,100 L140,280 Q140,300 160,300 L300,300" stroke="#051e2e" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 592" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="2s" repeatCount="indefinite" />
-        </path>
-
-        <!-- Glow + linija gore desno -->
-        <path d="M1200,60 L1060,60 Q1040,60 1040,80 L1040,240 Q1040,260 1020,260 L900,260" stroke="url(#fadeRight)" stroke-linecap="round" />
-        <path d="M1200,60 L1060,60 Q1040,60 1040,80 L1040,240 Q1040,260 1020,260 L900,260" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#softGlow)" stroke-dasharray="12 588" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="2.5s" repeatCount="indefinite" />
-        </path>
-        <path d="M1200,60 L1060,60 Q1040,60 1040,80 L1040,240 Q1040,260 1020,260 L900,260" stroke="#051e2e" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 592" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="2.5s" repeatCount="indefinite" />
-        </path>
-
-        <!-- Glow + linija dole levo -->
-        <path d="M0,700 L100,700 Q120,700 120,680 L120,520 Q120,500 140,500 L280,500" stroke="url(#fadeLeft)" stroke-linecap="round" />
-        <path d="M0,700 L100,700 Q120,700 120,680 L120,520 Q120,500 140,500 L280,500" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#softGlow)" stroke-dasharray="12 588" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="2.2s" repeatCount="indefinite" />
-        </path>
-        <path d="M0,700 L100,700 Q120,700 120,680 L120,520 Q120,500 140,500 L280,500" stroke="#051e2e" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 592" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="2.2s" repeatCount="indefinite" />
-        </path>
-
-        <!-- Glow + linija dole desno -->
-        <path d="M1200,750 L1080,750 Q1060,750 1060,730 L1060,550 Q1060,530 1040,530 L920,530" stroke="url(#fadeRight)" stroke-linecap="round" />
-        <path d="M1200,750 L1080,750 Q1060,750 1060,730 L1060,550 Q1060,530 1040,530 L920,530" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#softGlow)" stroke-dasharray="12 588" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="2.8s" repeatCount="indefinite" />
-        </path>
-        <path d="M1200,750 L1080,750 Q1060,750 1060,730 L1060,550 Q1060,530 1040,530 L920,530" stroke="#051e2e" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 592" stroke-dashoffset="0">
-          <animate attributeName="stroke-dashoffset" from="0" to="-600" dur="2.8s" repeatCount="indefinite" />
-        </path>
-      </svg>
-
-
-      <!-- Section 9 -->
-      <section ref="section9El" class="relative flex items-center justify-center h-[50vh] w-full overflow-hidden">
-          <div class="text-center relative z-10">
-            <span class="text-sm text-black/30 font-mono uppercase tracking-wider">Get In Touch</span>
-            <h1 class="text-3xl md:text-5xl font-bold px-6 max-w-5xl mt-3">Ready to scale European ammunition production? Let's talk.</h1>
-          </div>
-      </section>
-
-      <!-- Section 10 - Contact -->
-      <section id="contact" class="relative flex items-center justify-center w-full py-24 md:py-32 px-6">
-        <div class="w-full max-w-2xl">
-          <div class="flex flex-col items-center mb-12">
-            <div class="flex gap-2 mb-4">
-              <span class="w-3 h-3 rounded-full bg-[#02d4ff]"></span>
-              <span class="w-3 h-3 rounded-full bg-black/15"></span>
-            </div>
-            <h2 class="text-3xl md:text-5xl font-bold text-center">Tell us a bit about you:</h2>
-          </div>
-          <form class="space-y-10">
-            <div>
-              <label class="block text-base font-semibold text-[#051e2e] mb-2">Full Name *</label>
-              <input type="text" placeholder="John Doe" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
-            </div>
-            <div>
-              <label class="block text-base font-semibold text-[#051e2e] mb-2">Role or position *</label>
-              <input type="text" placeholder="Project manager" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
-            </div>
-            <div>
-              <label class="block text-base font-semibold text-[#051e2e] mb-2">Phone number</label>
-              <input type="tel" placeholder="(323) 555-0147" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
-            </div>
-            <div>
-              <label class="block text-base font-semibold text-[#051e2e] mb-2">Email *</label>
-              <input type="email" placeholder="name@email.com" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
-            </div>
-            <div>
-              <label class="block text-base font-semibold text-[#051e2e] mb-2">Company name *</label>
-              <input type="text" placeholder="Acme" class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none focus:border-[#02d4ff] transition-colors" />
-            </div>
-            <div>
-              <label class="block text-base font-semibold text-[#051e2e] mb-2">How Can We Help? *</label>
-              <div class="relative">
-                <select class="w-full bg-transparent border-b border-black/10 pb-3 text-lg text-black/40 outline-none appearance-none focus:border-[#02d4ff] transition-colors">
-                  <option value="">Select options</option>
-                  <option value="general">General inquiry</option>
-                  <option value="support">Support</option>
-                  <option value="partnership">Partnership</option>
-                </select>
-                <span class="absolute right-0 bottom-3 text-black/30">↓</span>
-              </div>
-            </div>
-            <button type="submit" class="relative overflow-hidden w-full bg-black/5 text-black/30 py-5 text-sm font-semibold uppercase tracking-widest font-mono group rounded-lg mt-4">
-              <span class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-              <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300">Save & Continue</span>
-            </button>
-          </form>
-        </div>
-      </section>
-    </div>
 
     <!-- Footer -->
     <footer class="relative flex flex-col min-h-screen w-full bg-[#051e2e] text-white overflow-hidden">
-      <!-- Trapezoid vrh -->
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none rotate-180">
-        <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
-          <path d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z" fill="white" />
-        </svg>
-      </div>
-
       <!-- Circuit linije -->
-      <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 800" preserveAspectRatio="none" fill="none" stroke-width="1.5">
+      <svg
+        class="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 1200 800"
+        preserveAspectRatio="none"
+        fill="none"
+        stroke-width="1.5"
+      >
         <defs>
           <filter id="footerGlow" x="-100%" y="-100%" width="300%" height="300%">
             <feGaussianBlur stdDeviation="25" />
           </filter>
         </defs>
         <!-- Linija 1 - gore levo: dole, skreni levo, skreni dole, krivina do levog ruba -->
-        <path d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296" stroke="rgba(255,255,255,0.15)" stroke-linecap="round" />
-        <path d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#footerGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
+        <path
+          d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296"
+          stroke="rgba(255,255,255,0.15)"
+          stroke-linecap="round"
+        />
+        <path
+          d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296"
+          stroke="#02d4ff"
+          stroke-width="25"
+          stroke-linecap="round"
+          opacity="0.6"
+          filter="url(#footerGlow)"
+          stroke-dasharray="12 1188"
+          stroke-dashoffset="0"
+        >
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3s" repeatCount="indefinite" />
         </path>
-        <path d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
+        <path
+          d="M480,0 L480,70 Q480,120 430,120 L170,120 Q120,120 120,170 L120,365 Q120,440 72,382 L0,296"
+          stroke="white"
+          stroke-width="1"
+          stroke-linecap="round"
+          stroke-dasharray="8 1192"
+          stroke-dashoffset="0"
+        >
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3s" repeatCount="indefinite" />
         </path>
 
         <!-- Linija 2 - gore desno: dole, skreni desno, skreni dole, skreni do desnog ruba -->
-        <path d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360" stroke="rgba(255,255,255,0.15)" stroke-linecap="round" />
-        <path d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#footerGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
+        <path
+          d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360"
+          stroke="rgba(255,255,255,0.15)"
+          stroke-linecap="round"
+        />
+        <path
+          d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360"
+          stroke="#02d4ff"
+          stroke-width="25"
+          stroke-linecap="round"
+          opacity="0.6"
+          filter="url(#footerGlow)"
+          stroke-dasharray="12 1188"
+          stroke-dashoffset="0"
+        >
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3.5s" repeatCount="indefinite" />
         </path>
-        <path d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
+        <path
+          d="M720,0 L720,134 Q720,184 770,184 L1030,184 Q1080,184 1080,234 L1080,310 Q1080,360 1130,360 L1200,360"
+          stroke="white"
+          stroke-width="1"
+          stroke-linecap="round"
+          stroke-dasharray="8 1192"
+          stroke-dashoffset="0"
+        >
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3.5s" repeatCount="indefinite" />
         </path>
 
         <!-- Linija 3 - dole desno: dijagonala, skreni levo, skreni dole -->
-        <path d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800" stroke="rgba(255,255,255,0.15)" stroke-linecap="round" />
-        <path d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#footerGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
+        <path
+          d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800"
+          stroke="rgba(255,255,255,0.15)"
+          stroke-linecap="round"
+        />
+        <path
+          d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800"
+          stroke="#02d4ff"
+          stroke-width="25"
+          stroke-linecap="round"
+          opacity="0.6"
+          filter="url(#footerGlow)"
+          stroke-dasharray="12 1188"
+          stroke-dashoffset="0"
+        >
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.8s" repeatCount="indefinite" />
         </path>
-        <path d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
+        <path
+          d="M1200,640 L1094,534 Q1080,520 1060,520 L830,520 Q780,520 780,570 L780,800"
+          stroke="white"
+          stroke-width="1"
+          stroke-linecap="round"
+          stroke-dasharray="8 1192"
+          stroke-dashoffset="0"
+        >
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.8s" repeatCount="indefinite" />
         </path>
 
         <!-- Linija 4 - dole levo: horizontala, krivina, dijagonala dole -->
         <path d="M0,520 L240,520 Q360,520 282,611 L120,800" stroke="rgba(255,255,255,0.15)" stroke-linecap="round" />
-        <path d="M0,520 L240,520 Q360,520 282,611 L120,800" stroke="#02d4ff" stroke-width="25" stroke-linecap="round" opacity="0.6" filter="url(#footerGlow)" stroke-dasharray="12 1188" stroke-dashoffset="0">
+        <path
+          d="M0,520 L240,520 Q360,520 282,611 L120,800"
+          stroke="#02d4ff"
+          stroke-width="25"
+          stroke-linecap="round"
+          opacity="0.6"
+          filter="url(#footerGlow)"
+          stroke-dasharray="12 1188"
+          stroke-dashoffset="0"
+        >
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.5s" repeatCount="indefinite" />
         </path>
-        <path d="M0,520 L240,520 Q360,520 282,611 L120,800" stroke="white" stroke-width="1" stroke-linecap="round" stroke-dasharray="8 1192" stroke-dashoffset="0">
+        <path
+          d="M0,520 L240,520 Q360,520 282,611 L120,800"
+          stroke="white"
+          stroke-width="1"
+          stroke-linecap="round"
+          stroke-dasharray="8 1192"
+          stroke-dashoffset="0"
+        >
           <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="2.5s" repeatCount="indefinite" />
         </path>
       </svg>
@@ -416,10 +1107,13 @@
       <!-- Gornji deo - heading + CTA -->
       <div class="flex flex-col items-center text-center px-6 pt-32 md:pt-40">
         <h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2>
-        <NuxtLink to="/contact" class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group">
-          <span class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-          <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300">Request A Briefing</span>
-        </NuxtLink>
+        <a
+          href="/contact"
+          @mouseenter="scrambleText"
+          @mouseleave="scrambleText"
+          class="btn-notch-clip inline-block bg-[#02d4ff] text-[#051e2e] text-xs font-mono uppercase tracking-widest px-8 py-4 cursor-pointer"
+          >Request A Briefing</a
+        >
       </div>
 
       <!-- Donji deo - logo + linkovi -->
@@ -461,7 +1155,9 @@
       </div>
 
       <!-- Copyright -->
-      <div class="px-6 md:px-16 py-6 flex flex-col md:flex-row items-center justify-between text-white/40 text-sm gap-4 md:gap-0">
+      <div
+        class="px-6 md:px-16 py-6 flex flex-col md:flex-row items-center justify-between text-white/40 text-sm gap-4 md:gap-0"
+      >
         <p>&copy; 2026 Shield. All rights reserved.</p>
         <div class="flex gap-6">
           <span>Privacy Policy</span>
@@ -497,6 +1193,60 @@ const cursorLabel = ref<HTMLElement | null>(null)
 const heroScrolled = ref(false)
 
 const section3 = ref<HTMLElement | null>(null)
+const capPanel1Ref = ref<HTMLElement | null>(null)
+const capPanel2Ref = ref<HTMLElement | null>(null)
+const capPanel3Ref = ref<HTMLElement | null>(null)
+const capPanel4Ref = ref<HTMLElement | null>(null)
+const capPanel1ParallaxY = ref(-150)
+const capPanel2ParallaxY = ref(-150)
+const capPanel3ParallaxY = ref(-150)
+const capPanel4ParallaxY = ref(-150)
+
+// Scramble text hover effect
+const scrambleChars = '!<>-_\\/[]{}—=+*^?#________'
+function scrambleElement(el: HTMLElement) {
+  const target = el.dataset.scrambleTarget || el.textContent || ''
+  el.dataset.scrambleTarget = target
+  const queue: Array<{ to: string; start: number; end: number; char?: string }> = []
+  for (let i = 0; i < target.length; i++) {
+    const start = Math.floor(Math.random() * 15)
+    const end = start + Math.floor(Math.random() * 15) + 8
+    queue.push({ to: target[i], start, end })
+  }
+  let frame = 0
+  function update() {
+    let output = ''
+    let complete = 0
+    for (let i = 0; i < queue.length; i++) {
+      const { to, start, end } = queue[i]
+      if (frame >= end) {
+        complete++
+        output += to
+      } else if (frame >= start) {
+        if (!queue[i].char || Math.random() < 0.28)
+          queue[i].char = scrambleChars[Math.floor(Math.random() * scrambleChars.length)]
+        output += queue[i].char
+      } else output += to
+    }
+    el.textContent = output
+    if (complete === queue.length) return
+    frame++
+    requestAnimationFrame(update)
+  }
+  update()
+}
+function scrambleText(e: Event) {
+  scrambleElement(e.currentTarget as HTMLElement)
+}
+
+function computeCapParallax(el: HTMLElement | null, vh: number): number {
+  if (!el) return -150
+  const rect = el.getBoundingClientRect()
+  const center = rect.top + rect.height / 2
+  const offset = (center - vh / 2) / vh
+  const clamped = Math.max(-1, Math.min(1, offset))
+  return -150 - clamped * 150
+}
 const section4 = ref<HTMLElement | null>(null)
 const section5 = ref<HTMLElement | null>(null)
 const section8 = ref<HTMLElement | null>(null)
@@ -507,6 +1257,268 @@ const parallax9 = ref(0)
 const section9El = ref<HTMLElement | null>(null)
 const section4Progress = ref(0)
 const pulseTime = ref(0)
+const heroProgress = ref(0)
+const heroExitProgress = ref(0)
+const heroCanvasStyle = computed(() => {
+  const p = heroExitProgress.value
+  // Scale stays constant (so canvas always covers viewport + extra), only translateY animates for parallax
+  return { transform: `translateY(-${p * 15}vh) scale(1.2)` }
+})
+const heroHeadingRef = ref<HTMLElement | null>(null)
+const capIntroHeadingRef = ref<HTMLElement | null>(null)
+const statusLabel = ref<HTMLElement | null>(null)
+const statusLabelText = ref<HTMLElement | null>(null)
+const statusLine1 = ref<HTMLElement | null>(null)
+const statusLine2 = ref<HTMLElement | null>(null)
+const profileLabel = ref<HTMLElement | null>(null)
+const profileLabelText = ref<HTMLElement | null>(null)
+const profileBody = ref<HTMLElement | null>(null)
+const briefingLabel = ref<HTMLElement | null>(null)
+const briefingLabelText = ref<HTMLElement | null>(null)
+const briefingLine1 = ref<HTMLElement | null>(null)
+const briefingLine2 = ref<HTMLElement | null>(null)
+const statusAnimated = ref(false)
+const profileAnimated = ref(false)
+const briefingAnimated = ref(false)
+
+// Section 3 panel label/description refs + flags
+const capPanel1LabelWord = ref<HTMLElement | null>(null)
+const capPanel2LabelWord = ref<HTMLElement | null>(null)
+const capPanel3LabelWord = ref<HTMLElement | null>(null)
+const capPanel4LabelWord = ref<HTMLElement | null>(null)
+const capPanel1DescRef = ref<HTMLElement | null>(null)
+const capPanel2DescRef = ref<HTMLElement | null>(null)
+const capPanel3DescRef = ref<HTMLElement | null>(null)
+const capPanel4DescRef = ref<HTMLElement | null>(null)
+const capPanel1Animated = ref(false)
+const capPanel2Animated = ref(false)
+const capPanel3Animated = ref(false)
+const capPanel4Animated = ref(false)
+
+function charRevealBlock(els: (HTMLElement | null)[]) {
+  nextTick(() => {
+    els.filter(Boolean).forEach((el) => {
+      gsap.set(el, { opacity: 1 })
+      SplitText.create(el as HTMLElement, {
+        type: 'chars',
+        charsClass: 'char',
+        mask: 'chars',
+        reduceWhiteSpace: false,
+        onSplit: (self: any) => {
+          gsap.from(self.chars, {
+            duration: 0.6,
+            yPercent: 100,
+            stagger: 0.02,
+            ease: 'power3.out',
+          })
+        },
+      })
+    })
+  })
+}
+
+function animateHeroHeadingLoop() {
+  nextTick(() => {
+    if (!heroHeadingRef.value) return
+    const lines = heroHeadingRef.value.querySelectorAll('.hero-line')
+    if (!lines.length) return
+    gsap.set(lines, { yPercent: 100 })
+    gsap.to(lines, {
+      yPercent: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.15,
+    })
+  })
+}
+
+function animateCapIntroHeading() {
+  nextTick(() => {
+    if (!capIntroHeadingRef.value) return
+    SplitText.create(capIntroHeadingRef.value, {
+      type: 'lines',
+      linesClass: 'cap-line',
+      mask: 'lines',
+      autoSplit: true,
+      onSplit: (self: any) => {
+        gsap.set(self.lines, { yPercent: 100 })
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                gsap.to(self.lines, {
+                  yPercent: 0,
+                  duration: 0.9,
+                  ease: 'power3.out',
+                  stagger: 0.15,
+                })
+                observer.disconnect()
+              }
+            })
+          },
+          { threshold: 0.3 },
+        )
+        observer.observe(capIntroHeadingRef.value!)
+      },
+    })
+  })
+}
+
+function btdStyleCharReveal(el: HTMLElement | null) {
+  if (!el) return
+  nextTick(() => {
+    gsap.set(el, { opacity: 1 })
+    SplitText.create(el, {
+      type: 'chars',
+      charsClass: 'char',
+      reduceWhiteSpace: false,
+      onSplit: (self: any) => {
+        gsap.from(self.chars, {
+          duration: 0.5,
+          opacity: 0,
+          y: 8,
+          stagger: 0.015,
+          ease: 'power2.out',
+        })
+      },
+    })
+  })
+}
+
+function setupCapPanelReveals() {
+  nextTick(() => {
+    const panels = [
+      {
+        panel: capPanel2Ref.value,
+        label: capPanel2LabelWord.value,
+        desc: capPanel2DescRef.value,
+        flag: capPanel2Animated,
+      },
+      {
+        panel: capPanel1Ref.value,
+        label: capPanel1LabelWord.value,
+        desc: capPanel1DescRef.value,
+        flag: capPanel1Animated,
+      },
+      {
+        panel: capPanel4Ref.value,
+        label: capPanel4LabelWord.value,
+        desc: capPanel4DescRef.value,
+        flag: capPanel4Animated,
+      },
+      {
+        panel: capPanel3Ref.value,
+        label: capPanel3LabelWord.value,
+        desc: capPanel3DescRef.value,
+        flag: capPanel3Animated,
+      },
+    ]
+    panels.forEach(({ panel, label, desc, flag }) => {
+      if (!panel) return
+      if (desc) gsap.set(desc, { opacity: 0 })
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !flag.value) {
+              flag.value = true
+              if (label) scrambleElement(label)
+              btdStyleCharReveal(desc)
+              observer.disconnect()
+            }
+          })
+        },
+        { threshold: 0.3 },
+      )
+      observer.observe(panel)
+    })
+  })
+}
+
+// Partners & Licenses slider
+const plSection = ref<HTMLElement | null>(null)
+const partnerPage = ref(0)
+const partnerCursorX = ref(0)
+const partnerCursorY = ref(0)
+const partnerCursorVisible = ref(false)
+const partnerAutoProgress = ref(0)
+const PARTNER_SLIDE_MS = 5000
+
+let partnerTimerStart = 0
+function resetPartnerTimer() {
+  partnerTimerStart = performance.now()
+  partnerAutoProgress.value = 0
+}
+
+function nextPartnerPage() {
+  partnerPage.value = (partnerPage.value + 1) % 4
+  resetPartnerTimer()
+}
+function onPartnerMouseMove(e: MouseEvent) {
+  partnerCursorX.value = e.clientX
+  partnerCursorY.value = e.clientY
+}
+
+onMounted(() => {
+  partnerTimerStart = performance.now()
+  let alive = true
+  function tick() {
+    if (!alive) return
+    const elapsed = performance.now() - partnerTimerStart
+    const p = Math.min(1, elapsed / PARTNER_SLIDE_MS)
+    partnerAutoProgress.value = p
+    if (p >= 1) {
+      partnerPage.value = (partnerPage.value + 1) % 4
+      resetPartnerTimer()
+    }
+    requestAnimationFrame(tick)
+  }
+  requestAnimationFrame(tick)
+  onUnmounted(() => {
+    alive = false
+  })
+})
+
+// Hero text choreography — tied to heroProgress (0→1)
+// textAnim: slide up from far below (invisible) through viewport, keep sliding up on exit
+function textAnim(p: number, enterAt: number, fullInAt: number) {
+  let ty: number
+  if (p < enterAt) ty = 300
+  else if (p < fullInAt) {
+    const t = (p - enterAt) / (fullInAt - enterAt)
+    ty = 300 - t * 300
+  } else {
+    const t = (p - fullInAt) / (1 - fullInAt)
+    ty = -t * 1200
+  }
+  return { transform: `translateY(${ty}px)` }
+}
+
+// Dot element fade-in tied to heroProgress
+function dotFade(p: number, startAt: number, fadeWindow = 0.04) {
+  if (p < startAt) return 0
+  if (p < startAt + fadeWindow) return (p - startAt) / fadeWindow
+  return 1
+}
+const elem1Opacity = computed(() => dotFade(heroProgress.value, 0.4))
+const elem2Opacity = computed(() => dotFade(heroProgress.value, 0.36))
+const elem3Opacity = computed(() => dotFade(heroProgress.value, 0.44))
+
+const leftTextStyle = computed(() => textAnim(heroProgress.value, -0.1, 0))
+const rightTextStyle = computed(() => textAnim(heroProgress.value, 0.25, 0.38))
+const leftText2Style = computed(() => textAnim(heroProgress.value, 0.55, 0.68))
+const rightText2Style = computed(() => {
+  const p = heroProgress.value
+  const ep = heroExitProgress.value
+  let ty: number
+  if (p < 0.82) ty = 300
+  else if (p < 0.95) {
+    const t = (p - 0.82) / 0.13
+    ty = 300 - t * 300
+  } else {
+    ty = -ep * 1200
+  }
+  return { transform: `translateY(${ty}px)` }
+})
 
 // Repeating dark pulses from center - like ripples in water
 function gridDotOpacity(col: number, row: number, maxCol: number, maxRow: number) {
@@ -532,7 +1544,102 @@ function gridDotOpacity(col: number, row: number, maxCol: number, maxRow: number
   return Math.max(0, minOpacity)
 }
 const section4Merge = ref(0)
-const section4ColorShift = ref(0)
+const section4ColorShift = ref(1)
+const activeSlide4 = ref(0)
+
+// Section 4 mouse-tracking for panel parallax
+const s4MouseX = ref(0)
+const s4MouseY = ref(0)
+
+// Section 4 slide panel draw-in animations (bidirectional on enter/exit)
+const s4Slide1StrokeP = ref(0)
+const s4Slide1ImageP = ref(0)
+const s4Slide2StrokeP = ref(0)
+const s4Slide2ImageP = ref(0)
+const s4Slide3StrokeP = ref(0)
+const s4Slide3ImageP = ref(0)
+const S4_PANEL_PATH_LEN = 1700
+
+// Scroll indicator dots — 3 segments mapped to slide ranges
+const SECTION4_DOT_SEGMENTS: Array<[number, number]> = [
+  [0.45, 0.6],
+  [0.6, 0.78],
+  [0.78, 1.0],
+]
+function section4DotActive(i: number) {
+  const p = section4Progress.value
+  const [s, e] = SECTION4_DOT_SEGMENTS[i]
+  return p >= s && p <= e
+}
+function section4DotFill(i: number) {
+  const p = section4Progress.value
+  const [s, e] = SECTION4_DOT_SEGMENTS[i]
+  if (p < s || p > e) return 0
+  return (p - s) / (e - s)
+}
+const slide4Title1 = ref<HTMLElement | null>(null)
+const slide4Desc1 = ref<HTMLElement | null>(null)
+const slide4Title2 = ref<HTMLElement | null>(null)
+const slide4Desc2 = ref<HTMLElement | null>(null)
+const slide4Title3 = ref<HTMLElement | null>(null)
+const slide4Desc3 = ref<HTMLElement | null>(null)
+
+function s4PanelDrawIn(strokeRef: any, imageRef: any) {
+  gsap.killTweensOf([strokeRef, imageRef])
+  gsap.to(strokeRef, { value: 1, duration: 1.4, ease: 'power2.inOut' })
+  gsap.to(imageRef, { value: 1, duration: 0.9, delay: 0.5, ease: 'power2.out' })
+}
+function s4PanelDrawOut(strokeRef: any, imageRef: any) {
+  gsap.killTweensOf([strokeRef, imageRef])
+  gsap.to(imageRef, { value: 0, duration: 0.5, ease: 'power2.in' })
+  gsap.to(strokeRef, { value: 0, duration: 0.9, delay: 0.25, ease: 'power2.inOut' })
+}
+watch(activeSlide4, (newVal, oldVal) => {
+  if (newVal === 1) s4PanelDrawIn(s4Slide1StrokeP, s4Slide1ImageP)
+  else if (oldVal === 1) s4PanelDrawOut(s4Slide1StrokeP, s4Slide1ImageP)
+  if (newVal === 2) s4PanelDrawIn(s4Slide2StrokeP, s4Slide2ImageP)
+  else if (oldVal === 2) s4PanelDrawOut(s4Slide2StrokeP, s4Slide2ImageP)
+  if (newVal === 3) s4PanelDrawIn(s4Slide3StrokeP, s4Slide3ImageP)
+  else if (oldVal === 3) s4PanelDrawOut(s4Slide3StrokeP, s4Slide3ImageP)
+})
+
+let lastAnimatedSlide4 = 0
+function animateSlide4(slideNum: number) {
+  if (slideNum === lastAnimatedSlide4) return
+  lastAnimatedSlide4 = slideNum
+  nextTick(() => {
+    let titleEl: HTMLElement | null = null
+    let descEl: HTMLElement | null = null
+    if (slideNum === 1) {
+      titleEl = slide4Title1.value
+      descEl = slide4Desc1.value
+    } else if (slideNum === 2) {
+      titleEl = slide4Title2.value
+      descEl = slide4Desc2.value
+    } else if (slideNum === 3) {
+      titleEl = slide4Title3.value
+      descEl = slide4Desc3.value
+    }
+    const els = [titleEl, descEl].filter(Boolean) as HTMLElement[]
+    els.forEach((el) => {
+      gsap.set(el, { opacity: 1 })
+      SplitText.create(el, {
+        type: 'chars',
+        charsClass: 'char',
+        reduceWhiteSpace: false,
+        onSplit: (self: any) => {
+          gsap.from(self.chars, {
+            duration: 0.5,
+            opacity: 0,
+            y: 8,
+            stagger: 0.015,
+            ease: 'power2.out',
+          })
+        },
+      })
+    })
+  })
+}
 const activePanel = ref(1)
 const activePanelPrev = ref(1)
 const section3Progress = ref(0)
@@ -549,7 +1656,6 @@ const trapezoidPosition = ref(15)
 
 const videoCdn = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com/videos'
 const panelVideos: Record<number, string> = {
-  1: `${videoCdn}/panel1.mp4`,
   2: `${videoCdn}/panel2.mp4`,
   3: `${videoCdn}/panel3.mp4`,
   4: `${videoCdn}/panel4.mp4`,
@@ -559,7 +1665,7 @@ const panelTexts = [
   '9,050 m² Licensed Facility\nWith 19 Operational Units\nAnd 5,330 m² Dedicated\nStorage Infrastructure',
   '240,000 kg TNT-Equivalent\nStorage Capacity Across\nExplosive & Pyrotechnic\nClasses With Indefinite Permits',
   '1,020 m² Available For\nNew Production Lines\nPlus 500 m² Under Construction\nReady For Repurposing',
-  'Positioned In Europe\'s\nFastest-Growing\nDefense Market With\n60-Day Manufacturing\nLicensing Pathway',
+  "Positioned In Europe's\nFastest-Growing\nDefense Market With\n60-Day Manufacturing\nLicensing Pathway",
 ]
 
 const gridLogos: Record<number, string> = {
@@ -632,13 +1738,13 @@ const slide5Titles = [
 const slide5Subtitles = [
   'Our facility is positioned to manufacture 155mm artillery and 30mm medium-caliber ammunition — the two highest-demand segments in European defense, driven by restocking, NATO rearmament, and shifting mission profiles toward C-UAS and heavy land warfare.',
   'European ammunition demand is undergoing a generational surge. 155mm artillery is growing at 17% CAGR to 2026 with sustained 4% growth thereafter, while 30mm medium-caliber is expanding at 11% CAGR — supported by expanding IFV fleets and air-burst round requirements across NATO.',
-  'With 1,020 m² of available construction area, a 500 m² unit ready for repurposing, and access to the EU ASAP Programme\'s €500M public and €1B private investment pipeline — Shield is positioned to scale production rapidly within Europe\'s accelerating defense industrial base.',
+  "With 1,020 m² of available construction area, a 500 m² unit ready for repurposing, and access to the EU ASAP Programme's €500M public and €1B private investment pipeline — Shield is positioned to scale production rapidly within Europe's accelerating defense industrial base.",
 ]
 
 function animateSlideText() {
   nextTick(() => {
     const els = [slide5Label.value, slide5Title.value, slide5Desc.value].filter(Boolean) as HTMLElement[]
-    els.forEach(el => {
+    els.forEach((el) => {
       gsap.set(el, { opacity: 1 })
       SplitText.create(el, {
         type: 'words,lines',
@@ -654,7 +1760,7 @@ function animateSlideText() {
             stagger: 0.1,
             ease: 'expo.out',
           })
-        }
+        },
       })
     })
   })
@@ -665,10 +1771,43 @@ let indexCleanup: (() => void) | null = null
 onMounted(() => {
   // Initial split text animation
   animateSlideText()
+  // Hero heading reveal: pre-set lines hidden, trigger when loader is gone
+  nextTick(() => {
+    if (heroHeadingRef.value) {
+      const lines = heroHeadingRef.value.querySelectorAll('.hero-line')
+      gsap.set(lines, { yPercent: 100 })
+    }
+  })
+  window.addEventListener('loader-gone', animateHeroHeadingLoop, { once: true })
+  animateCapIntroHeading()
+  setupCapPanelReveals()
+
+  // Section 4 panel mouse parallax — smooth lerp
+  let s4MouseXTarget = 0
+  let s4MouseYTarget = 0
+  const onS4Mouse = (e: MouseEvent) => {
+    s4MouseXTarget = (e.clientX / window.innerWidth) * 2 - 1
+    s4MouseYTarget = (e.clientY / window.innerHeight) * 2 - 1
+  }
+  window.addEventListener('mousemove', onS4Mouse, { passive: true })
+  let s4MouseAlive = true
+  function s4MouseLerp() {
+    if (!s4MouseAlive) return
+    s4MouseX.value += (s4MouseXTarget - s4MouseX.value) * 0.08
+    s4MouseY.value += (s4MouseYTarget - s4MouseY.value) * 0.08
+    requestAnimationFrame(s4MouseLerp)
+  }
+  s4MouseLerp()
+  onUnmounted(() => {
+    s4MouseAlive = false
+    window.removeEventListener('mousemove', onS4Mouse)
+  })
 
   // Cursor label follows mouse in hero section with easing
-  let cursorX = 0, cursorY = 0
-  let labelX = 0, labelY = 0
+  let cursorX = 0,
+    cursorY = 0
+  let labelX = 0,
+    labelY = 0
   let cursorVisible = false
 
   if (heroSection.value) {
@@ -711,14 +1850,17 @@ onMounted(() => {
     requestAnimationFrame(animatePulse)
   }
   if (section4.value) {
-    const pulseObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !pulseRunning) {
-        pulseRunning = true
-        requestAnimationFrame(animatePulse)
-      } else if (!entry.isIntersecting) {
-        pulseRunning = false
-      }
-    }, { rootMargin: '100px' })
+    const pulseObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !pulseRunning) {
+          pulseRunning = true
+          requestAnimationFrame(animatePulse)
+        } else if (!entry.isIntersecting) {
+          pulseRunning = false
+        }
+      },
+      { rootMargin: '100px' },
+    )
     pulseObserver.observe(section4.value)
   }
 
@@ -735,14 +1877,17 @@ onMounted(() => {
     requestAnimationFrame(smoothSlide)
   }
   if (section5.value) {
-    const slideObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !slideRunning) {
-        slideRunning = true
-        requestAnimationFrame(smoothSlide)
-      } else if (!entry.isIntersecting) {
-        slideRunning = false
-      }
-    }, { rootMargin: '200px' })
+    const slideObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !slideRunning) {
+          slideRunning = true
+          requestAnimationFrame(smoothSlide)
+        } else if (!entry.isIntersecting) {
+          slideRunning = false
+        }
+      },
+      { rootMargin: '200px' },
+    )
     slideObserver.observe(section5.value)
   }
 
@@ -751,7 +1896,7 @@ onMounted(() => {
   const cdnFrames = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com'
 
   // Hero frames setup
-  const totalHeroFrames = 264
+  const totalHeroFrames = 144
   const heroImages: (HTMLImageElement | null)[] = new Array(totalHeroFrames).fill(null)
   let heroLoaded = false
 
@@ -763,7 +1908,7 @@ onMounted(() => {
     onFirstFrame: (img: HTMLImageElement) => void,
     onReady: () => void,
     onDone: () => void,
-    readyThreshold = 50
+    readyThreshold = 50,
   ) {
     let firstDone = false
     let loadedCount = 0
@@ -879,9 +2024,15 @@ onMounted(() => {
     if (!img?.complete) {
       for (let off = 1; off <= 50; off++) {
         const b = heroImages[frame - 1 - off]
-        if (b?.complete) { img = b; break }
+        if (b?.complete) {
+          img = b
+          break
+        }
         const a = heroImages[frame - 1 + off]
-        if (a?.complete) { img = a; break }
+        if (a?.complete) {
+          img = a
+          break
+        }
       }
     }
     if (!img?.complete) return
@@ -891,7 +2042,7 @@ onMounted(() => {
   // Start hero frame loading
   loadFrames(
     totalHeroFrames,
-    (i) => `${cdnBase}/hero-frames/frame_${String(i).padStart(4, '0')}.jpg`,
+    (i) => `${cdnBase}/hero-frames-v2/frame_${String(i).padStart(4, '0')}.jpg`,
     heroImages,
     (img) => {
       heroLoaded = true
@@ -901,14 +2052,14 @@ onMounted(() => {
       window.dispatchEvent(new Event('hero-frames-loaded'))
     },
     () => {},
-    50
+    50,
   )
 
   // Direct draw in scroll with smooth snap
   let heroLastDrawn = 0
   let scrollTicking = false
   let heroSmoothedProgress = 0
-  const heroSnaps = [15/264, 70/264, 160/264, 228/264, 260/264]
+  const heroSnaps: number[] = []
   const snapZone = 0.06
 
   function getSnappedProgress(raw: number): number {
@@ -933,8 +2084,12 @@ onMounted(() => {
     } else {
       heroSmoothedProgress = target
     }
+    heroProgress.value = heroSmoothedProgress
     const frame = Math.max(1, Math.min(totalHeroFrames, Math.round(heroSmoothedProgress * (totalHeroFrames - 1)) + 1))
-    if (frame !== heroLastDrawn) { heroLastDrawn = frame; drawHero(frame) }
+    if (frame !== heroLastDrawn) {
+      heroLastDrawn = frame
+      drawHero(frame)
+    }
     requestAnimationFrame(heroSmoothLoop)
   }
   let heroRawProgress = 0
@@ -952,79 +2107,121 @@ onMounted(() => {
         const rectH = heroSection.value.getBoundingClientRect()
         const heightH = heroSection.value.offsetHeight
         const scrolledH = -rectH.top
-        heroRawProgress = Math.max(0, Math.min(1, scrolledH / (heightH - window.innerHeight)))
+        // Hero animation completes over 3 viewport heights (indicator 100% at scroll 300vh)
+        // Remaining hero scroll (300-400vh) is "overlap phase" where Section 3 slides over pinned hero
+        heroRawProgress = Math.max(0, Math.min(1, scrolledH / (window.innerHeight * 3)))
+        // Exit/overlap phase: 0 at scroll 300vh, 1 at scroll 400vh — drives bg parallax
+        heroExitProgress.value = Math.max(0, Math.min(1, (scrolledH - 3 * window.innerHeight) / window.innerHeight))
+        // Trigger char-reveal animations when hero text blocks become visible
+        if (!statusAnimated.value && heroRawProgress >= 0.25) {
+          statusAnimated.value = true
+          if (statusLabelText.value) scrambleElement(statusLabelText.value)
+          charRevealBlock([statusLine1.value, statusLine2.value])
+        }
+        if (!profileAnimated.value && heroRawProgress >= 0.55) {
+          profileAnimated.value = true
+          if (profileLabelText.value) scrambleElement(profileLabelText.value)
+          charRevealBlock([profileBody.value])
+        }
+        if (!briefingAnimated.value && heroRawProgress >= 0.82) {
+          briefingAnimated.value = true
+          if (briefingLabelText.value) scrambleElement(briefingLabelText.value)
+          charRevealBlock([briefingLine1.value, briefingLine2.value])
+        }
       }
 
-    const s2 = document.querySelector('section:nth-of-type(2)') as HTMLElement
-    if (s2) {
-      const rect = s2.getBoundingClientRect()
-      parallax2.value = rect.top * -0.15
-    }
-    const s6 = document.querySelector('section:nth-of-type(6)') as HTMLElement
-    if (s6) {
-      const rect = s6.getBoundingClientRect()
-      parallax6.value = rect.top * -0.15
-    }
-    if (section9El.value) {
-      const rect = section9El.value.getBoundingClientRect()
-      parallax9.value = rect.top * -0.15
-    }
-    // Section 3
-    if (section3.value) {
-      const rect3 = section3.value.getBoundingClientRect()
-      const height3 = section3.value.offsetHeight
-      const scrolled3 = -rect3.top
-      const progress3 = Math.max(0, Math.min(1, scrolled3 / (height3 - window.innerHeight)))
-      const textProgress = Math.min(3.5, progress3 * 3.5)
-      const newPanel = Math.min(4, Math.floor(textProgress) + 1)
-      if (newPanel !== activePanel.value) {
-        activePanelPrev.value = activePanel.value
-        activePanel.value = newPanel
+      // Capabilities zigzag panels parallax
+      const vh = window.innerHeight
+      capPanel1ParallaxY.value = computeCapParallax(capPanel1Ref.value, vh)
+      capPanel2ParallaxY.value = computeCapParallax(capPanel2Ref.value, vh)
+      capPanel3ParallaxY.value = computeCapParallax(capPanel3Ref.value, vh)
+      capPanel4ParallaxY.value = computeCapParallax(capPanel4Ref.value, vh)
+
+      const s2 = document.querySelector('section:nth-of-type(2)') as HTMLElement
+      if (s2) {
+        const rect = s2.getBoundingClientRect()
+        parallax2.value = rect.top * -0.15
       }
-      section3Progress.value = textProgress
-      trapezoidPosition.value = 15 + Math.min(1, textProgress / 3) * 70
-    }
-
-    // Section 4
-    if (section4.value) {
-      const rect4 = section4.value.getBoundingClientRect()
-      const height4 = section4.value.offsetHeight
-      const scrolled4 = -rect4.top
-      const progress4 = Math.max(0, Math.min(1, scrolled4 / (height4 - window.innerHeight)))
-      section4Progress.value = progress4
-      section4Merge.value = Math.max(0, Math.min(1, progress4 * 1.43))
-      section4ColorShift.value = progress4 > 0.7 ? 1 : 0
-    }
-
-    // Section 8 parallax
-    if (section8.value) {
-      const rect8 = section8.value.getBoundingClientRect()
-      parallax8.value = rect8.top * -0.15
-    }
-
-    // Section 5
-    if (section5.value) {
-      const rect5 = section5.value.getBoundingClientRect()
-      const height5 = section5.value.offsetHeight
-      const scrolled5 = -rect5.top
-      const progress5 = Math.max(0, Math.min(1, scrolled5 / (height5 - window.innerHeight)))
-      slide5Progress.value = progress5
-      const newSlide = progress5 < 0.2 ? 1 : progress5 < 0.6 ? 2 : 3
-      if (newSlide !== activeSlide5.value && !slide5Transitioning.value) {
-        slide5Direction.value = newSlide > activeSlide5.value ? 1 : -1
-        slide5Transitioning.value = true
-        // Phase 1: exit current
-        const exitEl = document.querySelector('.slide5-content')
-        if (exitEl) exitEl.classList.add('stagger-exit')
-        setTimeout(() => {
-          // Phase 2: swap content and enter
-          activeSlide5.value = newSlide
-          slide5Display.value = newSlide
-          slide5Transitioning.value = false
-          animateSlideText()
-        }, 300)
+      const s6 = document.querySelector('section:nth-of-type(6)') as HTMLElement
+      if (s6) {
+        const rect = s6.getBoundingClientRect()
+        parallax6.value = rect.top * -0.15
       }
-    }
+      if (section9El.value) {
+        const rect = section9El.value.getBoundingClientRect()
+        parallax9.value = rect.top * -0.15
+      }
+      // Section 3
+      if (section3.value) {
+        const rect3 = section3.value.getBoundingClientRect()
+        const height3 = section3.value.offsetHeight
+        const scrolled3 = -rect3.top
+        const progress3 = Math.max(0, Math.min(1, scrolled3 / (height3 - window.innerHeight)))
+        const textProgress = Math.min(3.5, progress3 * 3.5)
+        const newPanel = Math.min(4, Math.floor(textProgress) + 1)
+        if (newPanel !== activePanel.value) {
+          activePanelPrev.value = activePanel.value
+          activePanel.value = newPanel
+        }
+        section3Progress.value = textProgress
+        trapezoidPosition.value = 15 + Math.min(1, textProgress / 3) * 70
+      }
+
+      // Section 4
+      if (section4.value) {
+        const rect4 = section4.value.getBoundingClientRect()
+        const height4 = section4.value.offsetHeight
+        const scrolled4 = -rect4.top
+        const progress4 = Math.max(0, Math.min(1, scrolled4 / (height4 - window.innerHeight)))
+        section4Progress.value = progress4
+        section4Merge.value = Math.max(0, Math.min(1, progress4 * 3.33))
+        section4ColorShift.value = progress4 > 0.3 ? 0 : 1
+        // Active slide for section 4
+        // Hysteresis state machine — different thresholds for entering vs leaving a slide
+        // Prevents scroll jitter from re-triggering animation at boundaries
+        const curSlide4 = activeSlide4.value
+        let newSlide4 = curSlide4
+        if (curSlide4 === 0 && progress4 >= 0.45) newSlide4 = 1
+        else if (curSlide4 === 1 && progress4 >= 0.6) newSlide4 = 2
+        else if (curSlide4 === 2 && progress4 >= 0.78) newSlide4 = 3
+        else if (curSlide4 === 3 && progress4 < 0.73) newSlide4 = 2
+        else if (curSlide4 === 2 && progress4 < 0.55) newSlide4 = 1
+        else if (curSlide4 === 1 && progress4 < 0.4) newSlide4 = 0
+        if (newSlide4 !== curSlide4) {
+          activeSlide4.value = newSlide4
+          if (newSlide4 > 0) animateSlide4(newSlide4)
+        }
+      }
+
+      // Section 8 parallax
+      if (section8.value) {
+        const rect8 = section8.value.getBoundingClientRect()
+        parallax8.value = rect8.top * -0.15
+      }
+
+      // Section 5
+      if (section5.value) {
+        const rect5 = section5.value.getBoundingClientRect()
+        const height5 = section5.value.offsetHeight
+        const scrolled5 = -rect5.top
+        const progress5 = Math.max(0, Math.min(1, scrolled5 / (height5 - window.innerHeight)))
+        slide5Progress.value = progress5
+        const newSlide = progress5 < 0.2 ? 1 : progress5 < 0.6 ? 2 : 3
+        if (newSlide !== activeSlide5.value && !slide5Transitioning.value) {
+          slide5Direction.value = newSlide > activeSlide5.value ? 1 : -1
+          slide5Transitioning.value = true
+          // Phase 1: exit current
+          const exitEl = document.querySelector('.slide5-content')
+          if (exitEl) exitEl.classList.add('stagger-exit')
+          setTimeout(() => {
+            // Phase 2: swap content and enter
+            activeSlide5.value = newSlide
+            slide5Display.value = newSlide
+            slide5Transitioning.value = false
+            animateSlideText()
+          }, 300)
+        }
+      }
     })
   }
   window.addEventListener('scroll', onMainScroll)
@@ -1052,17 +2249,33 @@ onUnmounted(() => {
 }
 .num-up-enter-active,
 .num-down-enter-active {
-  transition: transform 0.45s cubic-bezier(.19,1,.22,1), opacity 0.3s ease;
+  transition:
+    transform 0.45s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 0.3s ease;
 }
 .num-up-leave-active,
 .num-down-leave-active {
   position: absolute;
-  transition: transform 0.35s cubic-bezier(.55,.06,.68,.19), opacity 0.25s ease;
+  transition:
+    transform 0.35s cubic-bezier(0.55, 0.06, 0.68, 0.19),
+    opacity 0.25s ease;
 }
-.num-up-enter-from { opacity: 0; transform: translateY(100%); }
-.num-up-leave-to { opacity: 0; transform: translateY(-100%); }
-.num-down-enter-from { opacity: 0; transform: translateY(-100%); }
-.num-down-leave-to { opacity: 0; transform: translateY(100%); }
+.num-up-enter-from {
+  opacity: 0;
+  transform: translateY(100%);
+}
+.num-up-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.num-down-enter-from {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.num-down-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
+}
 .split-text {
   opacity: 0;
 }
@@ -1081,5 +2294,103 @@ onUnmounted(() => {
   -webkit-background-clip: text;
   background-clip: text;
   color: rgba(0, 0, 0, 0.1);
+}
+.btn-notch {
+  position: relative;
+  isolation: isolate;
+  border-radius: 6px;
+}
+@property --btn-br-x {
+  syntax: '<length>';
+  initial-value: 16px;
+  inherits: false;
+}
+@property --btn-br-y {
+  syntax: '<length>';
+  initial-value: 14px;
+  inherits: false;
+}
+@property --btn-tl-x {
+  syntax: '<length>';
+  initial-value: 0px;
+  inherits: false;
+}
+@property --btn-tl-y {
+  syntax: '<length>';
+  initial-value: 0px;
+  inherits: false;
+}
+.btn-notch-clip {
+  border-radius: 6px;
+  clip-path: polygon(
+    var(--btn-tl-x) 0,
+    100% 0,
+    100% calc(100% - var(--btn-br-y)),
+    calc(100% - var(--btn-br-x)) 100%,
+    0 100%,
+    0 var(--btn-tl-y)
+  );
+  transition:
+    --btn-br-x 0.55s cubic-bezier(0.77, 0, 0.175, 1),
+    --btn-br-y 0.55s cubic-bezier(0.77, 0, 0.175, 1),
+    --btn-tl-x 0.55s cubic-bezier(0.77, 0, 0.175, 1),
+    --btn-tl-y 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+}
+.btn-notch-clip:hover {
+  --btn-br-x: 0px;
+  --btn-br-y: 0px;
+  --btn-tl-x: 16px;
+  --btn-tl-y: 14px;
+}
+@keyframes dotBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.dot-blink {
+  animation: dotBlink 1.5s ease-in-out infinite;
+}
+.btn-notch::before,
+.btn-notch::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 18px;
+  background: var(--btn-mask, white);
+  pointer-events: none;
+  transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+}
+.btn-notch::before {
+  /* TL corner mask — starts collapsed, grows on hover */
+  top: -1px;
+  left: -1px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  transform: scale3d(0, 0, 1);
+  transform-origin: top left;
+}
+.btn-notch::after {
+  /* BR corner mask — starts at full size, shrinks on hover */
+  bottom: -1px;
+  right: -1px;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  transform: scale3d(0.9999, 0.9999, 1);
+  transform-origin: bottom right;
+}
+.btn-notch:hover::before {
+  transform: scale3d(1, 1, 1);
+}
+.btn-notch:hover::after {
+  transform: scale3d(0, 0, 1);
+}
+.btn-notch:hover::before {
+  opacity: 1;
+}
+.btn-notch:hover::after {
+  opacity: 0;
 }
 </style>

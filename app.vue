@@ -1,46 +1,79 @@
 <template>
   <div>
-    <HudLoader />
-    <nav class="fixed top-6 left-[15%] right-[15%] md:left-[25%] md:right-[25%] z-50 flex items-center justify-between px-5 md:px-6 py-3 bg-black/30 backdrop-blur-[30px] rounded-lg text-white">
-      <NuxtLink to="/" class="text-lg font-bold">Shield</NuxtLink>
-      <div class="hidden md:flex items-center gap-6 text-sm">
-        <!-- Home dropdown -->
-        <div class="relative group/home">
-          <NuxtLink to="/" class="relative text-white/70 hover:text-white transition-colors duration-300 py-2 flex items-center gap-1">Home <svg class="w-3 h-3 transition-transform duration-300 group-hover/home:rotate-180" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5l3 3 3-3"/></svg></NuxtLink>
-          <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover/home:opacity-100 group-hover/home:visible transition-all duration-300">
-            <div class="bg-black/40 backdrop-blur-[30px] rounded-lg py-3 px-4 min-w-[180px] border border-white/10">
-              <a href="/#hero" class="flex items-center justify-between text-white/50 hover:text-white py-1.5 transition-colors group/item"><span>Hero</span><svg class="w-3 h-3 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 3l3 3-3 3"/></svg></a>
-              <a href="/#capabilities" class="flex items-center justify-between text-white/50 hover:text-white py-1.5 transition-colors group/item"><span>Capabilities</span><svg class="w-3 h-3 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 3l3 3-3 3"/></svg></a>
-              <a href="/#production" class="flex items-center justify-between text-white/50 hover:text-white py-1.5 transition-colors group/item"><span>Production</span><svg class="w-3 h-3 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 3l3 3-3 3"/></svg></a>
-              <a href="/#contact" class="flex items-center justify-between text-white/50 hover:text-white py-1.5 transition-colors group/item"><span>Contact</span><svg class="w-3 h-3 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 3l3 3-3 3"/></svg></a>
-            </div>
-          </div>
+    <HudLoader v-if="showLoader" />
+
+    <!-- Logo top-left -->
+    <NuxtLink
+      to="/"
+      class="fixed top-6 left-6 md:top-8 md:left-10 z-[60] text-xl font-bold tracking-wider transition-colors duration-300"
+      :class="navColorClass"
+      >Shield</NuxtLink
+    >
+
+    <!-- Menu button top-right -->
+    <button
+      @click="menuOpen = !menuOpen"
+      class="fixed top-6 right-6 md:top-8 md:right-10 z-[60] flex items-center gap-4 transition-colors duration-300"
+      :class="navColorClass"
+    >
+      <span class="text-sm font-mono uppercase tracking-widest">{{ menuOpen ? 'Close' : 'Menu' }}</span>
+      <svg
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="w-8 h-8 transition-transform ease-in-out duration-500"
+        :class="menuOpen ? '-rotate-45' : ''"
+      >
+        <path
+          class="transition-all ease-in-out duration-500"
+          :class="menuOpen ? '[stroke-dasharray:20_300] [stroke-dashoffset:-32.42px]' : '[stroke-dasharray:12_63]'"
+          d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+        />
+        <path d="M7 16 27 16" />
+      </svg>
+    </button>
+
+    <!-- Backdrop blur when menu open -->
+    <transition name="backdrop">
+      <div v-if="menuOpen" @click="menuOpen = false" class="fixed inset-0 z-40 backdrop-blur-md bg-black/30"></div>
+    </transition>
+
+    <!-- Side drawer -->
+    <transition name="drawer">
+      <aside
+        v-if="menuOpen"
+        class="fixed top-0 right-0 h-screen w-full md:w-1/4 z-50 bg-[#051e2e] text-white flex flex-col"
+      >
+        <nav class="flex flex-col gap-8 px-10 pt-32">
+          <NuxtLink
+            @click="menuOpen = false"
+            to="/"
+            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
+            >Home</NuxtLink
+          >
+          <NuxtLink
+            @click="menuOpen = false"
+            to="/about"
+            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
+            >About</NuxtLink
+          >
+          <NuxtLink
+            @click="menuOpen = false"
+            to="/contact"
+            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
+            >Contact</NuxtLink
+          >
+        </nav>
+        <div class="mt-auto px-10 pb-10 text-xs font-mono text-white/40 uppercase tracking-widest">
+          <p>Balatonfűzfő · HU</p>
+          <p class="mt-1">47.5°N 18.4°E</p>
         </div>
-        <!-- About dropdown -->
-        <div class="relative group/about">
-          <NuxtLink to="/about" class="relative text-white/70 hover:text-white transition-colors duration-300 py-2 flex items-center gap-1">About <svg class="w-3 h-3 transition-transform duration-300 group-hover/about:rotate-180" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5l3 3 3-3"/></svg></NuxtLink>
-          <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover/about:opacity-100 group-hover/about:visible transition-all duration-300">
-            <div class="bg-black/40 backdrop-blur-[30px] rounded-lg py-3 px-4 min-w-[180px] border border-white/10">
-              <a href="/about#overview" class="flex items-center justify-between text-white/50 hover:text-white py-1.5 transition-colors group/item"><span>Overview</span><svg class="w-3 h-3 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 3l3 3-3 3"/></svg></a>
-              <a href="/about#ammunition" class="flex items-center justify-between text-white/50 hover:text-white py-1.5 transition-colors group/item"><span>Ammunition</span><svg class="w-3 h-3 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 3l3 3-3 3"/></svg></a>
-              <a href="/about#about-capabilities" class="flex items-center justify-between text-white/50 hover:text-white py-1.5 transition-colors group/item"><span>Capabilities</span><svg class="w-3 h-3 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 3l3 3-3 3"/></svg></a>
-              <a href="/about#about-contact" class="flex items-center justify-between text-white/50 hover:text-white py-1.5 transition-colors group/item"><span>Contact</span><svg class="w-3 h-3 opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 3l3 3-3 3"/></svg></a>
-            </div>
-          </div>
-        </div>
-        <!-- Contact -->
-        <NuxtLink to="/contact" class="relative text-white/70 hover:text-white transition-colors duration-300 after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#02d4ff] after:transition-all after:duration-300 hover:after:w-full">Contact</NuxtLink>
-      </div>
-      <NuxtLink to="/contact" class="hidden md:block relative overflow-hidden bg-white text-[#051e2e] px-5 py-2 rounded-md text-sm font-semibold uppercase tracking-wider font-mono group">
-        <span class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
-        <span class="relative z-10">Get Started</span>
-      </NuxtLink>
-      <button class="md:hidden text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-    </nav>
+      </aside>
+    </transition>
+
     <NuxtPage />
   </div>
 </template>
@@ -48,14 +81,104 @@
 <script setup lang="ts">
 import Lenis from 'lenis'
 
-onMounted(() => {
-  const lenis = new Lenis()
+const menuOpen = ref(false)
+const route = useRoute()
+const showLoader = computed(() => route.path === '/' || route.path === '/about')
 
+const isOverDark = ref(true)
+const navColorClass = computed(() => (isOverDark.value ? 'text-white' : 'text-[#051e2e]'))
+
+onMounted(() => {
+  const lenis = new Lenis({
+    lerp: 0.18,
+    wheelMultiplier: 1.2,
+    touchMultiplier: 2,
+  })
   function raf(time: number) {
     lenis.raf(time)
     requestAnimationFrame(raf)
   }
-
   requestAnimationFrame(raf)
+
+  // Detect whether nav is currently over a dark background section
+  const probeY = 40
+  function checkNavBg() {
+    if (menuOpen.value) {
+      isOverDark.value = true
+      return
+    }
+    const darkEls = document.querySelectorAll('[data-nav-dark]')
+    let over = false
+    darkEls.forEach((el) => {
+      const rect = (el as HTMLElement).getBoundingClientRect()
+      if (rect.top <= probeY && rect.bottom >= probeY) over = true
+    })
+    isOverDark.value = over
+  }
+  window.addEventListener('scroll', checkNavBg, { passive: true })
+  nextTick(checkNavBg)
+  watch(menuOpen, () => checkNavBg())
+
+  // Scramble menu items when drawer opens
+  const scrambleChars = '!<>-_\\/[]{}—=+*^?#________'
+  function scrambleEl(el: HTMLElement) {
+    const target = el.dataset.scrambleTarget || el.textContent || ''
+    el.dataset.scrambleTarget = target
+    const queue: Array<{ to: string; start: number; end: number; char?: string }> = []
+    for (let i = 0; i < target.length; i++) {
+      const start = Math.floor(Math.random() * 15)
+      const end = start + Math.floor(Math.random() * 15) + 8
+      queue.push({ to: target[i], start, end })
+    }
+    let frame = 0
+    function update() {
+      let output = ''
+      let complete = 0
+      for (let i = 0; i < queue.length; i++) {
+        const { to, start, end } = queue[i]
+        if (frame >= end) {
+          complete++
+          output += to
+        } else if (frame >= start) {
+          if (!queue[i].char || Math.random() < 0.28)
+            queue[i].char = scrambleChars[Math.floor(Math.random() * scrambleChars.length)]
+          output += queue[i].char
+        } else output += to === ' ' ? ' ' : ''
+      }
+      el.textContent = output
+      if (complete === queue.length) return
+      frame++
+      requestAnimationFrame(update)
+    }
+    update()
+  }
+  watch(menuOpen, (open) => {
+    if (open) {
+      nextTick(() => {
+        document.querySelectorAll<HTMLElement>('.menu-item').forEach((el, i) => {
+          setTimeout(() => scrambleEl(el), i * 80)
+        })
+      })
+    }
+  })
 })
 </script>
+
+<style scoped>
+.drawer-enter-active,
+.drawer-leave-active {
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.drawer-enter-from,
+.drawer-leave-to {
+  transform: translateX(100%);
+}
+.backdrop-enter-active,
+.backdrop-leave-active {
+  transition: opacity 0.3s ease;
+}
+.backdrop-enter-from,
+.backdrop-leave-to {
+  opacity: 0;
+}
+</style>
