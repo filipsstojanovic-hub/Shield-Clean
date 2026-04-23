@@ -1,7 +1,7 @@
 <template>
   <main>
     <!-- Hero -->
-    <section id="hero" ref="heroSection" data-nav-dark class="relative w-full h-[500vh] z-0">
+    <section id="hero" ref="heroSection" data-nav-dark class="relative w-full h-[400vh] z-0">
       <div class="sticky top-0 h-screen w-full bg-[#051e2e] flex items-center justify-center overflow-hidden">
         <canvas
           ref="heroCanvas"
