@@ -45,47 +45,6 @@
           <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Brass Shell</div>
         </div>
 
-        <!-- Scroll progress indicator -->
-        <div
-          class="absolute right-6 md:right-10 top-1/2 -translate-y-1/2 z-10 h-[22%] flex items-start gap-2 pointer-events-none"
-        >
-          <svg
-            class="absolute -top-2 left-1/2 -translate-x-1/2 w-5 h-3 overflow-visible"
-            viewBox="0 0 20 12"
-            fill="none"
-          >
-            <path
-              d="M0,0 L0,5 M0,0 L7,0 M13,0 L20,0 M20,0 L20,5"
-              stroke="white"
-              stroke-opacity="0.7"
-              stroke-width="1"
-              stroke-linecap="square"
-            />
-          </svg>
-          <div class="w-[1px] h-full bg-white/70 relative overflow-hidden">
-            <div
-              class="absolute top-0 left-0 w-full bg-[#02d4ff] transition-none"
-              :style="{ height: heroProgress * 100 + '%' }"
-            ></div>
-          </div>
-          <svg
-            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-3 overflow-visible"
-            viewBox="0 0 20 12"
-            fill="none"
-          >
-            <path
-              d="M0,7 L0,12 M0,12 L7,12 M13,12 L20,12 M20,12 L20,7"
-              stroke="white"
-              stroke-opacity="0.7"
-              stroke-width="1"
-              stroke-linecap="square"
-            />
-          </svg>
-          <span class="text-xs font-mono text-white/60 absolute -left-8" :style="{ top: heroProgress * 85 + '%' }"
-            >{{ String(Math.round(heroProgress * 100)).padStart(2, '0') }}%</span
-          >
-        </div>
-
         <!-- Bottom Right — Primer -->
         <div
           class="absolute bottom-14 right-[10%] md:bottom-20 md:right-[14%] text-right z-10 text-white pointer-events-none transition-opacity duration-700"
