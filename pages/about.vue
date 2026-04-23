@@ -34,20 +34,20 @@
         <div
           class="absolute bottom-10 left-[8%] md:bottom-16 md:left-[11%] text-left z-10 text-white pointer-events-none"
         >
-          <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Brass Shell</div>
-          <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mt-3 max-w-xs">
+          <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mb-3 max-w-xs">
             &gt; Holds powder + chambers in the weapon.
           </div>
+          <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Brass Shell</div>
         </div>
 
         <!-- Bottom Right — Primer -->
         <div
           class="absolute bottom-10 right-[12%] md:bottom-16 md:right-[16%] text-right z-10 text-white pointer-events-none"
         >
-          <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Ignition Cap</div>
-          <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mt-3 max-w-xs ml-auto">
+          <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mb-3 max-w-xs ml-auto">
             &gt; Struck by firing pin — sparks the powder.
           </div>
+          <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Ignition Cap</div>
         </div>
       </div>
     </section>
