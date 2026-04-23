@@ -11,8 +11,8 @@
     <section class="relative flex items-center justify-center h-[50vh] w-full overflow-hidden">
       <div class="max-w-6xl px-6 md:px-8 text-center">
         <h2 class="text-3xl md:text-5xl font-bold leading-snug">
-          A 9,050 m² licensed facility in Balatonfűzfő, Hungary — 19 operational units, 240,000 kg TNT-equivalent
-          capacity, and a 60-day path to full manufacturing authorization.
+          A 350,000 m² defense park in Balatonfűzfő, Hungary — extensive capacity for strategic partnerships with
+          defense technology innovators and emerging players.
         </h2>
       </div>
     </section>
@@ -181,8 +181,8 @@
       </div>
       <div class="max-w-6xl px-6 md:px-8 text-center relative z-10">
         <h2 class="text-3xl md:text-5xl font-bold leading-snug">
-          Three integrated capabilities — manufacturing, logistics, and regulatory compliance — operating from a single
-          licensed facility.
+          Three integrated capabilities — manufacturing, logistics, and joint innovation — operating from a single
+          licensed defense park.
         </h2>
       </div>
     </section>
@@ -204,7 +204,7 @@
           <h3 class="text-sm font-mono uppercase tracking-wider text-black/40">What We Do</h3>
           <h1 class="text-4xl md:text-5xl font-bold text-[#051e2e] leading-tight mt-4">End-to-End Capability</h1>
           <h2 class="text-lg md:text-xl text-black/50 mt-4 leading-relaxed">
-            From raw material to finished round — fully integrated manufacturing, storage, and compliance under one
+            From raw material to finished round — fully integrated manufacturing, storage, and partnerships under one
             roof.
           </h2>
         </div>
@@ -216,7 +216,7 @@
         />
         <div class="absolute top-16 right-20 text-right z-10 space-y-4">
           <div>
-            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">60M+</span>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">120M+</span>
             <p class="text-xs text-black/30 font-mono uppercase">rounds / year</p>
           </div>
           <div>
@@ -279,16 +279,16 @@
         />
         <div class="absolute top-16 left-14 text-left z-10 space-y-4">
           <div>
-            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">240K</span>
-            <p class="text-xs text-black/30 font-mono uppercase">kg tnt capacity</p>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">240T</span>
+            <p class="text-xs text-black/30 font-mono uppercase">of tnt</p>
           </div>
           <div>
             <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">19</span>
             <p class="text-xs text-black/30 font-mono uppercase">storage units</p>
           </div>
           <div>
-            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">9,050</span>
-            <p class="text-xs text-black/30 font-mono uppercase">m² facility</p>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">5,330</span>
+            <p class="text-xs text-black/30 font-mono uppercase">m² storage</p>
           </div>
         </div>
         <div class="absolute inset-0 flex flex-col justify-end pb-16 px-14 md:px-20 z-10">
@@ -342,23 +342,27 @@
         />
         <div class="absolute top-16 left-14 text-left z-10 space-y-4">
           <div>
-            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">60</span>
-            <p class="text-xs text-black/30 font-mono uppercase">days to authorize</p>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">350K+</span>
+            <p class="text-xs text-black/30 font-mono uppercase">m² defense park</p>
           </div>
           <div>
-            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">1,020</span>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">100K+</span>
             <p class="text-xs text-black/30 font-mono uppercase">m² expansion ready</p>
           </div>
           <div>
-            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">€500M</span>
-            <p class="text-xs text-black/30 font-mono uppercase">investment pipeline</p>
+            <span class="text-2xl md:text-3xl font-bold text-[#051e2e]">EU</span>
+            <p class="text-xs text-black/30 font-mono uppercase">backed pipeline</p>
+            <p class="text-xs mt-1 font-mono uppercase">
+              <span class="font-bold text-[#051e2e]">Licenses</span>
+              <span class="text-black/30"> at your disposal</span>
+            </p>
           </div>
         </div>
         <div class="absolute inset-0 flex flex-col justify-end pb-24 px-14 md:px-20 z-10">
-          <span class="text-xs font-mono uppercase tracking-wider text-black/30">03 — Compliance & Scale</span>
-          <h3 class="text-xl md:text-2xl font-bold text-[#051e2e] mt-3 leading-snug">Production-ready in 60 days</h3>
+          <span class="text-xs font-mono uppercase tracking-wider text-black/30">03 — Scale & Innovate</span>
+          <h3 class="text-xl md:text-2xl font-bold text-[#051e2e] mt-3 leading-snug">Joint ventures across defense</h3>
           <p class="text-xs text-black/40 mt-2 leading-relaxed">
-            Pre-licensed facility aligned with EU ASAP Programme. Established P&L per caliber.
+            Defense park ready to innovate — open to partnerships with any defense-related company.
           </p>
         </div>
         <svg class="w-full h-full" viewBox="-40 -40 480 480" fill="none" style="transform: rotate(180deg)">
@@ -408,7 +412,7 @@
             <span class="w-3 h-3 rounded-full bg-[#02d4ff]"></span>
             <span class="w-3 h-3 rounded-full bg-black/15"></span>
           </div>
-          <h2 class="text-3xl md:text-5xl font-bold text-center">Tell us a bit about you:</h2>
+          <h2 class="text-3xl md:text-5xl font-bold text-center">Ready to scale the EU defense sector? Get in touch</h2>
         </div>
         <form class="space-y-10">
           <div>
@@ -628,7 +632,7 @@
       <!-- Logo + linkovi -->
       <div class="flex flex-col md:flex-row items-start justify-between px-6 md:px-16 pb-8 pt-16 gap-12 mt-auto">
         <div>
-          <h3 class="text-3xl font-bold mb-8">Shield</h3>
+          <h3 class="text-3xl font-bold mb-8">EuroShield</h3>
           <p class="text-white/40 text-sm mb-1">Defense Manufacturing</p>
           <p class="text-white/40 text-sm mb-1">Ammunition Production</p>
           <p class="text-white/40 text-sm">NATO Aligned</p>
@@ -646,7 +650,7 @@
             <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Company</h3>
             <ul class="space-y-3 text-white/60">
               <li><NuxtLink to="/" class="hover:text-[#02d4ff] transition-colors">Home</NuxtLink></li>
-              <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About</NuxtLink></li>
+              <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About Us</NuxtLink></li>
               <li><NuxtLink to="/contact" class="hover:text-[#02d4ff] transition-colors">Contact</NuxtLink></li>
             </ul>
           </div>
@@ -666,7 +670,7 @@
       <div
         class="px-6 md:px-16 py-6 flex flex-col md:flex-row items-center justify-between text-white/40 text-sm gap-4 md:gap-0"
       >
-        <p>&copy; 2026 Shield. All rights reserved.</p>
+        <p>&copy; 2026 EuroShield. All rights reserved.</p>
         <div class="flex gap-6">
           <span>Privacy Policy</span>
           <span>Terms of Service</span>

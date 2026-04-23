@@ -8,7 +8,7 @@
       to="/"
       class="fixed top-6 left-6 md:top-8 md:left-10 z-[60] text-xl font-bold tracking-wider transition-colors duration-300"
       :class="navColorClass"
-      >Shield</NuxtLink
+      >EuroShield</NuxtLink
     >
 
     <!-- Menu button top-right -->
@@ -59,7 +59,7 @@
             @click="menuOpen = false"
             to="/about"
             class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
-            >About</NuxtLink
+            >About Us</NuxtLink
           >
           <NuxtLink
             @click="menuOpen = false"

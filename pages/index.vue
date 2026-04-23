@@ -90,7 +90,7 @@
             <span ref="profileLabelText">Profile</span>
           </div>
           <div ref="profileBody" class="text-xl md:text-2xl leading-snug max-w-sm">
-            240,000 kg TNT-equivalent capacity across explosive and pyrotechnic classes.
+            Licensed defense-park capacity engineered for strategic partnerships across NATO-aligned industries.
           </div>
         </div>
         <div
@@ -168,7 +168,7 @@
     <section id="capabilities" class="relative w-full bg-white z-20 -mt-[100vh] pt-32 md:pt-40 pb-32 px-6 md:px-16">
       <div class="max-w-7xl mx-auto mb-12 md:mb-16">
         <h2 ref="capIntroHeadingRef" class="max-w-2xl text-3xl md:text-5xl font-bold text-[#051e2e] leading-[1.15]">
-          Placeholder heading text about Shield's position in European defense manufacturing.
+          EuroShield anchors a new generation of European defense manufacturing — licensed, scalable, ready for scale.
         </h2>
       </div>
       <div class="max-w-6xl mx-auto flex flex-col gap-8">
@@ -208,8 +208,7 @@
               <span class="text-[#051e2e]/40">01</span><span ref="capPanel2LabelWord">Storage</span>
             </div>
             <p ref="capPanel2DescRef" class="text-xl md:text-2xl text-[#051e2e] mt-8 leading-snug">
-              240,000 kg TNT-equivalent storage capacity across explosive and pyrotechnic classes, with indefinite
-              permits for continuous operations.
+              Indefinitely licensed storage across regulated defense classes — scalable to mission demand.
             </p>
             <a
               href="#"
@@ -262,8 +261,7 @@
               <span class="text-[#051e2e]/40">02</span><span ref="capPanel1LabelWord">Facility</span>
             </div>
             <p ref="capPanel1DescRef" class="text-xl md:text-2xl text-[#051e2e] mt-8 leading-snug">
-              9,050 m² licensed facility with 19 operational units and 5,330 m² dedicated storage infrastructure,
-              positioned to scale production rapidly.
+              5,330 m² dedicated storage across 19 licensed operational units — ready to scale production rapidly.
             </p>
             <a
               href="#"
@@ -314,8 +312,8 @@
               <span class="text-[#051e2e]/40">03</span><span ref="capPanel4LabelWord">Licensing</span>
             </div>
             <p ref="capPanel4DescRef" class="text-xl md:text-2xl text-[#051e2e] mt-8 leading-snug">
-              60-day manufacturing licensing pathway positions Shield in Europe's fastest-growing defense market, with
-              EU ASAP Programme backing.
+              Every defense-manufacturing license at your disposal — positioned in Europe's fastest-growing defense
+              market.
             </p>
             <a
               href="#"
@@ -366,8 +364,7 @@
               <span class="text-[#051e2e]/40">04</span><span ref="capPanel3LabelWord">Expansion</span>
             </div>
             <p ref="capPanel3DescRef" class="text-xl md:text-2xl text-[#051e2e] mt-8 leading-snug">
-              1,020 m² available for new production lines plus 500 m² under construction — ready for repurposing to meet
-              growing NATO demand.
+              105,000 m² ready for new production lines, storage, and defense tech development — repurposing on demand.
             </p>
             <a
               href="#"
@@ -508,7 +505,7 @@
             ref="slide4Title1"
             class="text-2xl md:text-4xl font-bold leading-tight split-text"
             v-html="
-              'A licensed facility for large-scale <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>ammunition manufacturing</u>'
+              'A licensed facility starting with <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>small-caliber ammunition</u>'
             "
           ></h3>
         </div>
@@ -559,8 +556,8 @@
             </svg>
           </div>
           <p ref="slide4Desc1" class="text-base md:text-lg leading-relaxed split-text">
-            Our facility is positioned to manufacture 155mm artillery and 30mm medium-caliber ammunition — the two
-            highest-demand segments in European defense.
+            Our facility is producing small-caliber rounds — 5.56×45mm, 7.62×51mm, and 12.7×99mm — ready for
+            NATO-aligned supply.
           </p>
         </div>
 
@@ -612,7 +609,7 @@
             ref="slide4Title2"
             class="text-2xl md:text-4xl font-bold leading-tight split-text"
             v-html="
-              'Sustained demand driven by NATO <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>rearmament</u> and restocking'
+              'A defense park built for <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>growing demand and innovation</u>'
             "
           ></h3>
         </div>
@@ -626,8 +623,8 @@
           }"
         >
           <p ref="slide4Desc2" class="text-base md:text-lg leading-relaxed split-text mb-6">
-            European ammunition demand is undergoing a generational surge — 155mm artillery at 17% CAGR and 30mm
-            medium-caliber at 11% CAGR driven by NATO rearmament.
+            105,000 m² of licensed development land for in-demand defense projects — timed with NATO's 5% GDP defense
+            commitment by 2030.
           </p>
           <!-- Panel below right description -->
           <div
@@ -679,7 +676,7 @@
             ref="slide4Title3"
             class="text-2xl md:text-4xl font-bold leading-tight split-text mb-6"
             v-html="
-              'Built to scale with EU-backed funding and <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>expansion capacity</u>'
+              'Built to scale across <u class=&quot;decoration-current decoration-2 underline-offset-4&quot;>Europe's defense ecosystem</u>'
             "
           ></h3>
           <!-- Panel below title -->
@@ -767,8 +764,8 @@
             </svg>
           </div>
           <p ref="slide4Desc3" class="text-base md:text-lg leading-relaxed split-text">
-            Access to EU ASAP Programme's €500M public and €1B private investment pipeline — positioning Shield to scale
-            production rapidly within Europe's defense industrial base.
+            300,000 m² of land, all necessary licenses, and EU-backed funding — EuroShield scales rapidly within
+            Europe's defense ecosystem, ready for any collaboration.
           </p>
         </div>
         <svg
@@ -866,7 +863,7 @@
               </p>
               <p class="text-base md:text-lg leading-relaxed mt-6">
                 Joint venture rooted in Finland and Norway, producing small- and medium-caliber rounds for NATO partners
-                — a strategic supply partner for Shield's European distribution.
+                — a strategic supply partner for EuroShield's European distribution.
               </p>
             </div>
           </div>
@@ -882,7 +879,7 @@
               </p>
               <p class="text-base md:text-lg leading-relaxed mt-6">
                 BAE Systems operates critical munitions programs across Europe and North America — technical and
-                supply-chain collaboration that underpins Shield's 155mm artillery capability.
+                supply-chain collaboration that underpins EuroShield's small-caliber production capability.
               </p>
             </div>
           </div>
@@ -898,7 +895,7 @@
               </p>
               <p class="text-base md:text-lg leading-relaxed mt-6">
                 Thales brings command-and-control systems expertise to NATO-aligned defense programs — a key integration
-                partner for Shield's 30mm medium-caliber ammunition and C-UAS platforms.
+                partner for EuroShield's defense technology and C-UAS collaboration.
               </p>
             </div>
           </div>
@@ -1119,7 +1116,7 @@
       <!-- Donji deo - logo + linkovi -->
       <div class="flex flex-col md:flex-row items-start justify-between px-6 md:px-16 pb-8 pt-16 gap-12 mt-auto">
         <div>
-          <h3 class="text-3xl font-bold mb-8">Shield</h3>
+          <h3 class="text-3xl font-bold mb-8">EuroShield</h3>
           <p class="text-white/40 text-sm mb-1">Defense Manufacturing</p>
           <p class="text-white/40 text-sm mb-1">Ammunition Production</p>
           <p class="text-white/40 text-sm">NATO Aligned</p>
@@ -1128,16 +1125,16 @@
           <div>
             <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Capabilities</h3>
             <ul class="space-y-3 text-white/60">
-              <li>155mm Artillery</li>
-              <li>30mm Medium Caliber</li>
-              <li>Pyrotechnics</li>
-              <li>Storage & Logistics</li>
+              <li>Defense Munitions</li>
+              <li>Defense Technology</li>
+              <li>Defense Gear &amp; Equipment</li>
+              <li>Defense Logistics</li>
             </ul>
           </div>
           <div>
             <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Company</h3>
             <ul class="space-y-3 text-white/60">
-              <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About</NuxtLink></li>
+              <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About Us</NuxtLink></li>
               <li><NuxtLink to="/contact" class="hover:text-[#02d4ff] transition-colors">Contact</NuxtLink></li>
             </ul>
           </div>
@@ -1158,7 +1155,7 @@
       <div
         class="px-6 md:px-16 py-6 flex flex-col md:flex-row items-center justify-between text-white/40 text-sm gap-4 md:gap-0"
       >
-        <p>&copy; 2026 Shield. All rights reserved.</p>
+        <p>&copy; 2026 EuroShield. All rights reserved.</p>
         <div class="flex gap-6">
           <span>Privacy Policy</span>
           <span>Terms of Service</span>
