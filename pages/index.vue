@@ -1459,16 +1459,37 @@ function onPartnerMouseMove(e: MouseEvent) {
 }
 
 onMounted(() => {
-  partnerTimerStart = performance.now()
   let alive = true
+  let partnersVisible = false
+
+  // Start timer only when Partners section scrolls into view
+  if (plSection.value) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !partnersVisible) {
+            partnersVisible = true
+            partnerPage.value = 0
+            resetPartnerTimer()
+          }
+        })
+      },
+      { threshold: 0.3 },
+    )
+    io.observe(plSection.value)
+    onUnmounted(() => io.disconnect())
+  }
+
   function tick() {
     if (!alive) return
-    const elapsed = performance.now() - partnerTimerStart
-    const p = Math.min(1, elapsed / PARTNER_SLIDE_MS)
-    partnerAutoProgress.value = p
-    if (p >= 1) {
-      partnerPage.value = (partnerPage.value + 1) % 4
-      resetPartnerTimer()
+    if (partnersVisible) {
+      const elapsed = performance.now() - partnerTimerStart
+      const p = Math.min(1, elapsed / PARTNER_SLIDE_MS)
+      partnerAutoProgress.value = p
+      if (p >= 1) {
+        partnerPage.value = (partnerPage.value + 1) % 4
+        resetPartnerTimer()
+      }
     }
     requestAnimationFrame(tick)
   }
