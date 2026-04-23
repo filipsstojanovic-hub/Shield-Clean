@@ -13,7 +13,10 @@
         ></video>
 
         <!-- Top Left — Projectile -->
-        <div class="absolute top-14 left-[8%] md:top-24 md:left-[11%] text-left z-10 text-white pointer-events-none">
+        <div
+          class="absolute top-14 left-[8%] md:top-24 md:left-[11%] text-left z-10 text-white pointer-events-none transition-opacity duration-700"
+          :style="{ opacity: heroProgress >= 0.86 ? 1 : 0 }"
+        >
           <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Bullet</div>
           <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mt-3 max-w-xs">
             &gt; Copper-jacketed lead core — the part that flies out.
@@ -21,7 +24,10 @@
         </div>
 
         <!-- Top Right — Propellant -->
-        <div class="absolute top-14 right-[6%] md:top-24 md:right-[10%] text-right z-10 text-white pointer-events-none">
+        <div
+          class="absolute top-14 right-[6%] md:top-24 md:right-[10%] text-right z-10 text-white pointer-events-none transition-opacity duration-700"
+          :style="{ opacity: heroProgress >= 0.86 ? 1 : 0 }"
+        >
           <div class="text-3xl md:text-5xl font-bold uppercase leading-tight tracking-tight">Powder</div>
           <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mt-3 max-w-xs ml-auto">
             &gt; Smokeless charge — burns to launch the bullet.
@@ -30,7 +36,8 @@
 
         <!-- Bottom Left — Case -->
         <div
-          class="absolute bottom-10 left-[6%] md:bottom-16 md:left-[9%] text-left z-10 text-white pointer-events-none"
+          class="absolute bottom-10 left-[6%] md:bottom-16 md:left-[9%] text-left z-10 text-white pointer-events-none transition-opacity duration-700"
+          :style="{ opacity: heroProgress >= 0.86 ? 1 : 0 }"
         >
           <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mb-3 max-w-xs">
             &gt; Holds powder + chambers in the weapon.
@@ -81,7 +88,8 @@
 
         <!-- Bottom Right — Primer -->
         <div
-          class="absolute bottom-14 right-[10%] md:bottom-20 md:right-[14%] text-right z-10 text-white pointer-events-none"
+          class="absolute bottom-14 right-[10%] md:bottom-20 md:right-[14%] text-right z-10 text-white pointer-events-none transition-opacity duration-700"
+          :style="{ opacity: heroProgress >= 0.86 ? 1 : 0 }"
         >
           <div class="text-[10px] md:text-xs font-mono uppercase tracking-[0.25em] text-white/60 mb-3 max-w-xs ml-auto">
             &gt; Struck by firing pin — sparks the powder.
