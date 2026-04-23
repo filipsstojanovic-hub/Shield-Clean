@@ -3,7 +3,14 @@
     <!-- Section 1 - Hero with reverse video -->
     <section id="overview" ref="heroSection" data-nav-dark class="relative w-full h-[300vh]">
       <div class="sticky top-0 h-screen w-full bg-black flex items-center justify-center overflow-hidden">
-        <video src="/videos/about-hero.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+        <video
+          ref="heroVideo"
+          src="/videos/about-hero.mp4"
+          muted
+          playsinline
+          preload="auto"
+          class="w-full h-full object-cover"
+        ></video>
       </div>
     </section>
 
@@ -688,7 +695,7 @@ useHead({
 })
 
 const heroSection = ref<HTMLElement | null>(null)
-const heroCanvas = ref<HTMLCanvasElement | null>(null)
+const heroVideo = ref<HTMLVideoElement | null>(null)
 const section4El = ref<HTMLElement | null>(null)
 const activeS4Panel = ref(1)
 const activeS4PanelPrev = ref(1)
@@ -696,95 +703,9 @@ const activeS4PanelPrev = ref(1)
 let cleanupFn: (() => void) | null = null
 
 onMounted(() => {
-  const cdnBase = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com'
-  const totalFrames = 144
-  const images: (HTMLImageElement | null)[] = new Array(totalFrames).fill(null)
-  let loaded = false
-  let lastDrawn = 0
   let alive = true
 
-  // Cover draw
-  function drawCover(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, img: HTMLImageElement) {
-    const cw = canvas.width
-    const ch = canvas.height
-    const iw = img.naturalWidth
-    const ih = img.naturalHeight
-    const scale = Math.max(cw / iw, ch / ih)
-    const sw = iw * scale
-    const sh = ih * scale
-    ctx.drawImage(img, (cw - sw) / 2, (ch - sh) / 2, sw, sh)
-  }
-
-  function sizeCanvas(canvas: HTMLCanvasElement) {
-    const w = canvas.offsetWidth
-    const h = canvas.offsetHeight
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w
-      canvas.height = h
-    }
-  }
-
-  function draw(frame: number) {
-    const canvas = heroCanvas.value
-    if (!canvas || !loaded) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    sizeCanvas(canvas)
-    let img = images[frame - 1]
-    if (!img?.complete) {
-      for (let off = 1; off <= 50; off++) {
-        const b = images[frame - 1 - off]
-        if (b?.complete) {
-          img = b
-          break
-        }
-        const a = images[frame - 1 + off]
-        if (a?.complete) {
-          img = a
-          break
-        }
-      }
-    }
-    if (!img?.complete) return
-    drawCover(canvas, ctx, img)
-  }
-
-  // Load frames in batches
-  let firstDone = false
-  let loadedCount = 0
-  let readyFired = false
-  const batchSize = 15
-  let i = 0
-  function loadBatch() {
-    if (!alive) return
-    for (let b = 0; b < batchSize && i < totalFrames; b++, i++) {
-      const idx = i
-      const img = new Image()
-      img.crossOrigin = 'anonymous'
-      img.onload = () => {
-        if (!alive) return
-        images[idx] = img
-        loadedCount++
-        if (!firstDone) {
-          firstDone = true
-          loaded = true
-          requestAnimationFrame(() => {
-            draw(1)
-            if (!lastDrawn) requestAnimationFrame(() => draw(1))
-          })
-        }
-        if (!readyFired && loadedCount >= 50) {
-          readyFired = true
-          window.dispatchEvent(new Event('hero-frames-loaded'))
-        }
-      }
-      img.src = `${cdnBase}/about-frames-v2/frame_${String(idx + 1).padStart(4, '0')}.jpg`
-    }
-    if (i < totalFrames) setTimeout(loadBatch, 20)
-  }
-  loadBatch()
-
-  // Raw + smoothed progress for silky hero scrub
+  // Scroll-scrubbed video: currentTime mapped to hero scroll progress (0→1 over 300vh)
   let rawProgress = 0
   let smoothedProgress = 0
 
@@ -796,29 +717,27 @@ onMounted(() => {
     } else {
       smoothedProgress = rawProgress
     }
-    const frame = Math.max(1, Math.min(totalFrames, Math.round(smoothedProgress * (totalFrames - 1)) + 1))
-    if (frame !== lastDrawn) {
-      lastDrawn = frame
-      draw(frame)
+    const v = heroVideo.value
+    if (v && !isNaN(v.duration) && v.duration > 0) {
+      const t = smoothedProgress * v.duration
+      if (Math.abs(v.currentTime - t) > 0.01) v.currentTime = t
     }
     requestAnimationFrame(heroSmoothLoop)
   }
   requestAnimationFrame(heroSmoothLoop)
 
-  // Scroll handler (named so it can be removed)
   let scrollTicking = false
   function onScroll() {
     if (scrollTicking) return
     scrollTicking = true
     requestAnimationFrame(() => {
       scrollTicking = false
-      if (heroSection.value && loaded) {
+      if (heroSection.value) {
         const rect = heroSection.value.getBoundingClientRect()
         const height = heroSection.value.offsetHeight
         const scrolled = -rect.top
         rawProgress = Math.max(0, Math.min(1, scrolled / (height - window.innerHeight)))
       }
-      // Section 4 panel number
       if (section4El.value) {
         const rect4 = section4El.value.getBoundingClientRect()
         const height4 = section4El.value.offsetHeight
