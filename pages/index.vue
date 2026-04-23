@@ -414,7 +414,7 @@
         <div
           class="absolute z-10 top-[38%] left-1/2 -translate-x-1/2"
           :style="{
-            transform: `translate(-50%, ${-Math.max(0, Math.min(1, (section4Progress - 0.37) / 0.08)) * 30}vh)`,
+            transform: `translate(-50%, ${-Math.max(0, Math.min(1, (section4Progress - 0.5) / 0.08)) * 30}vh)`,
           }"
         >
           <span
@@ -427,7 +427,7 @@
           class="relative z-10 text-5xl md:text-9xl font-bold whitespace-nowrap"
           :style="{
             color: section4ColorShift > 0 ? `rgba(0,0,0,${section4ColorShift})` : 'white',
-            transform: `translateY(${-Math.max(0, Math.min(1, (section4Progress - 0.37) / 0.08)) * 30}vh) scale(${(1 + section4Merge * 0.5) * (1 - Math.max(0, Math.min(1, (section4Progress - 0.37) / 0.08)) * 0.6)})`,
+            transform: `translateY(${-Math.max(0, Math.min(1, (section4Progress - 0.5) / 0.08)) * 30}vh) scale(${(1 + section4Merge * 0.5) * (1 - Math.max(0, Math.min(1, (section4Progress - 0.5) / 0.08)) * 0.6)})`,
           }"
         >
           <span class="inline-flex">
@@ -2190,12 +2190,12 @@ onMounted(() => {
         // Prevents scroll jitter from re-triggering animation at boundaries
         const curSlide4 = activeSlide4.value
         let newSlide4 = curSlide4
-        if (curSlide4 === 0 && progress4 >= 0.45) newSlide4 = 1
-        else if (curSlide4 === 1 && progress4 >= 0.6) newSlide4 = 2
-        else if (curSlide4 === 2 && progress4 >= 0.78) newSlide4 = 3
-        else if (curSlide4 === 3 && progress4 < 0.73) newSlide4 = 2
-        else if (curSlide4 === 2 && progress4 < 0.55) newSlide4 = 1
-        else if (curSlide4 === 1 && progress4 < 0.4) newSlide4 = 0
+        if (curSlide4 === 0 && progress4 >= 0.58) newSlide4 = 1
+        else if (curSlide4 === 1 && progress4 >= 0.7) newSlide4 = 2
+        else if (curSlide4 === 2 && progress4 >= 0.85) newSlide4 = 3
+        else if (curSlide4 === 3 && progress4 < 0.8) newSlide4 = 2
+        else if (curSlide4 === 2 && progress4 < 0.65) newSlide4 = 1
+        else if (curSlide4 === 1 && progress4 < 0.53) newSlide4 = 0
         if (newSlide4 !== curSlide4) {
           activeSlide4.value = newSlide4
           if (newSlide4 > 0) animateSlide4(newSlide4)
