@@ -176,8 +176,12 @@ onMounted(() => {
   }
   requestAnimationFrame(raf)
 
-  // Detect whether nav is currently over a dark background section
-  const probeY = 40
+  // Detect whether nav is currently over a dark background section.
+  // Two probe points cover the vertical extent of the burger/logo (top-6..top-8 + 32px icon),
+  // so detection flips the instant any dark section overlaps the nav area, not one tick late.
+  const PROBE_TOP = 24
+  const PROBE_BOTTOM = 56
+  let navAlive = true
   function checkNavBg() {
     if (menuOpen.value) {
       isOverDark.value = true
@@ -185,13 +189,24 @@ onMounted(() => {
     }
     const darkEls = document.querySelectorAll('[data-nav-dark]')
     let over = false
-    darkEls.forEach((el) => {
+    for (const el of Array.from(darkEls)) {
       const rect = (el as HTMLElement).getBoundingClientRect()
-      if (rect.top <= probeY && rect.bottom >= probeY) over = true
-    })
+      // Covers nav area if it intersects the burger's vertical band.
+      if (rect.top <= PROBE_BOTTOM && rect.bottom >= PROBE_TOP) {
+        over = true
+        break
+      }
+    }
     isOverDark.value = over
   }
-  window.addEventListener('scroll', checkNavBg, { passive: true })
+  // rAF loop — syncs nav color with Lenis-smoothed scroll frame-by-frame.
+  function navBgLoop() {
+    if (!navAlive) return
+    checkNavBg()
+    requestAnimationFrame(navBgLoop)
+  }
+  requestAnimationFrame(navBgLoop)
+  window.addEventListener('resize', checkNavBg, { passive: true })
   nextTick(checkNavBg)
   watch(menuOpen, () => checkNavBg())
 

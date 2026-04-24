@@ -1227,13 +1227,23 @@ const capText2Y = ref(0)
 const capText3Y = ref(0)
 const capText4Y = ref(0)
 
-function updateTextParallax(el: HTMLElement | null, yRef: { value: number }, intensity = 80) {
-  if (!el) return
+function computeTextParallaxTarget(el: HTMLElement | null, intensity = 80): number {
+  if (!el) return 0
   const rect = el.getBoundingClientRect()
   const vh = window.innerHeight
   const p = (rect.top + rect.height / 2 - vh / 2) / vh
-  yRef.value = -p * intensity
+  return -p * intensity
 }
+
+// Lerp targets — scroll writes raw values, rAF loop smooths refs toward them
+let capText1YTarget = 0
+let capText2YTarget = 0
+let capText3YTarget = 0
+let capText4YTarget = 0
+let capPanel1YTarget = -150
+let capPanel2YTarget = -150
+let capPanel3YTarget = -150
+let capPanel4YTarget = -150
 
 // Scramble text hover effect
 const scrambleChars = '!<>-_\\/[]{}—=+*^?#________'
@@ -2202,14 +2212,14 @@ onMounted(() => {
 
       // Capabilities zigzag panels parallax
       const vh = window.innerHeight
-      capPanel1ParallaxY.value = computeCapParallax(capPanel1Ref.value, vh)
-      capPanel2ParallaxY.value = computeCapParallax(capPanel2Ref.value, vh)
-      capPanel3ParallaxY.value = computeCapParallax(capPanel3Ref.value, vh)
-      capPanel4ParallaxY.value = computeCapParallax(capPanel4Ref.value, vh)
-      updateTextParallax(capText1Ref.value, capText1Y)
-      updateTextParallax(capText2Ref.value, capText2Y)
-      updateTextParallax(capText3Ref.value, capText3Y)
-      updateTextParallax(capText4Ref.value, capText4Y)
+      capPanel1YTarget = computeCapParallax(capPanel1Ref.value, vh)
+      capPanel2YTarget = computeCapParallax(capPanel2Ref.value, vh)
+      capPanel3YTarget = computeCapParallax(capPanel3Ref.value, vh)
+      capPanel4YTarget = computeCapParallax(capPanel4Ref.value, vh)
+      capText1YTarget = computeTextParallaxTarget(capText1Ref.value, 80)
+      capText2YTarget = computeTextParallaxTarget(capText2Ref.value, 80)
+      capText3YTarget = computeTextParallaxTarget(capText3Ref.value, 80)
+      capText4YTarget = computeTextParallaxTarget(capText4Ref.value, 80)
 
       const s2 = document.querySelector('section:nth-of-type(2)') as HTMLElement
       if (s2) {
@@ -2299,6 +2309,22 @@ onMounted(() => {
     })
   }
   window.addEventListener('scroll', onMainScroll)
+
+  // Parallax smooth loop — lerps refs toward scroll-computed targets at 0.12/frame
+  const PARALLAX_LERP = 0.12
+  function smoothParallaxLoop() {
+    if (!alive) return
+    capPanel1ParallaxY.value += (capPanel1YTarget - capPanel1ParallaxY.value) * PARALLAX_LERP
+    capPanel2ParallaxY.value += (capPanel2YTarget - capPanel2ParallaxY.value) * PARALLAX_LERP
+    capPanel3ParallaxY.value += (capPanel3YTarget - capPanel3ParallaxY.value) * PARALLAX_LERP
+    capPanel4ParallaxY.value += (capPanel4YTarget - capPanel4ParallaxY.value) * PARALLAX_LERP
+    capText1Y.value += (capText1YTarget - capText1Y.value) * PARALLAX_LERP
+    capText2Y.value += (capText2YTarget - capText2Y.value) * PARALLAX_LERP
+    capText3Y.value += (capText3YTarget - capText3Y.value) * PARALLAX_LERP
+    capText4Y.value += (capText4YTarget - capText4Y.value) * PARALLAX_LERP
+    requestAnimationFrame(smoothParallaxLoop)
+  }
+  requestAnimationFrame(smoothParallaxLoop)
 
   indexCleanup = () => {
     alive = false

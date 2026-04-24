@@ -930,14 +930,21 @@ function computeImageParallax(el: HTMLElement | null, vh: number): number {
   return -150 - clamped * 150
 }
 
-function updateTextParallax(el: HTMLElement | null, yRef: { value: number }, intensity = 80) {
-  if (!el) return
+function computeTextParallaxTarget(el: HTMLElement | null, intensity = 80): number {
+  if (!el) return 0
   const rect = el.getBoundingClientRect()
   const vh = window.innerHeight
-  // p = 0 when element center is at viewport center; negative below, positive above
   const p = (rect.top + rect.height / 2 - vh / 2) / vh
-  yRef.value = -p * intensity
+  return -p * intensity
 }
+
+// Lerp targets — scroll handler writes raw values here, rAF loop smooths refs toward them
+let wwdText1YTarget = 0
+let wwdText2YTarget = 0
+let wwdText3YTarget = 0
+let wwdPanel1YTarget = -150
+let wwdPanel2YTarget = -150
+let wwdPanel3YTarget = -150
 
 let cleanupFn: (() => void) | null = null
 
@@ -1024,16 +1031,30 @@ onMounted(() => {
           activeS4Panel.value = newPanel
         }
       }
-      updateTextParallax(wwdText1Ref.value, wwdText1Y)
-      updateTextParallax(wwdText2Ref.value, wwdText2Y)
-      updateTextParallax(wwdText3Ref.value, wwdText3Y)
+      wwdText1YTarget = computeTextParallaxTarget(wwdText1Ref.value, 80)
+      wwdText2YTarget = computeTextParallaxTarget(wwdText2Ref.value, 80)
+      wwdText3YTarget = computeTextParallaxTarget(wwdText3Ref.value, 80)
       const vhNow = window.innerHeight
-      wwdPanel1Y.value = computeImageParallax(wwdPanel1Ref.value, vhNow)
-      wwdPanel2Y.value = computeImageParallax(wwdPanel2Ref.value, vhNow)
-      wwdPanel3Y.value = computeImageParallax(wwdPanel3Ref.value, vhNow)
+      wwdPanel1YTarget = computeImageParallax(wwdPanel1Ref.value, vhNow)
+      wwdPanel2YTarget = computeImageParallax(wwdPanel2Ref.value, vhNow)
+      wwdPanel3YTarget = computeImageParallax(wwdPanel3Ref.value, vhNow)
     })
   }
   window.addEventListener('scroll', onScroll)
+
+  // Parallax smooth loop — lerps refs toward scroll-computed targets at 0.12/frame
+  const LERP = 0.12
+  function smoothParallaxLoop() {
+    if (!alive) return
+    wwdText1Y.value += (wwdText1YTarget - wwdText1Y.value) * LERP
+    wwdText2Y.value += (wwdText2YTarget - wwdText2Y.value) * LERP
+    wwdText3Y.value += (wwdText3YTarget - wwdText3Y.value) * LERP
+    wwdPanel1Y.value += (wwdPanel1YTarget - wwdPanel1Y.value) * LERP
+    wwdPanel2Y.value += (wwdPanel2YTarget - wwdPanel2Y.value) * LERP
+    wwdPanel3Y.value += (wwdPanel3YTarget - wwdPanel3Y.value) * LERP
+    requestAnimationFrame(smoothParallaxLoop)
+  }
+  requestAnimationFrame(smoothParallaxLoop)
 
   cleanupFn = () => {
     alive = false
