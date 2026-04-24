@@ -62,8 +62,8 @@
     <section class="relative flex items-center justify-center h-[50vh] w-full overflow-hidden">
       <div class="max-w-6xl px-6 md:px-8 text-center">
         <h2 class="text-3xl md:text-5xl font-bold leading-snug">
-          A 350,000 m² defense park in Balatonfűzfő, Hungary — extensive capacity for strategic partnerships with
-          defense technology innovators and emerging players.
+          These four parts assemble the rounds NATO relies on. EuroShield is starting small-caliber production across
+          5.56×45mm, 7.62×51mm, and 12.7×99mm.
         </h2>
       </div>
     </section>
