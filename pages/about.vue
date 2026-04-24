@@ -75,11 +75,11 @@
         <div class="group cursor-pointer">
           <div class="bg-[#051e2e] text-white rounded-2xl p-8 md:p-10 min-h-[400px] relative overflow-hidden">
             <img
-              src="/about-panel1.webp"
+              src="/about-panel3.webp"
               class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
             />
             <img
-              src="/about-panel1-hover.webp"
+              src="/about-panel3-hover.webp"
               class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             />
             <h3 class="text-2xl md:text-3xl font-bold relative z-10">5.56×45mm NATO</h3>
@@ -88,9 +88,8 @@
             <p
               class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out"
             >
-              The standard infantry round across NATO forces. Lightweight, high-velocity, and optimized for modern
-              assault rifles — 5.56mm remains the backbone of small arms ammunition with sustained demand driven by
-              training cycles and stockpile replenishment.
+              NATO's standard-issue infantry round. Light, fast, volume-driven — the core of training cycles, frontline
+              supply, and allied stockpile replenishment.
             </p>
             <div
               class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-colors duration-400 ease-out w-14 overflow-hidden relative h-8"
@@ -133,9 +132,8 @@
             <p
               class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out"
             >
-              The full-power battle rifle and machine gun round. Heavier and harder-hitting than 5.56mm, 7.62×51mm
-              serves as the primary medium machine gun and designated marksman cartridge across NATO — critical for
-              suppressive fire and extended-range engagements.
+              The full-power battle rifle and machine gun round. Heavier reach, longer range — the backbone of NATO's
+              designated marksman platforms and medium machine guns.
             </p>
             <div
               class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-colors duration-400 ease-out w-14 overflow-hidden relative h-8"
@@ -165,11 +163,11 @@
         <div class="group cursor-pointer">
           <div class="bg-[#051e2e] text-white rounded-2xl p-8 md:p-10 min-h-[400px] relative overflow-hidden">
             <img
-              src="/about-panel3.webp"
+              src="/about-panel1.webp"
               class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
             />
             <img
-              src="/about-panel3-hover.webp"
+              src="/about-panel1-hover.webp"
               class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             />
             <h3 class="text-2xl md:text-3xl font-bold relative z-10">.50 BMG</h3>
@@ -178,9 +176,8 @@
             <p
               class="text-black/50 text-sm md:text-base leading-relaxed px-2 opacity-0 -translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out"
             >
-              The heavy machine gun and anti-materiel standard. 12.7×99mm delivers devastating stopping power at extreme
-              range — used in vehicle-mounted weapon systems, sniper platforms, and perimeter defense across every NATO
-              theatre of operation.
+              NATO's heavy machine gun and anti-materiel standard. Maximum stopping power across vehicle-mounted
+              systems, sniper platforms, and perimeter defense.
             </p>
             <div
               class="bg-black/5 group-hover:bg-[#051e2e] rounded-lg py-2 flex-shrink-0 transition-colors duration-400 ease-out w-14 overflow-hidden relative h-8"
