@@ -49,29 +49,29 @@
         class="fixed top-0 right-0 h-screen w-full md:w-1/4 z-50 bg-[#051e2e] text-white flex flex-col"
       >
         <nav class="flex flex-col gap-8 px-10 pt-32">
-          <NuxtLink
+          <a
+            href="/"
             @click.prevent="navigateWithCurtain('/')"
-            to="/"
-            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
-            >Home</NuxtLink
+            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors text-left cursor-pointer"
+            >Home</a
           >
-          <NuxtLink
+          <a
+            href="/about"
             @click.prevent="navigateWithCurtain('/about')"
-            to="/about"
-            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
-            >About Us</NuxtLink
+            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors text-left cursor-pointer"
+            >About Us</a
           >
-          <NuxtLink
+          <a
+            href="/production"
             @click.prevent="navigateWithCurtain('/production')"
-            to="/production"
-            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
-            >Production</NuxtLink
+            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors text-left cursor-pointer"
+            >Production</a
           >
-          <NuxtLink
+          <a
+            href="/contact"
             @click.prevent="navigateWithCurtain('/contact')"
-            to="/contact"
-            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
-            >Contact</NuxtLink
+            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors text-left cursor-pointer"
+            >Contact</a
           >
         </nav>
         <div class="mt-auto px-10 pb-10 text-xs font-mono text-white/40 uppercase tracking-widest">
@@ -82,7 +82,7 @@
     </transition>
 
     <!-- Page transition curtain — slides in from right to cover, then slides out to left -->
-    <transition name="curtain">
+    <transition name="curtain" @after-enter="onCurtainEntered" @after-leave="onCurtainLeft">
       <div v-if="curtainVisible" class="fixed inset-0 z-[100] bg-[#051e2e] pointer-events-none"></div>
     </transition>
 
@@ -95,11 +95,30 @@ import Lenis from 'lenis'
 
 const menuOpen = ref(false)
 const route = useRoute()
-const showLoader = computed(() => route.path === '/' || route.path === '/production')
 
-// Page transition curtain — slides over screen to cover, navigates, then slides off to reveal
+// Loader should only ever play once per session. After loader-gone fires, never show HudLoader again.
+const loaderShown = ref(false)
+const showLoader = computed(() => {
+  if (loaderShown.value) return false
+  return route.path === '/' || route.path === '/production'
+})
+
+// Page transition curtain — slides over screen to cover, navigates, then slides off to reveal.
+// Uses Vue transition @after-enter/@after-leave hooks for precise sync with CSS transition.
 const curtainVisible = ref(false)
 let curtainInFlight = false
+let curtainEnterResolve: (() => void) | null = null
+let curtainLeaveResolve: (() => void) | null = null
+
+function onCurtainEntered() {
+  curtainEnterResolve?.()
+  curtainEnterResolve = null
+}
+function onCurtainLeft() {
+  curtainLeaveResolve?.()
+  curtainLeaveResolve = null
+}
+
 async function navigateWithCurtain(path: string) {
   if (curtainInFlight) return
   if (route.path === path) {
@@ -107,16 +126,25 @@ async function navigateWithCurtain(path: string) {
     return
   }
   curtainInFlight = true
-  curtainVisible.value = true
-  // Wait for curtain to slide in from right and fully cover (matches .curtain-enter-active duration)
-  await new Promise((r) => setTimeout(r, 600))
+
+  // Phase 1: slide curtain in from right and wait until it fully covers
+  await new Promise<void>((r) => {
+    curtainEnterResolve = r
+    curtainVisible.value = true
+  })
+
+  // Phase 2: curtain fully covers — safe to navigate under it
   menuOpen.value = false
   await navigateTo(path)
-  // Small buffer so new page has time to mount before reveal starts
-  await new Promise((r) => setTimeout(r, 120))
-  curtainVisible.value = false
-  // Wait for curtain to finish exiting (matches .curtain-leave-active duration)
-  await new Promise((r) => setTimeout(r, 700))
+  // Give the browser two frames to paint the new page before we reveal
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null))))
+
+  // Phase 3: slide curtain out to left, wait until done
+  await new Promise<void>((r) => {
+    curtainLeaveResolve = r
+    curtainVisible.value = false
+  })
+
   curtainInFlight = false
 }
 
@@ -129,11 +157,18 @@ function onGatePassed() {
 const isOverDark = ref(true)
 const navColorClass = computed(() => (isOverDark.value ? 'text-white' : 'text-[#051e2e]'))
 
+// Mark loader as shown once its sequence finishes
+if (import.meta.client) {
+  window.addEventListener('loader-gone', () => {
+    loaderShown.value = true
+  })
+}
+
 onMounted(() => {
   const lenis = new Lenis({
-    lerp: 0.18,
-    wheelMultiplier: 1.2,
-    touchMultiplier: 2,
+    lerp: 0.1,
+    wheelMultiplier: 1.0,
+    touchMultiplier: 1.5,
   })
   function raf(time: number) {
     lenis.raf(time)
