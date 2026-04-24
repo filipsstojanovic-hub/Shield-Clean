@@ -4,12 +4,11 @@
     <IdentityGate v-if="!gatePassed" :wait-for-loader="showLoader" @passed="onGatePassed" />
 
     <!-- Logo top-left -->
-    <a
-      href="/"
-      @click.prevent="navigateWithCurtain('/')"
-      class="fixed top-6 left-6 md:top-8 md:left-10 z-[60] text-xl font-bold tracking-wider transition-colors duration-300 cursor-pointer"
+    <NuxtLink
+      to="/"
+      class="fixed top-6 left-6 md:top-8 md:left-10 z-[60] text-xl font-bold tracking-wider transition-colors duration-300"
       :class="navColorClass"
-      >EuroShield</a
+      >EuroShield</NuxtLink
     >
 
     <!-- Menu button top-right -->
@@ -104,11 +103,49 @@ const showLoader = computed(() => {
   return route.path === '/' || route.path === '/production'
 })
 
-// Page transition curtain — shared via composable so any page CTA can use it.
-const { curtainVisible, navigateWithCurtain: rawNavigate, onCurtainEntered, onCurtainLeft } = useCurtainNav()
+// Page transition curtain — slides over screen to cover, navigates, then slides off to reveal.
+// Uses Vue transition @after-enter/@after-leave hooks for precise sync with CSS transition.
+const curtainVisible = ref(false)
+let curtainInFlight = false
+let curtainEnterResolve: (() => void) | null = null
+let curtainLeaveResolve: (() => void) | null = null
+
+function onCurtainEntered() {
+  curtainEnterResolve?.()
+  curtainEnterResolve = null
+}
+function onCurtainLeft() {
+  curtainLeaveResolve?.()
+  curtainLeaveResolve = null
+}
+
 async function navigateWithCurtain(path: string) {
+  if (curtainInFlight) return
+  if (route.path === path) {
+    menuOpen.value = false
+    return
+  }
+  curtainInFlight = true
+
+  // Phase 1: slide curtain in from right and wait until it fully covers
+  await new Promise<void>((r) => {
+    curtainEnterResolve = r
+    curtainVisible.value = true
+  })
+
+  // Phase 2: curtain fully covers — safe to navigate under it
   menuOpen.value = false
-  await rawNavigate(path)
+  await navigateTo(path)
+  // Give the browser two frames to paint the new page before we reveal
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null))))
+
+  // Phase 3: slide curtain out to left, wait until done
+  await new Promise<void>((r) => {
+    curtainLeaveResolve = r
+    curtainVisible.value = false
+  })
+
+  curtainInFlight = false
 }
 
 // Identity gate — session-scoped password protection
