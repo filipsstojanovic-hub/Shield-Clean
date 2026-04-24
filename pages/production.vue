@@ -128,7 +128,7 @@
     <!-- Section 2 -->
     <section class="relative flex items-center justify-center h-[50vh] w-full overflow-hidden">
       <div class="max-w-6xl px-6 md:px-8 text-center">
-        <h2 class="text-3xl md:text-5xl font-bold leading-snug">
+        <h2 ref="section2HeadingRef" class="text-3xl md:text-5xl font-bold leading-snug">
           These four parts assemble the rounds NATO relies on. EuroShield is starting small-caliber production across
           5.56×45mm, 7.62×51mm, and 12.7×99mm.
         </h2>
@@ -893,6 +893,7 @@ const heroClipOutlineTransform = computed(() => {
 // Intro headline — slides up off-screen as user scrolls; color fades dark→white as panel
 // expansion starts covering the text area (dark works over white bg, white works over video).
 const heroIntroRef = ref<HTMLElement | null>(null)
+const section2HeadingRef = ref<HTMLElement | null>(null)
 const heroIntroStyle = computed(() => {
   const p = heroProgress.value
   const ty = -p * 1200
@@ -985,6 +986,38 @@ onMounted(() => {
   } else {
     window.addEventListener('loader-gone', revealIntro, { once: true })
   }
+
+  // Section 2 heading — split into lines, slide up from below on scroll-into-view
+  nextTick(() => {
+    const el = section2HeadingRef.value
+    if (!el) return
+    SplitText.create(el, {
+      type: 'lines',
+      linesClass: 'section2-line',
+      mask: 'lines',
+      autoSplit: true,
+      onSplit: (self: { lines: Element[] }) => {
+        gsap.set(self.lines, { yPercent: 100 })
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                gsap.to(self.lines, {
+                  yPercent: 0,
+                  duration: 0.9,
+                  ease: 'power3.out',
+                  stagger: 0.15,
+                })
+                observer.disconnect()
+              }
+            })
+          },
+          { threshold: 0.3 },
+        )
+        observer.observe(el)
+      },
+    })
+  })
 
   // Scroll-scrubbed video: currentTime mapped to hero scroll progress (0→1 over 300vh)
   let rawProgress = 0

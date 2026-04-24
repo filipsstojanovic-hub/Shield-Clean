@@ -1890,17 +1890,19 @@ onMounted(() => {
     labelY = 0
   let cursorVisible = false
 
+  const onHeroMouseMove = (e: MouseEvent) => {
+    if (!heroScrolled.value) {
+      cursorX = e.clientX
+      cursorY = e.clientY
+      cursorVisible = true
+    }
+  }
+  const onHeroMouseLeave = () => {
+    cursorVisible = false
+  }
   if (heroSection.value) {
-    heroSection.value.addEventListener('mousemove', (e) => {
-      if (!heroScrolled.value) {
-        cursorX = e.clientX
-        cursorY = e.clientY
-        cursorVisible = true
-      }
-    })
-    heroSection.value.addEventListener('mouseleave', () => {
-      cursorVisible = false
-    })
+    heroSection.value.addEventListener('mousemove', onHeroMouseMove)
+    heroSection.value.addEventListener('mouseleave', onHeroMouseLeave)
   }
 
   let alive = true
@@ -1929,8 +1931,9 @@ onMounted(() => {
     pulseTime.value = (performance.now() - pulseStart) / 1000
     requestAnimationFrame(animatePulse)
   }
+  let pulseObserver: IntersectionObserver | null = null
   if (section4.value) {
-    const pulseObserver = new IntersectionObserver(
+    pulseObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !pulseRunning) {
           pulseRunning = true
@@ -1956,8 +1959,9 @@ onMounted(() => {
     }
     requestAnimationFrame(smoothSlide)
   }
+  let slideObserver: IntersectionObserver | null = null
   if (section5.value) {
-    const slideObserver = new IntersectionObserver(
+    slideObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !slideRunning) {
           slideRunning = true
@@ -2330,6 +2334,12 @@ onMounted(() => {
     alive = false
     window.removeEventListener('scroll', onHeroScroll)
     window.removeEventListener('scroll', onMainScroll)
+    pulseObserver?.disconnect()
+    slideObserver?.disconnect()
+    if (heroSection.value) {
+      heroSection.value.removeEventListener('mousemove', onHeroMouseMove)
+      heroSection.value.removeEventListener('mouseleave', onHeroMouseLeave)
+    }
   }
 })
 

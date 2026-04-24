@@ -92,6 +92,7 @@
 
 <script setup lang="ts">
 import Lenis from 'lenis'
+import gsap from 'gsap'
 
 const menuOpen = ref(false)
 const route = useRoute()
@@ -127,6 +128,10 @@ if (import.meta.client) {
 }
 
 onMounted(() => {
+  // GSAP lag smoothing off — prevents a visible jump after tab backgrounding / frame drops
+  // when any GSAP tween or ScrollTrigger shares the frame budget with Lenis.
+  gsap.ticker.lagSmoothing(0)
+
   const lenis = new Lenis({
     lerp: 0.1,
     wheelMultiplier: 1.0,

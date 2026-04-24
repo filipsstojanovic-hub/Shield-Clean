@@ -175,7 +175,7 @@ const PRELOAD_IMAGES = [
   '/posters/cap2.webp',
   '/posters/cap3.webp',
   '/posters/cap4.webp',
-  '/posters/panel1.jpg',
+  '/posters/panel1.webp',
 ]
 const PRELOAD_VIDEOS = [
   'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com/videos/panel1.mp4',
