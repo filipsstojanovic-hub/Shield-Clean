@@ -202,7 +202,11 @@
               />
             </svg>
           </div>
-          <div class="max-w-sm">
+          <div
+            ref="capText1Ref"
+            :style="{ transform: `translateY(${capText1Y}px)` }"
+            class="max-w-sm will-change-transform"
+          >
             <div
               class="flex items-baseline gap-4 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#051e2e]"
             >
@@ -255,7 +259,11 @@
               />
             </svg>
           </div>
-          <div class="max-w-sm">
+          <div
+            ref="capText2Ref"
+            :style="{ transform: `translateY(${capText2Y}px)` }"
+            class="max-w-sm will-change-transform"
+          >
             <div
               class="flex items-baseline gap-4 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#051e2e]"
             >
@@ -306,7 +314,11 @@
               </g>
             </svg>
           </div>
-          <div class="max-w-sm">
+          <div
+            ref="capText3Ref"
+            :style="{ transform: `translateY(${capText3Y}px)` }"
+            class="max-w-sm will-change-transform"
+          >
             <div
               class="flex items-baseline gap-4 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#051e2e]"
             >
@@ -358,7 +370,11 @@
               </g>
             </svg>
           </div>
-          <div class="max-w-sm">
+          <div
+            ref="capText4Ref"
+            :style="{ transform: `translateY(${capText4Y}px)` }"
+            class="max-w-sm will-change-transform"
+          >
             <div
               class="flex items-baseline gap-4 text-2xl md:text-3xl font-mono uppercase tracking-widest text-[#051e2e]"
             >
@@ -1136,6 +1152,7 @@
             <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Company</h3>
             <ul class="space-y-3 text-white/60">
               <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About Us</NuxtLink></li>
+              <li><NuxtLink to="/production" class="hover:text-[#02d4ff] transition-colors">Production</NuxtLink></li>
               <li><NuxtLink to="/contact" class="hover:text-[#02d4ff] transition-colors">Contact</NuxtLink></li>
             </ul>
           </div>
@@ -1199,6 +1216,24 @@ const capPanel1ParallaxY = ref(-150)
 const capPanel2ParallaxY = ref(-150)
 const capPanel3ParallaxY = ref(-150)
 const capPanel4ParallaxY = ref(-150)
+
+// Capabilities text parallax — text blocks drift vertically as row scrolls through viewport
+const capText1Ref = ref<HTMLElement | null>(null)
+const capText2Ref = ref<HTMLElement | null>(null)
+const capText3Ref = ref<HTMLElement | null>(null)
+const capText4Ref = ref<HTMLElement | null>(null)
+const capText1Y = ref(0)
+const capText2Y = ref(0)
+const capText3Y = ref(0)
+const capText4Y = ref(0)
+
+function updateTextParallax(el: HTMLElement | null, yRef: { value: number }, intensity = 80) {
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  const vh = window.innerHeight
+  const p = (rect.top + rect.height / 2 - vh / 2) / vh
+  yRef.value = -p * intensity
+}
 
 // Scramble text hover effect
 const scrambleChars = '!<>-_\\/[]{}—=+*^?#________'
@@ -1808,7 +1843,12 @@ onMounted(() => {
       gsap.set(lines, { yPercent: 100 })
     }
   })
-  window.addEventListener('loader-gone', animateHeroHeadingLoop, { once: true })
+  // If loader has already finished (client-side navigation back), reveal immediately.
+  if ((window as unknown as { __heroLoaderGone?: boolean }).__heroLoaderGone) {
+    nextTick(animateHeroHeadingLoop)
+  } else {
+    window.addEventListener('loader-gone', animateHeroHeadingLoop, { once: true })
+  }
   animateCapIntroHeading()
   setupCapPanelReveals()
 
@@ -2166,6 +2206,10 @@ onMounted(() => {
       capPanel2ParallaxY.value = computeCapParallax(capPanel2Ref.value, vh)
       capPanel3ParallaxY.value = computeCapParallax(capPanel3Ref.value, vh)
       capPanel4ParallaxY.value = computeCapParallax(capPanel4Ref.value, vh)
+      updateTextParallax(capText1Ref.value, capText1Y)
+      updateTextParallax(capText2Ref.value, capText2Y)
+      updateTextParallax(capText3Ref.value, capText3Y)
+      updateTextParallax(capText4Ref.value, capText4Y)
 
       const s2 = document.querySelector('section:nth-of-type(2)') as HTMLElement
       if (s2) {

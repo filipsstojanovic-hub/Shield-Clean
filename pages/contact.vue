@@ -87,16 +87,6 @@
 
     <!-- Footer -->
     <footer class="relative flex flex-col min-h-screen w-full bg-[#051e2e] text-white overflow-hidden">
-      <!-- Trapezoid vrh -->
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[75%] h-[55px] pointer-events-none rotate-180">
-        <svg class="w-[calc(100%+50px)] h-full -ml-[25px]" viewBox="0 0 850 55">
-          <path
-            d="M0,55 C15,55 25,53 32,46 L48,6 C49,2 52,0 56,0 L794,0 C798,0 801,2 802,6 L818,46 C825,53 835,55 850,55 L802,55 L48,55 Z"
-            fill="white"
-          />
-        </svg>
-      </div>
-
       <!-- Circuit linije -->
       <svg
         class="absolute inset-0 w-full h-full pointer-events-none"
@@ -254,6 +244,7 @@
             <ul class="space-y-3 text-white/60">
               <li><NuxtLink to="/" class="hover:text-[#02d4ff] transition-colors">Home</NuxtLink></li>
               <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About Us</NuxtLink></li>
+              <li><NuxtLink to="/production" class="hover:text-[#02d4ff] transition-colors">Production</NuxtLink></li>
               <li><NuxtLink to="/contact" class="hover:text-[#02d4ff] transition-colors">Contact</NuxtLink></li>
             </ul>
           </div>

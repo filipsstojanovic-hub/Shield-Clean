@@ -50,19 +50,25 @@
       >
         <nav class="flex flex-col gap-8 px-10 pt-32">
           <NuxtLink
-            @click="menuOpen = false"
+            @click.prevent="navigateWithCurtain('/')"
             to="/"
             class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
             >Home</NuxtLink
           >
           <NuxtLink
-            @click="menuOpen = false"
+            @click.prevent="navigateWithCurtain('/about')"
             to="/about"
             class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
             >About Us</NuxtLink
           >
           <NuxtLink
-            @click="menuOpen = false"
+            @click.prevent="navigateWithCurtain('/production')"
+            to="/production"
+            class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
+            >Production</NuxtLink
+          >
+          <NuxtLink
+            @click.prevent="navigateWithCurtain('/contact')"
             to="/contact"
             class="menu-item text-3xl font-bold uppercase tracking-tight hover:text-[#02d4ff] transition-colors"
             >Contact</NuxtLink
@@ -75,6 +81,11 @@
       </aside>
     </transition>
 
+    <!-- Page transition curtain — slides in from right to cover, then slides out to left -->
+    <transition name="curtain">
+      <div v-if="curtainVisible" class="fixed inset-0 z-[100] bg-[#051e2e] pointer-events-none"></div>
+    </transition>
+
     <NuxtPage />
   </div>
 </template>
@@ -84,7 +95,30 @@ import Lenis from 'lenis'
 
 const menuOpen = ref(false)
 const route = useRoute()
-const showLoader = computed(() => route.path === '/' || route.path === '/about')
+const showLoader = computed(() => route.path === '/' || route.path === '/production')
+
+// Page transition curtain — slides over screen to cover, navigates, then slides off to reveal
+const curtainVisible = ref(false)
+let curtainInFlight = false
+async function navigateWithCurtain(path: string) {
+  if (curtainInFlight) return
+  if (route.path === path) {
+    menuOpen.value = false
+    return
+  }
+  curtainInFlight = true
+  curtainVisible.value = true
+  // Wait for curtain to slide in from right and fully cover (matches .curtain-enter-active duration)
+  await new Promise((r) => setTimeout(r, 600))
+  menuOpen.value = false
+  await navigateTo(path)
+  // Small buffer so new page has time to mount before reveal starts
+  await new Promise((r) => setTimeout(r, 120))
+  curtainVisible.value = false
+  // Wait for curtain to finish exiting (matches .curtain-leave-active duration)
+  await new Promise((r) => setTimeout(r, 700))
+  curtainInFlight = false
+}
 
 // Identity gate — session-scoped password protection
 const gatePassed = ref(false)
@@ -187,5 +221,19 @@ onMounted(() => {
 .backdrop-enter-from,
 .backdrop-leave-to {
   opacity: 0;
+}
+
+/* Page transition curtain */
+.curtain-enter-active {
+  transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.curtain-enter-from {
+  transform: translateX(100%);
+}
+.curtain-leave-active {
+  transition: transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+}
+.curtain-leave-to {
+  transform: translateX(-100%);
 }
 </style>

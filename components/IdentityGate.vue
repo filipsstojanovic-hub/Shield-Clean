@@ -44,7 +44,7 @@
                 data-1p-ignore="true"
                 data-form-type="other"
                 name="gate-no-save-1"
-                class="w-full bg-transparent text-3xl md:text-4xl font-mono uppercase tracking-wide text-white py-4 pl-6 pr-4 outline-none placeholder-white/30 disabled:text-white/40"
+                class="w-full bg-transparent text-3xl md:text-4xl font-mono tracking-wide text-white py-4 pl-6 pr-4 outline-none placeholder-white/30 disabled:text-white/40"
                 placeholder=""
               />
               <!-- L-shaped animated border (vertical left + horizontal bottom) -->

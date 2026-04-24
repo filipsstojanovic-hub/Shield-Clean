@@ -525,6 +525,9 @@ function startRevealSequence() {
   setTimeout(
     () => {
       gone.value = true
+      // Expose global flag so pages entered via client-side navigation (after the loader is already gone)
+      // can detect it and skip waiting for the event
+      ;(window as unknown as { __heroLoaderGone?: boolean }).__heroLoaderGone = true
       window.dispatchEvent(new Event('loader-gone'))
     },
     STEP_MS * 4 + 700 + 1200,
