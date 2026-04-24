@@ -624,17 +624,14 @@
       <!-- Heading + CTA -->
       <div class="flex flex-col items-center text-center px-6 pt-32 md:pt-40">
         <h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2>
-        <NuxtLink
-          to="/contact"
-          class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group"
+        <a
+          href="/contact"
+          @click.prevent="navigateWithCurtain('/contact')"
+          @mouseenter="scrambleText"
+          @mouseleave="scrambleText"
+          class="btn-notch-clip inline-block bg-[#02d4ff] text-[#051e2e] text-xs font-mono uppercase tracking-widest px-8 py-4 cursor-pointer"
+          >Request A Briefing</a
         >
-          <span
-            class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"
-          ></span>
-          <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300"
-            >Request A Briefing</span
-          >
-        </NuxtLink>
       </div>
 
       <!-- Logo + linkovi -->
@@ -692,6 +689,9 @@
 <script setup lang="ts">
 import gsap from 'gsap'
 import { SplitText } from 'gsap/SplitText'
+
+const { navigateWithCurtain } = useCurtainNav()
+const { scrambleText } = useScramble()
 
 useHead({
   bodyAttrs: {
