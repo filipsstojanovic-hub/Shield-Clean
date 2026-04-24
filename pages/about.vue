@@ -37,17 +37,14 @@
     <footer class="relative flex flex-col min-h-screen w-full bg-[#051e2e] text-white overflow-hidden">
       <div class="flex flex-col items-center text-center px-6 pt-32 md:pt-40">
         <h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2>
-        <NuxtLink
-          to="/contact"
-          class="relative overflow-hidden bg-white/10 text-white/60 px-12 py-4 rounded-lg text-sm font-semibold uppercase tracking-widest font-mono group"
+        <a
+          href="/contact"
+          @click.prevent="navigateWithCurtain('/contact')"
+          @mouseenter="scrambleText"
+          @mouseleave="scrambleText"
+          class="btn-notch-clip inline-block bg-[#02d4ff] text-[#051e2e] text-xs font-mono uppercase tracking-widest px-8 py-4 cursor-pointer"
+          >Request A Briefing</a
         >
-          <span
-            class="absolute inset-0 bg-[#02d4ff] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"
-          ></span>
-          <span class="relative z-10 group-hover:text-[#051e2e] transition-colors duration-300"
-            >Request A Briefing</span
-          >
-        </NuxtLink>
       </div>
 
       <div class="flex flex-col md:flex-row items-start justify-between px-6 md:px-16 pb-8 pt-16 gap-12 mt-auto">
@@ -69,10 +66,38 @@
           <div>
             <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Company</h3>
             <ul class="space-y-3 text-white/60">
-              <li><NuxtLink to="/" class="hover:text-[#02d4ff] transition-colors">Home</NuxtLink></li>
-              <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About Us</NuxtLink></li>
-              <li><NuxtLink to="/production" class="hover:text-[#02d4ff] transition-colors">Production</NuxtLink></li>
-              <li><NuxtLink to="/contact" class="hover:text-[#02d4ff] transition-colors">Contact</NuxtLink></li>
+              <li>
+                <a
+                  href="/"
+                  @click.prevent="navigateWithCurtain('/')"
+                  class="hover:text-[#02d4ff] transition-colors cursor-pointer"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/about"
+                  @click.prevent="navigateWithCurtain('/about')"
+                  class="hover:text-[#02d4ff] transition-colors cursor-pointer"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/production"
+                  @click.prevent="navigateWithCurtain('/production')"
+                  class="hover:text-[#02d4ff] transition-colors cursor-pointer"
+                  >Production</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  @click.prevent="navigateWithCurtain('/contact')"
+                  class="hover:text-[#02d4ff] transition-colors cursor-pointer"
+                  >Contact</a
+                >
+              </li>
             </ul>
           </div>
         </div>
@@ -101,6 +126,9 @@
 </template>
 
 <script setup lang="ts">
+const { navigateWithCurtain } = useCurtainNav()
+const { scrambleText } = useScramble()
+
 useHead({
   title: 'EuroShield · About Us',
   bodyAttrs: {

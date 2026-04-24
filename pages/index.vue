@@ -53,7 +53,8 @@
             <span class="block overflow-hidden"><span class="block hero-line">We scale faster.</span></span>
           </div>
           <a
-            href="#"
+            href="/contact"
+            @click.prevent="navigateWithCurtain('/contact')"
             @mouseenter="scrambleText"
             @mouseleave="scrambleText"
             class="btn-notch-clip inline-block bg-[#02d4ff] text-[#051e2e] text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
@@ -216,7 +217,8 @@
               Indefinitely licensed storage across regulated defense classes — scalable to mission demand.
             </p>
             <a
-              href="#"
+              href="/contact"
+              @click.prevent="navigateWithCurtain('/contact')"
               @mouseenter="scrambleText"
               @mouseleave="scrambleText"
               class="btn-notch-clip inline-block bg-[#051e2e] text-white text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
@@ -273,7 +275,8 @@
               5,330 m² dedicated storage across 19 licensed operational units — ready to scale production rapidly.
             </p>
             <a
-              href="#"
+              href="/contact"
+              @click.prevent="navigateWithCurtain('/contact')"
               @mouseenter="scrambleText"
               @mouseleave="scrambleText"
               class="btn-notch-clip inline-block bg-[#051e2e] text-white text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
@@ -329,7 +332,8 @@
               market.
             </p>
             <a
-              href="#"
+              href="/contact"
+              @click.prevent="navigateWithCurtain('/contact')"
               @mouseenter="scrambleText"
               @mouseleave="scrambleText"
               class="btn-notch-clip inline-block bg-[#051e2e] text-white text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
@@ -384,7 +388,8 @@
               105,000 m² ready for new production lines, storage, and defense tech development — repurposing on demand.
             </p>
             <a
-              href="#"
+              href="/contact"
+              @click.prevent="navigateWithCurtain('/contact')"
               @mouseenter="scrambleText"
               @mouseleave="scrambleText"
               class="btn-notch-clip inline-block bg-[#051e2e] text-white text-xs font-mono uppercase tracking-widest px-8 py-4 mt-8 cursor-pointer"
@@ -1123,6 +1128,7 @@
         <h2 class="text-4xl md:text-7xl font-bold mb-10 max-w-3xl leading-tight">The future of defense starts here.</h2>
         <a
           href="/contact"
+          @click.prevent="navigateWithCurtain('/contact')"
           @mouseenter="scrambleText"
           @mouseleave="scrambleText"
           class="btn-notch-clip inline-block bg-[#02d4ff] text-[#051e2e] text-xs font-mono uppercase tracking-widest px-8 py-4 cursor-pointer"
@@ -1151,9 +1157,30 @@
           <div>
             <h3 class="font-semibold mb-4 text-white/40 uppercase text-sm tracking-wider">Company</h3>
             <ul class="space-y-3 text-white/60">
-              <li><NuxtLink to="/about" class="hover:text-[#02d4ff] transition-colors">About Us</NuxtLink></li>
-              <li><NuxtLink to="/production" class="hover:text-[#02d4ff] transition-colors">Production</NuxtLink></li>
-              <li><NuxtLink to="/contact" class="hover:text-[#02d4ff] transition-colors">Contact</NuxtLink></li>
+              <li>
+                <a
+                  href="/about"
+                  @click.prevent="navigateWithCurtain('/about')"
+                  class="hover:text-[#02d4ff] transition-colors cursor-pointer"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/production"
+                  @click.prevent="navigateWithCurtain('/production')"
+                  class="hover:text-[#02d4ff] transition-colors cursor-pointer"
+                  >Production</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  @click.prevent="navigateWithCurtain('/contact')"
+                  class="hover:text-[#02d4ff] transition-colors cursor-pointer"
+                  >Contact</a
+                >
+              </li>
             </ul>
           </div>
         </div>
@@ -1190,6 +1217,8 @@ import { SplitText } from 'gsap/SplitText'
 if (import.meta.client) {
   gsap.registerPlugin(SplitText)
 }
+
+const { navigateWithCurtain } = useCurtainNav()
 
 const blobBase = 'https://i8ipe2nbskkytzsn.public.blob.vercel-storage.com'
 useHead({
@@ -2399,48 +2428,6 @@ onUnmounted(() => {
   position: relative;
   isolation: isolate;
   border-radius: 6px;
-}
-@property --btn-br-x {
-  syntax: '<length>';
-  initial-value: 16px;
-  inherits: false;
-}
-@property --btn-br-y {
-  syntax: '<length>';
-  initial-value: 14px;
-  inherits: false;
-}
-@property --btn-tl-x {
-  syntax: '<length>';
-  initial-value: 0px;
-  inherits: false;
-}
-@property --btn-tl-y {
-  syntax: '<length>';
-  initial-value: 0px;
-  inherits: false;
-}
-.btn-notch-clip {
-  border-radius: 6px;
-  clip-path: polygon(
-    var(--btn-tl-x) 0,
-    100% 0,
-    100% calc(100% - var(--btn-br-y)),
-    calc(100% - var(--btn-br-x)) 100%,
-    0 100%,
-    0 var(--btn-tl-y)
-  );
-  transition:
-    --btn-br-x 0.55s cubic-bezier(0.77, 0, 0.175, 1),
-    --btn-br-y 0.55s cubic-bezier(0.77, 0, 0.175, 1),
-    --btn-tl-x 0.55s cubic-bezier(0.77, 0, 0.175, 1),
-    --btn-tl-y 0.55s cubic-bezier(0.77, 0, 0.175, 1);
-}
-.btn-notch-clip:hover {
-  --btn-br-x: 0px;
-  --btn-br-y: 0px;
-  --btn-tl-x: 16px;
-  --btn-tl-y: 14px;
 }
 @keyframes dotBlink {
   0%,
