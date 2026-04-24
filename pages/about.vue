@@ -239,22 +239,29 @@
     <section id="about-capabilities" ref="section4El" class="relative h-[250vh] w-full bg-white">
       <!-- Text left side - sticky -->
       <div class="sticky top-0 h-screen flex items-center pointer-events-none">
-        <!-- Panel number -->
-        <span class="absolute left-[15%] text-sm font-mono text-black/30 flex -mt-[10vh]"
-          >0<span class="inline-block h-[1.2em] overflow-hidden relative w-[0.65em]"
-            ><transition :name="activeS4Panel > activeS4PanelPrev ? 'num-up' : 'num-down'"
-              ><span :key="activeS4Panel" class="block">{{ activeS4Panel }}</span></transition
-            ></span
-          ></span
-        >
         <!-- Text -->
-        <div class="max-w-md pointer-events-auto -mt-[10vh] ml-[28%]">
+        <div class="max-w-2xl pointer-events-auto -mt-[10vh] ml-[10%] pr-8">
           <h3 class="text-sm font-mono uppercase tracking-wider text-black/40">What We Do</h3>
           <h1 class="text-4xl md:text-5xl font-bold text-[#051e2e] leading-tight mt-4">End-to-End Capability</h1>
           <h2 class="text-lg md:text-xl text-black/50 mt-4 leading-relaxed">
             From raw material to finished round — fully integrated manufacturing, storage, and partnerships under one
             roof.
           </h2>
+          <div class="mt-8 space-y-4 text-sm md:text-base text-black/60 leading-relaxed">
+            <p>
+              <span class="text-[#051e2e] font-semibold">Three production lines</span> run dual-shift operations,
+              scaling toward 120M+ NATO-standard rounds per year — 5.56×45mm, 7.62×51mm, and 12.7×99mm.
+            </p>
+            <p>
+              <span class="text-[#051e2e] font-semibold">19 licensed storage units</span> hold 240 tonnes of
+              TNT-equivalent capacity across 5,330 m² of dedicated infrastructure — feeding European distribution from
+              on-site.
+            </p>
+            <p>
+              <span class="text-[#051e2e] font-semibold">100,000+ m² of expansion-ready land</span> sits under
+              indefinite licenses — backed by the EU investment pipeline and open to any defense-related partnership.
+            </p>
+          </div>
         </div>
       </div>
       <div class="absolute right-[10%] top-[10%] w-[400px] h-[400px] md:w-[550px] md:h-[550px]">
