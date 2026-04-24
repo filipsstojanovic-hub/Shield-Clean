@@ -206,35 +206,6 @@
       </div>
     </section>
 
-    <section class="relative flex items-end justify-center h-[50vh] w-full pb-16 overflow-visible">
-      <div
-        class="absolute left-0 right-0 top-0 h-[calc(100%+30vh)] pointer-events-none"
-        style="
-          mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 100%);
-          -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 100%);
-        "
-      >
-        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="dotGrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-              <line x1="20" y1="0" x2="20" y2="16" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
-              <line x1="20" y1="24" x2="20" y2="40" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
-              <line x1="0" y1="20" x2="16" y2="20" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
-              <line x1="24" y1="20" x2="40" y2="20" stroke="rgba(0,0,0,0.06)" stroke-width="1" />
-              <circle cx="20" cy="20" r="1.5" fill="rgba(0,0,0,0.15)" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#dotGrid)" />
-        </svg>
-      </div>
-      <div class="max-w-6xl px-6 md:px-8 text-center relative z-10">
-        <h2 class="text-3xl md:text-5xl font-bold leading-snug">
-          Three integrated capabilities — manufacturing, logistics, and joint innovation — operating from a single
-          licensed defense park.
-        </h2>
-      </div>
-    </section>
-
     <!-- Section 4 -->
     <section id="about-capabilities" ref="section4El" class="relative h-[250vh] w-full bg-white">
       <!-- Text left side - sticky -->
